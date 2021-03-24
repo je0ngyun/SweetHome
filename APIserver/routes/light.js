@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+let Op_req = require('../common_modules/op_req');
 
 /* 전등 컨트롤 라우터 */
 router.get('/', function (req, res, next) {
@@ -9,6 +10,8 @@ router.get('/', function (req, res, next) {
 // PUT /right/고유번호 형식  -> 전등 on off 로 추후 수정
 router.get('/:mid', function (req, res, next) {
   res.send(req.params);
+  let op_req = new Op_req(req.params);
+  console.log(op_req.getmid());
 });
 
 module.exports = router;
