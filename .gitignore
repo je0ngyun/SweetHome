@@ -11,9 +11,12 @@
 # Icon must end with two \r
 Icon
 
-
 # Thumbnails
 ._*
+
+#env
+db.env
+db_env.json
 
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100
