@@ -9,8 +9,8 @@ const env = require('./env/db_env.json');
     "DB_PASSWORD": "password"
   }
 }*/
-function db_conn() {
+function dbConn() {
   return env.db_env.DB_HOST; //형식 접근
 }
 
-module.exports = db_conn;
+module.exports = dbConn;

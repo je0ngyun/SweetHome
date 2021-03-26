@@ -1,5 +1,5 @@
 'use strict';
-class op_req {
+class OpReq {
   //아두이노 동작 요청 클래스
   constructor(param) {
     this.mid = param;
@@ -9,4 +9,4 @@ class op_req {
   }
 }
 
-module.exports = op_req;
+module.exports = OpReq;
