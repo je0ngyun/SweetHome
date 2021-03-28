@@ -10,7 +10,11 @@ router.get('/validation/:mid', function (req, res, next) {});
 
 //테스트 (API 역할)
 router.get('/:mid', async function (req, res, next) {
-  let macRes = await reqToMac.req('localhost', '3000', '/arduino/11');
+  let macRes = await reqToMac.req(
+    req.body.host,
+    req.body.port,
+    req.body.url + '/' + req.params.mid,
+  );
   let resData = {
     mid: req.params.mid,
     model: 'light',

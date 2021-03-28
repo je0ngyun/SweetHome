@@ -3,12 +3,20 @@ const { default: axios } = require('axios');
 const self = {};
 
 self.req = async (hostname, port, url) => {
+  let response = {};
   try {
-    // return await axios.get('http://localhost:3000/arduino/11');
-    return await axios.get('http://' + hostname + ':' + port + url);
-  } catch (error) {
-    console.error(error);
+    response = await axios.get('http://' + hostname + ':' + port + url);
+  } catch (ex) {
+    if (ex.response && ex.response.status === 404) {
+      response.data = '404';
+      return response;
+    } else {
+      // unexpected
+      console.log(ex);
+      return;
+    }
   }
+  return response;
 };
 
 module.exports = self;
