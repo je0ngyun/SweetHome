@@ -2,10 +2,11 @@
 const { default: axios } = require('axios');
 const self = {};
 
-self.req = async (hostname, port, url) => {
+self.req = async (hostname, port, mid) => {
   let response = {};
   try {
-    response = await axios.get('http://' + hostname + ':' + port + url);
+    let url = 'http://' + hostname + ':' + port + '/' + mid;
+    response = await axios.get(url);
   } catch (ex) {
     if (ex.response && ex.response.status === 404) {
       response.data = '404';
