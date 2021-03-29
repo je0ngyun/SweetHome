@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
+    <title>Title</title>
+    <script src="scripts/jquery.min.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+        button {
+            background-color: #008CBA;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            padding: 15px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .main {
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .lb-main {
+            width: calc(100% - 150px);
+        }
+        .btn-main{
+            width: calc(100% - 150px);
+        }
+        .hidden_box{
+            display: none;
+            width: calc(100% - 150px);
+        }
+        .btn-list{
+            width: calc(100% - 150px);
+        }
+        .lb-main, .btn-main, .btn-list, .hidden_box, .li_ssid, li input{
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        li input {
+            width: calc(100% - 150px);
+        }
+
+        @media screen and (min-width: 350px) {
+
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="lb-main">
+            <span style="position: relative; bottom: 15px">SSID: No SSID</span>
+        </div>
+        <div class="btn-main">
+            <button id="conf_wifi" style="width: 100%">Wifi 설정</button>
+        </div>
+        <div class="hidden_box">
+            <input type="text" id="ssid" placeholder="SSID" style="width: 100%; margin-top: 7px"/><br>
+            <input type="password" id="s_pd" placeholder="PassWord" style="width: 100%; margin-top: 7px; margin-bottom: 7px;"/>
+        </div>
+        <div class="btn-main">
+            <button id="Reboot" style="width: 100%;color: #ffffff;">재부팅</button>
+        </div>
+        <div class="btn-list">
+            <button id="List" style="width: 100%;color: #ffffff;">SSID 목록</button>
+        </div>
+        <div class="li_ssid" style="display: none">
+            <ul class="li_ssid_main">
+                <li>
+                    <input type="button"  value="test"/>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // function get_query(){
+        //     var url = document.location.href;
+        //     var qs = url.substring(url.indexOf('?') + 1).split('&');
+        //     for(var i = 0, result = {}; i < qs.length; i++){
+        //         qs[i] = qs[i].split('=');
+        //         result[qs[i][0]] = decodeURIComponent(qs[i][1]);
+        //     }
+        //     return result;
+        // }
+        // var result = get_query();
+
+        $(function(){
+            $("#List").data('ch', 0);
+            var list = {
+                reset: function() {
+                    this.getElement().html("");
+                },
+                list_add: function(data) {
+                    var source = `
+                        <li>
+                            <input type="button" style="calc(100% - 150px)" value="${data.ssid}" data-id="${data.id}"/>
+                        </li>
+                    `;
+                    this.getElement().append(source);
+                },
+                getElement: function(type = null) {
+                    if (type === null) {
+                        return $('.li_ssid_main');
+                    }
+                }
+            };
+
+            $("#conf_wifi").on("click", function(data){
+                if($(this).text() == '돌아가기'){
+                    $(this).text('Wifi 설정');
+                    $('.hidden_box').css('display','none');
+                    $("#Reboot").text('재부팅');
+                }else{
+                    $(this).text('돌아가기');
+                    $('.hidden_box').css('display','block');
+                    $("#Reboot").text('저장');
+                    $('#ssid').val('');$('#s_pd').val('');
+                }
+            });
+
+            $("#Reboot").on("click", function(data){
+                if($(this).text() == '저장'){
+                    // 유효성 검사
+                    let ssid = $('#ssid').val();
+                    let s_pw = $('#s_pd').val();
+
+                    console.log(ssid);
+                    console.log(s_pw);
+                    // //ajax 통신
+                    // $.ajax({
+                    //     url : "",
+                    //     type : "post",
+                    //     dataType : "json",
+                    //     data : {
+                    //
+                    //     },
+                    //     success:function(data){
+                    //       // 성공했을 경우 처리할 곳
+                    //     },
+                    //     error:function (data){
+                    //         // AJAX 나 통신자체에 오류가 있을 경우 처리할 곳
+                    //     }
+                    // })
+                }else{
+                    // Reboot 일 경우
+                    console.log(this);
+                    alert('아잇 씨파 Reboot눌렀다 이말이야!');
+                }
+            });
+
+            $("#List").on('click', function(data){
+                if($(this).data('ch') == 0){
+                    $(this).data('ch', 1);
+                    $('.li_ssid').css('display', 'block');
+
+                    list.reset();
+                    for(var i=0; i<10; i++){
+                        data = {
+                            id : ('test' + i),
+                            ssid : ('test_SSID' + i)
+                        }
+                        list.list_add(data);
+                    }
+                }else {
+                    $(this).data('ch', 0);
+                    $('.li_ssid').css('display', 'none');
+                    list.reset();
+                }
+            })
+        });
+    </script>
+</body>
+</html>
