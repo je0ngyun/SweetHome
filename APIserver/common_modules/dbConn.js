@@ -9,8 +9,15 @@ const env = require('./env/db_env.json');
     "DB_PASSWORD": "password"
   }
 }*/
-function dbConn() {
-  return env.db_env.DB_HOST; //형식 접근
-}
 
-module.exports = dbConn;
+const db = require('knex')({
+  client: 'mysql',
+  connection: {
+    host: env.db_env.DB_HOST,
+    user: env.db_env.DB_USER,
+    password: env.db_env.DB_PASSWORD,
+    database: env.db_env.DB_DATABASE,
+  },
+});
+
+module.exports = db;

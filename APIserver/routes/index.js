@@ -15,17 +15,15 @@ router.get('/111', function (req, res, next) {
 });
 
 router.get('/action', async function (req, res, next) {
-  let macRes = await reqToMac.req(req.body.host, req.body.port, req.body.mid);
+  let macRes = await reqToMac.req(req.headers.host, 3000, req.headers.mid);
   let resData = {
-    mid: req.params.mid,
-    model: 'light',
-    stat: macRes.data,
+    mid: req.headers.mid,
+    model: 'undefined',
+    status: macRes.data,
   };
   res.json(JSON.stringify(resData));
 });
 
-router.get('/vertify', function (req, res, next) {
-  res.json('test');
-});
+router.get('/vertify', function (req, res, next) {});
 
 module.exports = router;
