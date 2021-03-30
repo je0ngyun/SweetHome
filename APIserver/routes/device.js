@@ -5,7 +5,7 @@ const reqToMac = require('../common_modules/reqToMac');
 
 //기기등록
 router.post('/regist', async function (req, res, next) {
-  let result = await db.regDevice(req.body);
+  let result = await db.addDevice(req.body);
   if (!result) {
     res.status(400).json({
       success: false,
@@ -16,9 +16,9 @@ router.post('/regist', async function (req, res, next) {
   }
 });
 
-//기기등록해제
+//기기삭제
 router.delete('/regist', async function (req, res, next) {
-  let result = await db.unRegDevice(req.body);
+  let result = await db.delDevice(req.body);
   if (!result) {
     res.status(404).json({
       success: false,
@@ -26,6 +26,22 @@ router.delete('/regist', async function (req, res, next) {
     });
   } else {
     res.status(200).json({ success: true, message: '기기삭제 완료' });
+  }
+});
+
+//기기로그조회
+router.get('/log', async function (req, res, next) {
+  let result = await db.getDeviceLog(req.body);
+  if (!result.result) {
+    res
+      .status(404)
+      .json({ success: false, message: '잘못된 회원아이디 입니다' });
+  } else {
+    res.status(200).json({
+      success: true,
+      message: '기기로그 조회 성공',
+      log: result.log,
+    });
   }
 });
 
@@ -39,7 +55,20 @@ router.get('/action', async function (req, res, next) {
     });
   } else {
     let macRes = await reqToMac.req(result.host, 3000, result.mac);
-    res.json({ success: macRes.data, message: '기기 동작요청 성공' });
+    let history = '꺼짐';
+    res.status(200).json({
+      success: true,
+      device: macRes.data,
+      message: '기기 동작요청 성공',
+    });
+    if (macRes.data) {
+      history = '켜짐';
+    }
+    await db.setDeviceLog({
+      userid: req.body.userid,
+      deviceid: req.body.deviceid,
+      history: history,
+    });
   }
 });
 

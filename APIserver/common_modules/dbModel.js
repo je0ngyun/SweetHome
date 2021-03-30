@@ -3,9 +3,9 @@
 const db = require('../common_modules/dbConn');
 const self = {};
 
-self.signup = async function (info) {
+self.addUser = async function (info) {
   try {
-    let result = await db('user')
+    await db('user')
       .insert({
         id: info.userid,
         username: info.username,
@@ -24,6 +24,10 @@ self.signup = async function (info) {
 
 self.delUser = async function (info) {
   try {
+    let result = this.signin(info);
+    if (!result) {
+      return false;
+    }
     await db('device_log').where({ userid: info.userid }).delete().then();
     await db('user_log').where({ userid: info.userid }).delete().then();
     await db('reg_device').where({ userid: info.userid }).delete().then();
@@ -40,7 +44,7 @@ self.delUser = async function (info) {
   }
 };
 
-self.idcheck = async function (info) {
+self.idchecking = async function (info) {
   try {
     let result = await db('user')
       .select('id')
@@ -75,7 +79,7 @@ self.signin = async function (info) {
   }
 };
 
-self.userinfo = async function (info) {
+self.getUserInfo = async function (info) {
   try {
     let result = await db('user')
       .select('*')
@@ -93,7 +97,24 @@ self.userinfo = async function (info) {
   }
 };
 
-self.userlog = async function (info) {
+self.getUserLog = async function (info) {
+  try {
+    let result = await db('user_log')
+      .select('*')
+      .where('userid', info.userid)
+      .first()
+      .then();
+    if (result == undefined) {
+      return { result: false };
+    }
+    return { result: true, log: result };
+  } catch (ex) {
+    console.log(ex);
+    return;
+  }
+};
+
+self.setUserLog = async function (info) {
   try {
     await db('user_log')
       .insert({
@@ -106,9 +127,23 @@ self.userlog = async function (info) {
   }
 };
 
-self.regDevice = async function (info) {
+self.setDeviceLog = async function (info) {
   try {
-    let result = await db('reg_device')
+    await db('device_log')
+      .insert({
+        userid: info.userid,
+        deviceid: info.deviceid,
+        history: info.history,
+      })
+      .then();
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
+self.addDevice = async function (info) {
+  try {
+    await db('reg_device')
       .insert({
         deviceid: info.deviceid,
         userid: info.userid,
@@ -123,9 +158,16 @@ self.regDevice = async function (info) {
   }
 };
 
-self.unRegDevice = async function (info) {
+self.delDevice = async function (info) {
   try {
-    let result = await db('reg_device')
+    await db('device_log')
+      .where({
+        userid: info.userid,
+        deviceid: info.deviceid,
+      })
+      .delete()
+      .then();
+    await db('reg_device')
       .where({
         userid: info.userid,
         deviceid: info.deviceid,
@@ -157,6 +199,27 @@ self.idToMac = async function (info) {
   } catch (ex) {
     console.log(ex);
     return;
+  }
+};
+
+self.getDeviceLog = async function (info) {
+  try {
+    let result = await db('device_log')
+      .select('*')
+      .where({
+        userid: info.userid,
+        deviceid: info.deviceid,
+      })
+      .first()
+      .then();
+    if (result == undefined) {
+      console.log('시발');
+      return { result: true, log: {} };
+    }
+    return { result: true, log: result };
+  } catch (ex) {
+    console.log(ex);
+    return { result: false };
   }
 };
 
