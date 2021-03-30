@@ -10,7 +10,9 @@ bool connectWifi() {
   WiFi.begin(ssid, password);
 
   while (int status = WiFi.status() != WL_CONNECTED) {
-    if (status == 6)
+    if (status == 1) // SSID를 찾을 수 없음
+      return false;
+    else if (status == 6) // 비밀번호가 일치 하지 않음
       return false;
   }
   
