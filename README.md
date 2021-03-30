@@ -11,4 +11,4 @@
 
 REST API 1차 완성 [2021-03-30] <hr>
 REST<br>
-![REST](이미지 URL)
+![](https://github.com/Tr0picalN/SweetHome/blob/master/APIserver/public/images/REST.png)
