@@ -139,20 +139,25 @@ self.unRegDevice = async function (info) {
   }
 };
 
-self.getMac = async function (info) {
-  /*try {
+self.idToMac = async function (info) {
+  try {
     let result = await db('reg_device')
-      .select('mac')
-      .where({ deviceid: info.deviceid, userid: info.userid })
+      .select('mac', 'host')
+      .where({
+        userid: info.userid,
+        deviceid: info.deviceid,
+      })
       .first()
       .then();
     if (result == undefined) {
+      //탐색 실패시
       return { result: false };
     }
-    return { result: true, mac: result };
+    return { result: true, mac: result.mac, host: result.host };
   } catch (ex) {
     console.log(ex);
     return;
-  }*/
+  }
 };
+
 module.exports = self;
