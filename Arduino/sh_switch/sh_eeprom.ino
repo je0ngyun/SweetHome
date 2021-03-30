@@ -7,6 +7,12 @@ void eepromSetup() {
   EEPROM.begin(4096);
 }
 
+void eepromReset() {
+  for (int i = 0; i < EEPROM.length(); i++) {
+    EEPROM.write(i, 0);
+  }
+}
+
 void eepromWriteString(int address, String str) {
   EEPROM.write(address, str.length());
   
