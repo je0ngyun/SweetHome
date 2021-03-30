@@ -9,6 +9,7 @@
 
 비동기 통신 구현 to 아두이노 [2021-03-27] -정윤
 
-REST API 1차 완성 [2021-03-30] <hr>
+REST API 1차 완성 [2021-03-30] - 정윤<hr>
 REST<br>
 ![](https://github.com/Tr0picalN/SweetHome/blob/master/APIserver/public/images/REST.png)
+<br><hr>
