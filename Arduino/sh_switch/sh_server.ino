@@ -4,7 +4,7 @@
 AsyncWebServer server(80);
 
 void serverSetup() {
-  server.serveStatic("/", LittleFS, "/www/").setDefaultFile("index.html");
+  server.serveStatic("/", LittleFS, "/ap/").setDefaultFile("index.html").setFilter(ON_AP_FILTER);
   server.on("/scan", HTTP_GET, [](AsyncWebServerRequest *request){
     String json = "[";
     int n = WiFi.scanComplete();
