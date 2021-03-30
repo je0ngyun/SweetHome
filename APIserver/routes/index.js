@@ -4,8 +4,8 @@ var router = express.Router();
 const reqToMac = require('../common_modules/reqToMac');
 
 let state = false; //test 변수 (전등전원)
-//테스트 (아두이노 역할 mid=111 가정)
-router.get('/111', function (req, res, next) {
+//테스트 (아두이노 역할 mac=aa 가정)
+router.get('/aa', function (req, res, next) {
   if (state == false) {
     state = true;
   } else {
