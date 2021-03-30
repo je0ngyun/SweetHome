@@ -15,6 +15,19 @@ router.post('/signup', async function (req, res, next) {
   }
 });
 
+//회원탈퇴
+router.delete('/signup', async function (req, res, next) {
+  let result = await db.delUser(req.body);
+  if (!result) {
+    res.status(400).json({
+      success: false,
+      message: '예상치못한 이유로 회원탈퇴를 완료하지 못하였습니다',
+    });
+  } else {
+    res.status(200).json({ success: true, message: '회원탈퇴 완료' });
+  }
+});
+
 //id체크(회원가입시)
 router.get('/idcheck', async function (req, res, next) {
   let result = await db.idcheck(req.body);
@@ -24,7 +37,7 @@ router.get('/idcheck', async function (req, res, next) {
       message: '이미 사용중인 아이디입니다',
     });
   } else {
-    res.status(201).json({ success: true, message: '사용가능한 아이디입니다' });
+    res.status(200).json({ success: true, message: '사용가능한 아이디입니다' });
   }
 });
 
@@ -37,6 +50,7 @@ router.get('/signin', async function (req, res, next) {
       .json({ success: false, message: '아이디나 비밀번호를 확인해주세요' });
   } else {
     res.status(200).json({ success: true, message: '로그인 성공' });
+    await db.userlog({ userid: req.headers.userid, history: 'signin' });
   }
 });
 
