@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+  <link type="text/css" rel="stylesheet" href="css/bootstrap-vue.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+  <div id="app">
+    <b-container>
+      <b-row class="vh-100" align-v="center" align-h="center">
+        <b-col style="max-width: 600px;">
+          <b-card no-body header="네트워크">
+            <b-card-text>
+              <b-list-group flush v-for="(network, i) in networks" :key="i">
+                <b-list-group-item button @click="onClickItem(i)" v-text="network.ssid" />
+              </b-list-group>
+            </b-card-text>
+          </b-card>
+          <b-modal v-model="modal" :title="title + '의 암호 입력'">
+            
+          </b-modal>
+        </b-col>
+      </b-row>
+    </b-container>
+  </div>
+
+  <script src="script/vue.min.js"></script>
+  <script src="script/bootstrap-vue.min.js"></script>
+  <script src="script/axios.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+
+      created () {
+        this.onScan()
+        
+        this.polling = setInterval(() => {
+          this.onScan()
+        }, 5000)
+      },
+
+      beforeDestroy () {
+        clearInterval(this.polling)
+      },
+
+      data: () => ({
+        polling: null,
+        modal: false,
+        title: null,
+        selectedNetwork: null,
+        networks: []
+      }),
+
+      methods: {
+        onScan () {
+          axios.get('/scan')
+            .then(res => {
+              this.networks = res.data
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        },
+
+        onClickItem (i) {
+          this.selectedNetwork = i
+          this.title = this.networks[i].ssid
+          this.modal = !this.modal
+        }
+      }
+    })
+  </script>
+</body>
+</html>
