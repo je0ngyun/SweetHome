@@ -8,14 +8,9 @@ self.req = async (hostname, port, mid) => {
     let url = 'http://' + hostname + ':' + port + '/' + mid;
     response = await axios.get(url);
   } catch (ex) {
-    if (ex.response && ex.response.status === 404) {
-      response.data = '404';
-      return response;
-    } else {
-      // unexpected
-      console.log(ex);
-      return;
-    }
+    response.data = '404';
+    console.log(response.data);
+    return response;
   }
   return response;
 };

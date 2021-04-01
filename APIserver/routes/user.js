@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var db = require('../common_modules/dbModel');
+const db = require('../common_modules/dbModel');
 
 //회원가입
 router.post('/signup', async function (req, res, next) {
-  let result = await db.addUser(req.body);
+  const result = await db.addUser(req.body);
   if (!result.result) {
     res.status(400).json(result.response);
   } else {
@@ -14,7 +14,7 @@ router.post('/signup', async function (req, res, next) {
 
 //회원탈퇴
 router.delete('/signup', async function (req, res, next) {
-  let result = await db.delUser(req.headers);
+  const result = await db.delUser(req.headers);
   if (!result.result) {
     res.status(400).json(result.response);
   } else {
@@ -24,7 +24,7 @@ router.delete('/signup', async function (req, res, next) {
 
 //id체크(회원가입시)
 router.get('/idcheck', async function (req, res, next) {
-  let result = await db.idchecking(req.body);
+  const result = await db.idchecking(req.body);
   if (!result.result) {
     res.status(409).json(result.response);
   } else {
@@ -34,7 +34,7 @@ router.get('/idcheck', async function (req, res, next) {
 
 //로그인
 router.get('/signin', async function (req, res, next) {
-  let result = await db.signin(req.headers);
+  const result = await db.signin(req.headers);
   if (!result.result) {
     res.status(406).json(result.response);
   } else {
@@ -45,7 +45,7 @@ router.get('/signin', async function (req, res, next) {
 
 //회원정보조회
 router.get('/info', async function (req, res, next) {
-  let result = await db.getUserInfo(req.body);
+  const result = await db.getUserInfo(req.body);
   if (!result.result) {
     res.status(404).json(result.response);
   } else {
@@ -55,7 +55,7 @@ router.get('/info', async function (req, res, next) {
 
 //회원로그조회
 router.get('/log', async function (req, res, next) {
-  let result = await db.getUserLog(req.body);
+  const result = await db.getUserLog(req.body);
   if (!result.result) {
     res.status(404).json(result.response);
   } else {

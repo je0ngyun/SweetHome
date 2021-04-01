@@ -151,7 +151,7 @@ self.getUserInfo = async function (info) {
       };
     }
     return {
-      result: false,
+      result: true,
       response: {
         success: false,
         message: '회원정보 조회 성공',
@@ -176,7 +176,6 @@ self.getUserLog = async function (info) {
     let dbResult = await db('user_log')
       .select('*')
       .where('userid', info.userid)
-      .first()
       .then();
     if (dbResult == undefined) {
       return {
@@ -188,7 +187,7 @@ self.getUserLog = async function (info) {
       };
     }
     return {
-      result: false,
+      result: true,
       response: {
         success: false,
         message: '회원로그 조회 성공',
@@ -245,10 +244,23 @@ self.addDevice = async function (info) {
         mac: info.mac,
       })
       .then();
-    return true;
+    return {
+      result: true,
+      response: {
+        success: true,
+        message: '디바이스 등록 성공',
+      },
+    };
   } catch (ex) {
     console.log(ex);
-    return false;
+    return {
+      result: false,
+      response: {
+        success: false,
+        message: '예상치 못한이유로 작업을 완료하지 못하였습니다',
+        err: ex,
+      },
+    };
   }
 };
 
@@ -261,23 +273,45 @@ self.delDevice = async function (info) {
       })
       .delete()
       .then();
-    await db('reg_device')
+    let dbResult = await db('reg_device')
       .where({
         userid: info.userid,
         deviceid: info.deviceid,
       })
       .delete()
       .then();
-    return true;
+    if (!dbResult) {
+      return {
+        result: false,
+        response: {
+          success: false,
+          message: '디바이스 정보가 없습니다',
+        },
+      };
+    }
+    return {
+      result: true,
+      response: {
+        success: true,
+        message: '디바이스 삭제 성공',
+      },
+    };
   } catch (ex) {
     console.log(ex);
-    return false;
+    return {
+      result: false,
+      response: {
+        success: false,
+        message: '예상치 못한이유로 작업을 완료하지 못하였습니다',
+        err: ex,
+      },
+    };
   }
 };
 
 self.idToMac = async function (info) {
   try {
-    let result = await db('reg_device')
+    let dbResult = await db('reg_device')
       .select('mac', 'host')
       .where({
         userid: info.userid,
@@ -285,35 +319,99 @@ self.idToMac = async function (info) {
       })
       .first()
       .then();
-    if (result == undefined) {
+    if (dbResult == undefined) {
       //탐색 실패시
-      return { result: false };
+      return {
+        result: false,
+        response: {
+          success: false,
+          message: '디바이스 정보가 없습니다',
+        },
+      };
     }
-    return { result: true, mac: result.mac, host: result.host };
+    return {
+      result: true,
+      response: { mac: dbResult.mac, host: dbResult.host },
+    };
   } catch (ex) {
     console.log(ex);
-    return;
+  }
+};
+
+self.getDevices = async function (info) {
+  try {
+    let dbResult = await db('reg_device')
+      .select('*')
+      .where({
+        userid: info.userid,
+      })
+      .then();
+    if (dbResult == undefined) {
+      return {
+        result: false,
+        response: {
+          success: false,
+          message: '등록된 디바이스가 없습니다',
+        },
+      };
+    }
+    return {
+      result: true,
+      response: {
+        success: true,
+        message: '등록된 디바이스 조회 성공',
+        devices: dbResult,
+      },
+    };
+  } catch (ex) {
+    console.log(ex);
+    return {
+      result: false,
+      response: {
+        success: false,
+        message: '예상치 못한이유로 작업을 완료하지 못하였습니다',
+        err: ex,
+      },
+    };
   }
 };
 
 self.getDeviceLog = async function (info) {
   try {
-    let result = await db('device_log')
+    let dbResult = await db('device_log')
       .select('*')
       .where({
         userid: info.userid,
         deviceid: info.deviceid,
       })
-      .first()
       .then();
-    if (result == undefined) {
-      console.log('시발');
-      return { result: true, log: {} };
+    if (dbResult == undefined) {
+      return {
+        result: false,
+        response: {
+          success: false,
+          message: '디바이스 로그가 없습니다',
+        },
+      };
     }
-    return { result: true, log: result };
+    return {
+      result: true,
+      response: {
+        success: true,
+        message: '디바이스 로그조회 성공',
+        log: dbResult,
+      },
+    };
   } catch (ex) {
     console.log(ex);
-    return { result: false };
+    return {
+      result: false,
+      response: {
+        success: false,
+        message: '예상치 못한이유로 작업을 완료하지 못하였습니다',
+        err: ex,
+      },
+    };
   }
 };
 
