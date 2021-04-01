@@ -11,5 +11,5 @@
 
 REST API 1차 완성 [2021-03-30] - 정윤<hr>
 REST<br>
-![](https://github.com/Tr0picalN/SweetHome/blob/master/APIserver/public/images/REST.png)
+![](https://github.com/Tr0picalN/SweetHome/blob/JeongYun/Document/REST.png)
 <br><hr>
