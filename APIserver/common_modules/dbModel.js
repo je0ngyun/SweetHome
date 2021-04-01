@@ -15,18 +15,28 @@ self.addUser = async function (info) {
         phone_model: info.phone_model,
       })
       .then();
-    return true;
+    return {
+      result: true,
+      response: { success: true, message: '회원가입 완료' },
+    };
   } catch (ex) {
     console.log(ex);
-    return false;
+    return {
+      result: false,
+      response: {
+        success: false,
+        message: '예상치 못한이유로 작업을 완료하지 못하였습니다',
+        err: ex,
+      },
+    };
   }
 };
 
 self.delUser = async function (info) {
   try {
-    let result = this.signin(info);
-    if (!result) {
-      return false;
+    let dbResult = await this.signin(info); //아이디 비번 검사를 위해 signin 선수행
+    if (!dbResult.result) {
+      return dbResult;
     }
     await db('device_log').where({ userid: info.userid }).delete().then();
     await db('user_log').where({ userid: info.userid }).delete().then();
@@ -37,80 +47,164 @@ self.delUser = async function (info) {
       })
       .delete()
       .then();
-    return true;
+    return {
+      result: true,
+      response: { success: true, message: '회원탈퇴 완료' },
+    };
   } catch (ex) {
     console.log(ex);
-    return false;
+    return {
+      result: false,
+      response: {
+        success: false,
+        message: '예상치 못한이유로 작업을 완료하지 못하였습니다',
+        err: ex,
+      },
+    };
   }
 };
 
 self.idchecking = async function (info) {
   try {
-    let result = await db('user')
+    let dbResult = await db('user')
       .select('id')
       .where('id', info.userid)
       .first()
       .then();
-    if (result == undefined) {
+    if (dbResult == undefined) {
       //동일아이디 없을때
-      return true;
+      return {
+        result: true,
+        response: { success: true, message: '사용할 수 있는 아이디입니다' },
+      };
     }
-    return false;
+    return {
+      result: false,
+      response: { success: false, message: '사용할 수 없는 아이디입니다' },
+    };
   } catch (ex) {
     console.log(ex);
-    return;
+    return {
+      result: false,
+      response: {
+        success: false,
+        message: '예상치 못한이유로 작업을 완료하지 못하였습니다',
+        err: ex,
+      },
+    };
   }
 };
 
 self.signin = async function (info) {
   try {
-    let result = await db('user')
+    let dbResult = await db('user')
       .select('password')
       .where('id', info.userid)
       .first()
       .then();
-    if (result.password == info.password) {
-      return true;
+    if (dbResult == undefined) {
+      return {
+        result: false,
+        response: {
+          success: false,
+          message: '아이디나 비밀번호를 확인해주세요',
+        },
+      };
     }
-    return false;
+    if (dbResult.password == info.password) {
+      return {
+        result: true,
+        response: { success: true, message: '로그인 성공' },
+      };
+    }
+    return {
+      result: false,
+      response: { success: false, message: '아이디나 비밀번호를 확인해주세요' },
+    };
   } catch (ex) {
     console.log(ex);
-    return;
+    return {
+      result: false,
+      response: {
+        success: false,
+        message: '예상치 못한이유로 작업을 완료하지 못하였습니다',
+        err: ex,
+      },
+    };
   }
 };
 
 self.getUserInfo = async function (info) {
   try {
-    let result = await db('user')
+    let dbResult = await db('user')
       .select('*')
       .where('id', info.userid)
       .first()
       .then();
-    if (result == undefined) {
-      //아이디 탐색 실패시
-      return { result: false };
+    if (dbResult == undefined) {
+      return {
+        result: false,
+        response: {
+          success: false,
+          message: '회원 정보가 없습니다',
+        },
+      };
     }
-    return { result: true, info: result };
+    return {
+      result: false,
+      response: {
+        success: false,
+        message: '회원정보 조회 성공',
+        info: dbResult,
+      },
+    };
   } catch (ex) {
     console.log(ex);
-    return;
+    return {
+      result: false,
+      response: {
+        success: false,
+        message: '예상치 못한이유로 작업을 완료하지 못하였습니다',
+        err: ex,
+      },
+    };
   }
 };
 
 self.getUserLog = async function (info) {
   try {
-    let result = await db('user_log')
+    let dbResult = await db('user_log')
       .select('*')
       .where('userid', info.userid)
       .first()
       .then();
-    if (result == undefined) {
-      return { result: false };
+    if (dbResult == undefined) {
+      return {
+        result: false,
+        response: {
+          success: false,
+          message: '회원 로그가 없습니다',
+        },
+      };
     }
-    return { result: true, log: result };
+    return {
+      result: false,
+      response: {
+        success: false,
+        message: '회원로그 조회 성공',
+        log: dbResult,
+      },
+    };
   } catch (ex) {
     console.log(ex);
-    return;
+    return {
+      result: false,
+      response: {
+        success: false,
+        message: '예상치 못한이유로 작업을 완료하지 못하였습니다',
+        err: ex,
+      },
+    };
   }
 };
 
