@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" />
+  <link type="text/css" rel="stylesheet" href="../css/bootstrap-vue.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+  <div id="app">
+    <b-container>
+      <b-row class="vh-100" align-v="center" align-h="center">
+        <b-container class="mb-3">
+          <b-row cols="2">
+            <b-col>
+              <b-btn block>버튼1</b-btn>
+            </b-col>
+            <b-col>
+              <b-btn block>버튼2</b-btn>
+            </b-col>
+            <b-col>
+              <b-btn block>버튼3</b-btn>
+            </b-col>
+            <b-col>
+              <b-btn block @click="onReset">초기화</b-btn>
+            </b-col>
+          </b-row>
+        </b-container>
+      </b-row>
+    </b-container>
+  </div>
+
+  <script src="../script/vue.min.js"></script>
+  <script src="../script/bootstrap-vue.min.js"></script>
+  <script src="../script/bootstrap-vue-icons.min.js"></script>
+  <script src="../script/axios.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+
+      data: () => ({
+        
+      }),
+
+      methods: {
+        onReset() {
+          axios.get('/reset')
+          .then(res => {
+
+          })
+          .catch(err => {
+            
+          })
+        }
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,5 +1,9 @@
 #include <LittleFS.h>
 
+const String category = "2way Switch";
+const int way = 2;
+bool state[way] = { false, false };
+
 void setup() {
   Serial.begin(115200);
   if(!LittleFS.begin()) {

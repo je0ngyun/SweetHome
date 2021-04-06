@@ -1,10 +1,16 @@
 #include <ESPAsyncTCP.h>
 #include <ESPAsyncWebServer.h>
+#include <AsyncJson.h>
+#include <ArduinoJson.h>
 
 AsyncWebServer server(80);
 
 void serverSetup() {
+  server.serveStatic("/script", LittleFS, "/script");
+  server.serveStatic("/css", LittleFS, "/css");
   server.serveStatic("/", LittleFS, "/ap/").setDefaultFile("index.html").setFilter(ON_AP_FILTER);
+  server.serveStatic("/", LittleFS, "/www/").setDefaultFile("index.html").setFilter(ON_STA_FILTER);
+  
   server.on("/scan", HTTP_GET, [](AsyncWebServerRequest *request){
     String json = "[";
     int n = WiFi.scanComplete();
@@ -31,9 +37,70 @@ void serverSetup() {
     request->send(200, "application/json", json);
     json = String();
   });
-  server.on("/index", HTTP_GET, [](AsyncWebServerRequest *request){
-    request->send(LittleFS, "/www/index.html");
+
+  server.on("/reset", HTTP_GET, [](AsyncWebServerRequest *request){
+    eepromReset();
+    request->send(200, "application/json", "{\"result\": \"success\"}");
+    WiFi.disconnect();
+    ESP.reset();
+    ESP.restart();
   });
+
+  server.on("/state", HTTP_GET, [](AsyncWebServerRequest *request){
+    DynamicJsonDocument doc(512);
+    String json;
+
+    JsonObject object = doc.to<JsonObject>();
+    object["category"] = category;
+    object["way"] = way;
+    JsonArray array = object.createNestedArray("state");
+    for (int i = 0; i < way; i++) {
+      array.add(state[i]);
+    }
+
+    serializeJson(doc, json);
+    request->send(200, "application/json", json);
+  });
+
+  server.on("/action", HTTP_GET, [](AsyncWebServerRequest *request){
+    DynamicJsonDocument doc(512);
+    String json;
+    
+    JsonObject object = doc.to<JsonObject>();
+    
+    if (request->hasParam("switch")) {
+      int n = request->getParam("switch")->value().toInt();
+      if (0 <= n < way) {
+        state[n] = !state[n];
+        object["result"] = "success";
+      } else {
+        object["result"] = "fail";
+      }
+    } else {
+      object["result"] = "fail";
+    }
+    
+    JsonArray array = object.createNestedArray("state");
+    for (int i = 0; i < way; i++) {
+      array.add(state[i]);
+    }
+
+    serializeJson(doc, json);
+    request->send(200, "application/json", json);
+  });
+
+  AsyncCallbackJsonWebHandler* handler = new AsyncCallbackJsonWebHandler("/connect", [](AsyncWebServerRequest *request, JsonVariant &json) {
+    const JsonObject& jsonObj = json.as<JsonObject>();
+    String ssid = jsonObj["ssid"];
+    String password = jsonObj["password"];
+
+    eepromWriteString(SSID_ADDRESS, ssid);
+    eepromWriteString(PASSWORD_ADDRESS, password);
+    EEPROM.commit();
+    
+    ESP.restart();
+  });
+  server.addHandler(handler);
 
   server.begin();
 }
