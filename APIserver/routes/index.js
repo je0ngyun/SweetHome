@@ -10,6 +10,7 @@ router.get('/aa', function (req, res, next) {
   } else {
     state = false;
   }
+  console.log(req.query);
   res.json(state);
 });
 

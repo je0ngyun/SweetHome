@@ -4,7 +4,7 @@ const db = require('../common_modules/dbModel');
 const reqToMac = require('../common_modules/reqToMac');
 
 //기기등록
-router.post('/regist', async function (req, res, next) {
+router.post('/regist/', async function (req, res, next) {
   const result = await db.addDevice(req.body);
   if (!result.result) {
     res.status(400).json(result.response);
@@ -102,6 +102,43 @@ router.get('/validation', async function (req, res, next) {
       success: true,
       device: macRes.data,
       message: '디바이스 연결이 유효합니다',
+    });
+  }
+});
+
+//기기동작요청 테스트
+router.get('/actest', async function (req, res, next) {
+  const result = await db.idToMac(req.body);
+  if (!result.result) {
+    res.status(404).json(result.response);
+  } else {
+    let history = '꺼짐';
+    const macRes = await reqToMac.req(
+      result.response.host,
+      3000,
+      result.response.mac,
+      req.body,
+    );
+    if (macRes.data == '404') {
+      res.status(404).json({
+        success: false,
+        device: macRes.data,
+        message: '디바이스가 꺼져있거나 반응하지 않습니다',
+      });
+      return;
+    }
+    res.status(200).json({
+      success: true,
+      device: macRes.data,
+      message: '기기 동작요청 성공',
+    });
+    if (macRes.data) {
+      history = '켜짐';
+    }
+    await db.setDeviceLog({
+      userid: req.body.userid,
+      deviceid: req.body.deviceid,
+      history: history,
     });
   }
 });
