@@ -10,8 +10,8 @@ router.get('/aa', function (req, res, next) {
   } else {
     state = false;
   }
-  console.log(req.query);
   res.json(state);
+  console.log(req.query);
 });
 
 //테스트 (아두이노 역할 mac=aa 가정)

@@ -15,7 +15,7 @@ router.post('/regist/', async function (req, res, next) {
 
 //기기삭제
 router.delete('/regist', async function (req, res, next) {
-  const result = await db.delDevice(req.body);
+  const result = await db.delDevice(req.headers);
   if (!result.result) {
     res.status(404).json(result.response);
   } else {
@@ -25,7 +25,7 @@ router.delete('/regist', async function (req, res, next) {
 
 //등록기기조회
 router.get('/regist', async function (req, res, next) {
-  const result = await db.getDevices(req.body);
+  const result = await db.getDevices(req.query);
   if (!result) {
     res.status(404).json(result.response);
   } else {
@@ -35,7 +35,7 @@ router.get('/regist', async function (req, res, next) {
 
 //기기로그조회
 router.get('/log', async function (req, res, next) {
-  const result = await db.getDeviceLog(req.body);
+  const result = await db.getDeviceLog(req.query);
   if (!result.result) {
     res.status(404).json(result.response);
   } else {
@@ -45,7 +45,7 @@ router.get('/log', async function (req, res, next) {
 
 //기기동작요청
 router.get('/action', async function (req, res, next) {
-  const result = await db.idToMac(req.body);
+  const result = await db.idToMac(req.query);
   if (!result.result) {
     res.status(404).json(result.response);
   } else {
@@ -72,8 +72,8 @@ router.get('/action', async function (req, res, next) {
       history = '켜짐';
     }
     await db.setDeviceLog({
-      userid: req.body.userid,
-      deviceid: req.body.deviceid,
+      userid: req.query.userid,
+      deviceid: req.query.deviceid,
       history: history,
     });
   }
@@ -81,7 +81,7 @@ router.get('/action', async function (req, res, next) {
 
 //주기적 유효성 검사
 router.get('/validation', async function (req, res, next) {
-  const result = await db.idToMac(req.body);
+  const result = await db.idToMac(req.query);
   if (!result.result) {
     res.status(404).json(result.response);
   } else {
@@ -108,7 +108,7 @@ router.get('/validation', async function (req, res, next) {
 
 //기기동작요청 테스트
 router.get('/actest', async function (req, res, next) {
-  const result = await db.idToMac(req.body);
+  const result = await db.idToMac(req.query);
   if (!result.result) {
     res.status(404).json(result.response);
   } else {
@@ -117,7 +117,7 @@ router.get('/actest', async function (req, res, next) {
       result.response.host,
       3000,
       result.response.mac,
-      req.body,
+      req.query,
     );
     if (macRes.data == '404') {
       res.status(404).json({
@@ -136,8 +136,8 @@ router.get('/actest', async function (req, res, next) {
       history = '켜짐';
     }
     await db.setDeviceLog({
-      userid: req.body.userid,
-      deviceid: req.body.deviceid,
+      userid: req.query.userid,
+      deviceid: req.query.deviceid,
       history: history,
     });
   }
