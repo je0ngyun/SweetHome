@@ -3,33 +3,31 @@
 const db = require('../common_modules/dbConn');
 const self = {};
 
+self.errtest = async function (info) {
+  await db('user')
+    .insert({
+      id: info.userid,
+      username: info.username,
+      password: info.password, //추후 암호화
+      mail: info.mail,
+      phone_os: info.phone_os,
+      phone_model: info.phone_model,
+    })
+    .then();
+};
+
 self.addUser = async function (info) {
-  try {
-    await db('user')
-      .insert({
-        id: info.userid,
-        username: info.username,
-        password: info.password, //추후 암호화
-        mail: info.mail,
-        phone_os: info.phone_os,
-        phone_model: info.phone_model,
-      })
-      .then();
-    return {
-      result: true,
-      response: { success: true, message: '회원가입 완료' },
-    };
-  } catch (ex) {
-    console.log(ex);
-    return {
-      result: false,
-      response: {
-        success: false,
-        message: '예상치 못한이유로 작업을 완료하지 못하였습니다',
-        err: ex,
-      },
-    };
-  }
+  let dbResult = await db('user')
+    .insert({
+      id: info.userid,
+      username: info.username,
+      password: info.password, //추후 암호화
+      mail: info.mail,
+      phone_os: info.phone_os,
+      phone_model: info.phone_model,
+    })
+    .then();
+  return dbResult;
 };
 
 self.delUser = async function (info) {
@@ -65,73 +63,22 @@ self.delUser = async function (info) {
 };
 
 self.idchecking = async function (info) {
-  try {
-    let dbResult = await db('user')
-      .select('id')
-      .where('id', info.userid)
-      .first()
-      .then();
-    if (dbResult == undefined) {
-      //동일아이디 없을때
-      return {
-        result: true,
-        response: { success: true, message: '사용할 수 있는 아이디입니다' },
-      };
-    }
-    return {
-      result: false,
-      response: { success: false, message: '사용할 수 없는 아이디입니다' },
-    };
-  } catch (ex) {
-    console.log(ex);
-    return {
-      result: false,
-      response: {
-        success: false,
-        message: '예상치 못한이유로 작업을 완료하지 못하였습니다',
-        err: ex,
-      },
-    };
-  }
+  let dbResult = await db('user')
+    .select('id')
+    .where('id', info.userid)
+    .first()
+    .then();
+  return dbResult;
 };
 
 self.signin = async function (info) {
-  try {
-    let dbResult = await db('user')
-      .select('password')
-      .where('id', info.userid)
-      .first()
-      .then();
-    if (dbResult == undefined) {
-      return {
-        result: false,
-        response: {
-          success: false,
-          message: '아이디나 비밀번호를 확인해주세요',
-        },
-      };
-    }
-    if (dbResult.password == info.password) {
-      return {
-        result: true,
-        response: { success: true, message: '로그인 성공' },
-      };
-    }
-    return {
-      result: false,
-      response: { success: false, message: '아이디나 비밀번호를 확인해주세요' },
-    };
-  } catch (ex) {
-    console.log(ex);
-    return {
-      result: false,
-      response: {
-        success: false,
-        message: '예상치 못한이유로 작업을 완료하지 못하였습니다',
-        err: ex,
-      },
-    };
-  }
+  let dbResult = await db('user')
+    .select('password')
+    .where('id', info.userid)
+    .where('password', info.password)
+    .first()
+    .then();
+  return dbResult;
 };
 
 self.getUserInfo = async function (info) {

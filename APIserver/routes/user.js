@@ -1,16 +1,17 @@
 var express = require('express');
 var router = express.Router();
+const asyncHandler = require('express-async-handler');
 const db = require('../common_modules/dbModel');
+const createError = require('http-errors');
 
 //회원가입
-router.post('/signup', async function (req, res, next) {
-  const result = await db.addUser(req.body);
-  if (!result.result) {
-    res.status(400).json(result.response);
-  } else {
-    res.status(201).json(result.response);
-  }
-});
+router.post(
+  '/signup',
+  asyncHandler(async (req, res, next) => {
+    const result = await db.addUser(req.body);
+    res.json({ success: true });
+  }),
+);
 
 //회원탈퇴
 router.delete('/signup', async function (req, res, next) {
@@ -23,25 +24,31 @@ router.delete('/signup', async function (req, res, next) {
 });
 
 //id체크(회원가입시)
-router.get('/idcheck/', async function (req, res, next) {
-  const result = await db.idchecking(req.query);
-  if (!result.result) {
-    res.status(409).json(result.response);
-  } else {
-    res.status(200).json(result.response);
-  }
-});
+router.get(
+  '/idcheck',
+  asyncHandler(async (req, res, next) => {
+    const result = await db.idchecking(req.query);
+    if (result != undefined) {
+      throw new createError.Conflict();
+    } else {
+      res.status(200).json({ success: true });
+    }
+  }),
+);
 
 //로그인
-router.post('/signin', async function (req, res, next) {
-  const result = await db.signin(req.headers);
-  if (!result.result) {
-    res.status(406).json(result.response);
-  } else {
-    res.status(200).json(result.response);
-    await db.setUserLog({ userid: req.headers.userid, history: 'signin' });
-  }
-});
+router.post(
+  '/signin',
+  asyncHandler(async (req, res, next) => {
+    const result = await db.signin(req.headers);
+    if (result != undefined) {
+      res.status(200).json({ success: true });
+      await db.setUserLog({ userid: req.headers.userid, history: 'signin' });
+    } else {
+      throw new createError.NotAcceptable();
+    }
+  }),
+);
 
 //회원정보조회
 router.get('/info', async function (req, res, next) {
