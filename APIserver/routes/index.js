@@ -1,5 +1,4 @@
 const db = require('../common_modules/dbModel');
-const asyncHandler = require('express-async-handler');
 var express = require('express');
 var router = express.Router();
 
@@ -19,13 +18,5 @@ router.get('/aa', function (req, res, next) {
 router.get('/validation/aa', function (req, res, next) {
   res.json(true);
 });
-
-//테스트 오류처리 asyncHandler이용
-router.get(
-  '/error',
-  asyncHandler(async (req, res, next) => {
-    await db.errtest(req.body);
-  }),
-);
 
 module.exports = router;

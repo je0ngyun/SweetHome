@@ -14,14 +14,17 @@ router.post(
 );
 
 //회원탈퇴
-router.delete('/signup', async function (req, res, next) {
-  const result = await db.delUser(req.headers);
-  if (!result.result) {
-    res.status(400).json(result.response);
-  } else {
-    res.status(200).json(result.response);
-  }
-});
+router.delete(
+  '/signup',
+  asyncHandler(async (req, res, next) => {
+    const result = await db.delUser(req.headers);
+    if (!result) {
+      throw new createError.BadRequest();
+    } else {
+      res.status(200).json({ success: true });
+    }
+  }),
+);
 
 //id체크(회원가입시)
 router.get(
@@ -51,23 +54,21 @@ router.post(
 );
 
 //회원정보조회
-router.get('/info', async function (req, res, next) {
-  const result = await db.getUserInfo(req.query);
-  if (!result.result) {
-    res.status(404).json(result.response);
-  } else {
-    res.status(200).json(result.response);
-  }
-});
+router.get(
+  '/info',
+  asyncHandler(async (req, res, next) => {
+    const result = await db.getUserInfo(req.query);
+    res.status(200).json({ success: true, info: result });
+  }),
+);
 
 //회원로그조회
-router.get('/log', async function (req, res, next) {
-  const result = await db.getUserLog(req.query);
-  if (!result.result) {
-    res.status(404).json(result.response);
-  } else {
-    res.status(200).json(result.response);
-  }
-});
+router.get(
+  '/log',
+  asyncHandler(async (req, res, next) => {
+    const result = await db.getUserLog(req.query);
+    res.status(200).json({ success: true, log: result });
+  }),
+);
 
 module.exports = router;
