@@ -10,15 +10,13 @@
   <div id="app">
     <b-container>
       <b-row class="vh-100" align-v="center" align-h="center">
-        <b-col style="max-width: 600px;">
+        <b-col style="max-width: 400px;">
           <b-card>
-            <b-row class="vh-100" style="max-height: 600px;" align-v="center" align-h="center">
-              <b-col style="max-width: 600px;">
+              <b-row class="vh-100" style="max-height: 500px;" align-v="center" align-h="center">
                 <div style="font-size: 4rem;">
                   <b-icon icon="power" class="rounded-circle bg-danger p-2" variant="light"></b-icon>
                 </div>
-              </b-col>
-            </b-row>
+              </b-row>
           </b-card>
         </b-col>
       </b-row>
@@ -34,7 +32,8 @@
       el: '#app',
 
       data: () => ({
-        
+        way: 1,
+        state : []
       }),
 
       methods: {
@@ -50,13 +49,5 @@
       }
     })
   </script>
-  .btn-circle {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-  }
-  <style>
-
-  </style>
 </body>
 </html>
