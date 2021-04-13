@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link type="text/css" rel="stylesheet" href="../css/bootstrap.min.css" />
+  <link type="text/css" rel="stylesheet" href="../css/bootstrap-vue.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+  <div id="app">
+    <b-container>
+      <b-row class="vh-100" align-v="center" align-h="center">
+        <b-col style="max-width: 600px;">
+          <b-card>
+            <b-row class="vh-100" style="max-height: 600px;" align-v="center" align-h="center">
+              <b-col style="max-width: 600px;">
+                <div style="font-size: 4rem;">
+                  <b-icon icon="power" class="rounded-circle bg-danger p-2" variant="light"></b-icon>
+                </div>
+              </b-col>
+            </b-row>
+          </b-card>
+        </b-col>
+      </b-row>
+    </b-container>
+  </div>
+
+  <script src="../script/vue.min.js"></script>
+  <script src="../script/bootstrap-vue.min.js"></script>
+  <script src="../script/bootstrap-vue-icons.min.js"></script>
+  <script src="../script/axios.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+
+      data: () => ({
+        
+      }),
+
+      methods: {
+        onReset() {
+          axios.get('/reset')
+          .then(res => {
+
+          })
+          .catch(err => {
+            
+          })
+        }
+      }
+    })
+  </script>
+  .btn-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+  <style>
+
+  </style>
+</body>
+</html>
