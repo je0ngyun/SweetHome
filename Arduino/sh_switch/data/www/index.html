@@ -12,11 +12,16 @@
       <b-row class="vh-100" align-v="center" align-h="center">
         <b-col style="max-width: 400px;">
           <b-card>
-              <b-row class="vh-100" style="max-height: 500px;" align-v="center" align-h="center">
-                <div style="font-size: 4rem;">
-                  <b-icon icon="power" class="rounded-circle bg-danger p-2" variant="light"></b-icon>
-                </div>
+              <b-row class="vh-100 text-center" style="max-height: 500px;" cols="2" align-v="center" align-h="center">
+                <b-col v-for="(state, i) in states">
+                  <b-button variant="outline-light" @click="onClick(i)">
+                    <b-icon icon="power" font-scale="4" :variant="state ? 'success' : 'danger'"></b-icon>
+                  </b-button>
+                </b-col>
               </b-row>
+              <div class="text-right">
+                <b-button variant="link"><b-icon icon="gear-fill" /></b-button>
+              </div>
           </b-card>
         </b-col>
       </b-row>
@@ -32,8 +37,7 @@
       el: '#app',
 
       data: () => ({
-        way: 1,
-        state : []
+        states : [ false ]
       }),
 
       methods: {
@@ -45,7 +49,11 @@
           .catch(err => {
             
           })
-        }
+        },
+
+        onClick(i) {
+          this.states[i] = !this.states[i]
+        },
       }
     })
   </script>
