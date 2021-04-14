@@ -13,8 +13,8 @@
         <b-col style="max-width: 400px;">
           <b-card>
               <b-row class="vh-100 text-center" style="max-height: 500px;" cols="2" align-v="center" align-h="center">
-                <b-col v-for="(state, i) in states">
-                  <b-button variant="outline-light" @click="onClick(i)">
+                <b-col>
+                  <b-button variant="outline-light" @click="onClick()">
                     <b-icon icon="power" font-scale="4" :variant="state ? 'success' : 'danger'"></b-icon>
                   </b-button>
                 </b-col>
@@ -37,7 +37,7 @@
       el: '#app',
 
       data: () => ({
-        states : [ false ]
+        state: false
       }),
 
       methods: {
@@ -51,8 +51,8 @@
           })
         },
 
-        onClick(i) {
-          this.states[i] = !this.states[i]
+        onClick() {
+          this.state = !this.state
         },
       }
     })
