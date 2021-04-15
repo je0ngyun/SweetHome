@@ -2,9 +2,9 @@
 const { default: axios } = require('axios');
 const self = {};
 
-self.req = async (hostname, port, mid, body) => {
+self.req = async (hostname, port, source, body) => {
   let url =
-    'http://' + hostname + ':' + port + '/' + mid + '?' + getQueryStr(body);
+    'http://' + hostname + ':' + port + '/' + source + '?' + getQueryStr(body);
   let response = {};
   try {
     response = await axios.get(url, {

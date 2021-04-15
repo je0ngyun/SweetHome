@@ -6,7 +6,6 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var deviceRouter = require('./routes/device');
-var userRouter = require('./routes/user');
 
 var app = express();
 
@@ -22,7 +21,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/device', deviceRouter);
-app.use('/user', userRouter);
 
 // 404핸들러
 app.use(function (req, res, next) {
