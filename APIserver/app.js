@@ -24,20 +24,33 @@ app.use('/', indexRouter);
 app.use('/device', deviceRouter);
 app.use('/user', userRouter);
 
-// catch 404 and forward to error handler
+// 404핸들러
 app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// error handler
+//일반적인 에러 매핑
+const newErrorMap = new Map([['ER_NO_DEFAULT_FOR_FIELD', 400]]);
+
+//매핑 에러핸들러
+app.use((err, req, res, next) => {
+  const newError = newErrorMap.get(err.code);
+  if (newError) {
+    err.status = 400;
+    next(err);
+  } else {
+    next(err);
+  }
+});
+
+//최종 에러핸들러
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  //에러응답
   res.status(err.status || 500);
-  res.json({ error: err.message, success: false });
+  res.json({ error: err, success: false });
 });
 
 module.exports = app;

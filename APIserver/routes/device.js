@@ -52,7 +52,7 @@ router.get(
   '/action',
   asyncHandler(async (req, res, next) => {
     const result = await db.idToMac(req.query);
-    const macRes = await reqToMac.req(result.host, 3000, result.mac, req.query);
+    const macRes = await reqToMac.req(result.host, 80, result.mac, req.query);
     res.status(200).json({
       success: true,
       device: macRes.data,

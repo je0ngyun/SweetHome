@@ -19,4 +19,8 @@ router.get('/validation/aa', function (req, res, next) {
   res.json(true);
 });
 
+router.get('/test', function (req, res, next) {
+  res.json(true);
+});
+
 module.exports = router;
