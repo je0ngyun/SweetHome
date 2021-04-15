@@ -51,9 +51,9 @@ void serverSetup() {
     String json;
 
     JsonObject object = doc.to<JsonObject>();
-    object["category"] = category;
-    object["way"] = way;
-    JsonArray array = object.createNestedArray("state");
+    //object["category"] = category;
+    //object["way"] = way;
+    JsonArray array = object.createNestedArray("states");
     for (int i = 0; i < way; i++) {
       array.add(state[i]);
     }
@@ -80,7 +80,7 @@ void serverSetup() {
       object["result"] = "fail";
     }
     
-    JsonArray array = object.createNestedArray("state");
+    JsonArray array = object.createNestedArray("states");
     for (int i = 0; i < way; i++) {
       array.add(state[i]);
     }

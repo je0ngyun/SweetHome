@@ -13,8 +13,8 @@
         <b-col style="max-width: 400px;">
           <b-card>
               <b-row class="vh-100 text-center" style="max-height: 500px;" cols="2" align-v="center" align-h="center">
-                <b-col>
-                  <b-button variant="outline-light" @click="onClick()">
+                <b-col v-for="(state, index) in states" :state="state" :index="index">
+                  <b-button variant="outline-light" @click="onClick(index)" :key="state.id">
                     <b-icon icon="power" font-scale="4" :variant="state ? 'success' : 'danger'"></b-icon>
                   </b-button>
                 </b-col>
@@ -37,7 +37,10 @@
       el: '#app',
 
       data: () => ({
-        state: false
+        states: [
+          false,
+          false
+        ]
       }),
 
       methods: {
@@ -51,8 +54,18 @@
           })
         },
 
-        onClick() {
-          this.state = !this.state
+        onClick(index) {
+          axios.get('/action', {
+            params: {
+              switch: index
+            }
+          })
+          .then(res => {
+            this.states = res.data.states
+          })
+          .catch(err => {
+            console.log(err)
+          })
         },
       }
     })

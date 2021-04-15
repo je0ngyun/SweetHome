@@ -1,7 +1,11 @@
 #include <ESP8266WiFi.h>
+#include <WiFiUdp.h>
 
 const String AP_NAME = "SweetHome";
 const String AP_PASSWORD = "1234qwer";
+
+WiFiUDP udp;
+const int UDP_PORT = 4210;
 
 String errorMessage;
 
@@ -51,7 +55,15 @@ bool connectWifi() {
 
   Serial.print("IP 주소 : ");
   Serial.println(WiFi.localIP());
-  
+
+  udp.begin(UDP_PORT);
+
+  IPAddress broadcastIp = WiFi.localIP();
+  broadcastIp[3] = 255;
+
+  udp.beginPacket(broadcastIp, UDP_PORT);
+  udp.print(WiFi.hostname().c_str());
+  udp.endPacket();
   return true;
 }
 
