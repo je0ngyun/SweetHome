@@ -104,4 +104,3 @@ function test() {
     client.close();
   });
 }
-setTimeout(test, 1500);

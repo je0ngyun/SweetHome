@@ -15,11 +15,6 @@ self.start = function () {
     console.log(
       'UDP Server listening on ' + address.address + ':' + address.port,
     );
-    try {
-      await db.initDevice();
-    } catch (ex) {
-      console.log(ex);
-    }
   });
 
   server.on('message', async function (message, remote) {
@@ -27,7 +22,7 @@ self.start = function () {
     info.device_host = remote.address + '';
     info.device_name = message + '';
     try {
-      await db.setDevice(info);
+      db.setDevice(info);
     } catch (ex) {
       console.log(ex);
     }

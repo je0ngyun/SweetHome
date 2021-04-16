@@ -1,51 +1,50 @@
 'use strict';
 const env = require('./env/db_env.json');
-const db = require('../common_modules/dbConn');
 const self = {};
+const HashMap = require('hashmap');
+let devices = new HashMap();
+const logger = require('../common_modules/logger');
+const moment = require('moment');
+require('moment-timezone');
+moment.tz.setDefault('Asia/Seoul');
 
-self.initDevice = async function (info) {
-  await db('device').where({ api_serial: env.serial }).delete().then();
-};
+self.initDevice = async function (info) {};
 
-self.setDevice = async function (info) {
-  await db('device')
-    .insert({
-      device_host: info.device_host,
-      device_name: info.device_name,
-      api_serial: env.serial,
-    })
-    .then();
+self.setDevice = function (info) {
+  let date = moment().format('HH:mm:ss');
+  let obj = {};
+
+  devices.set(info.device_host, {
+    device_name: info.device_name,
+    api_serial: env.serial,
+  });
+
+  obj[info.device_host] = devices.get(info.device_host);
+  obj['state'] = 'regist';
+  obj['time'] = date;
+  logger.log('info', obj);
 };
 
 self.setDeviceLog = async function (info) {
-  await db('device_log')
-    .insert({
-      device_host: info.host,
-      deviceid: info.deviceid,
-      history: info.history,
-    })
-    .then();
+  let obj = {};
+  let date = moment().format('HH:mm:ss');
+
+  obj[info.host] = devices.get(info.host);
+  obj['userid'] = info.userid;
+  obj['time'] = date;
+  obj['state'] = info.state;
+
+  logger.log('info', obj);
 };
 
 self.getDevices = async function (info) {
-  let dbResult = await db('device')
-    .select('*')
-    .where({
-      api_serial: info.serial,
-    })
-    .then();
-  return dbResult;
+  let ret = {};
+  devices.forEach(function (value, key) {
+    ret[key] = value;
+  });
+  return ret;
 };
 
-self.getDeviceLog = async function (info) {
-  let dbResult = await db('device_log')
-    .select('*')
-    .where({
-      userid: info.userid,
-      deviceid: info.deviceid,
-    })
-    .then();
-  return dbResult;
-};
+self.getDeviceLog = async function (info) {};
 
 module.exports = self;
