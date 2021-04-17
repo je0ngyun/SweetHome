@@ -1,12 +1,12 @@
 'use strict';
 const env = require('./env/db_env.json');
-const db = require('../common_modules/dbModel');
+const db = require('./model');
 const self = {};
+const ip = require('ip');
 
 self.start = function () {
   var PORT = env.udp_env.UDP_PORT;
-  var HOST = env.udp_env.UDP_HOST;
-
+  var HOST = ip.address();
   var dgram = require('dgram');
   var server = dgram.createSocket('udp4');
 
@@ -15,19 +15,14 @@ self.start = function () {
     console.log(
       'UDP Server listening on ' + address.address + ':' + address.port,
     );
-    try {
-      await db.initDevice();
-    } catch (ex) {
-      console.log(ex);
-    }
   });
 
   server.on('message', async function (message, remote) {
     let info = {};
     info.device_host = remote.address + '';
-    info.device_name = message + '';
+    info.device_type = message + '';
     try {
-      await db.setDevice(info);
+      db.setDevice(info);
     } catch (ex) {
       console.log(ex);
     }
