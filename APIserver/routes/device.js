@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const asyncHandler = require('express-async-handler');
 const createError = require('http-errors');
-const db = require('../common_modules/dbModel');
+const db = require('../common_modules/model');
 const reqToMac = require('../common_modules/reqToMac');
 
 //등록기기조회

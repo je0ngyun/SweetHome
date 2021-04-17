@@ -1,28 +1,28 @@
 'use strict';
-const env = require('./env/db_env.json');
-const self = {};
 const HashMap = require('hashmap');
-let devices = new HashMap();
-const logger = require('../common_modules/logger');
+const logger = require('./logger');
 const moment = require('moment');
 require('moment-timezone');
 moment.tz.setDefault('Asia/Seoul');
+const self = {};
+let devices = new HashMap();
+const env = require('./env/db_env.json');
 
 self.initDevice = async function (info) {};
 
-self.setDevice = function (info) {
+self.setDevice = async function (info) {
   let date = moment().format('HH:mm:ss');
   let obj = {};
 
   devices.set(info.device_host, {
-    device_name: info.device_name,
-    api_serial: env.serial,
+    device_type: info.device_type,
+    api_serial: env.serial + '',
   });
 
   obj[info.device_host] = devices.get(info.device_host);
   obj['state'] = 'regist';
   obj['time'] = date;
-  logger.log('info', obj);
+  await logger.writeLog(obj);
 };
 
 self.setDeviceLog = async function (info) {
@@ -33,11 +33,10 @@ self.setDeviceLog = async function (info) {
   obj['userid'] = info.userid;
   obj['time'] = date;
   obj['state'] = info.state;
-
-  logger.log('info', obj);
+  logger.writeLog();
 };
 
-self.getDevices = async function (info) {
+self.getDevices = async function () {
   let ret = {};
   devices.forEach(function (value, key) {
     ret[key] = value;
@@ -45,6 +44,9 @@ self.getDevices = async function (info) {
   return ret;
 };
 
-self.getDeviceLog = async function (info) {};
+self.getDeviceLog = async function (info) {
+  let ret = JSON.parse(`[${await logger.readLog(info.date)}]`);
+  return ret;
+};
 
 module.exports = self;

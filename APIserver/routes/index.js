@@ -1,4 +1,3 @@
-const db = require('../common_modules/dbModel');
 var express = require('express');
 var router = express.Router();
 

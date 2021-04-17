@@ -5,6 +5,7 @@ const self = {};
 self.req = async (hostname, port, source, body) => {
   let url =
     'http://' + hostname + ':' + port + '/' + source + '?' + getQueryStr(body);
+  console.log(url);
   let response = {};
   try {
     response = await axios.get(url, {

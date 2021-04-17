@@ -1,22 +1,26 @@
 const appRoot = require('app-root-path'); // root 경로를 가져오기 위해 사용
-const winston = require('winston'); // log 파일 작성
-require('winston-daily-rotate-file');
-const time = require('timers');
+const moment = require('moment');
+const path = require('path');
+require('moment-timezone');
+moment.tz.setDefault('Asia/Seoul');
 
-var transport = new winston.transports.DailyRotateFile({
-  filename: `${appRoot}/logs/device-%DATE%.log`,
-  maxsize: 1024,
-  datePatten: 'YYYY-MM-DD-HH',
-  timestamp: function () {
-    var timezone = time.currentTimezone;
-    var now = new time.Date();
-    now.setTimezone(timezone);
-    return now.toString();
-  },
-});
+const self = {};
 
-var logger = winston.createLogger({
-  transports: [transport],
-});
+self.readLog = async function (date) {
+  const logPath = path.join(__dirname, `../logs/device-${date}.log`);
+  const fs = require('fs');
+  const util = require('util');
+  const readFile = util.promisify(fs.readFile);
+  let ret = await readFile(logPath, 'utf-8');
+  return ret.slice(0, -2);
+};
+self.writeLog = async function (obj) {
+  const date = moment().format('YYYY-MM-DD');
+  const logPath = path.join(__dirname, `../logs/device-${date}.log`);
+  const fs = require('fs');
+  const util = require('util');
+  const appendFile = util.promisify(fs.appendFile);
+  await appendFile(logPath, `${JSON.stringify(obj)},\n`, 'utf-8');
+};
 
-module.exports = logger;
+module.exports = self;
