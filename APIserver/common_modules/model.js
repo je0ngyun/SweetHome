@@ -33,7 +33,7 @@ self.setDeviceLog = async function (info) {
   obj['userid'] = info.userid;
   obj['time'] = date;
   obj['state'] = info.state;
-  logger.writeLog();
+  await logger.writeLog(obj);
 };
 
 self.getDevices = async function () {

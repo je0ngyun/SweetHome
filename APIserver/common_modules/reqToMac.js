@@ -3,8 +3,7 @@ const { default: axios } = require('axios');
 const self = {};
 
 self.req = async (hostname, port, source, body) => {
-  let url =
-    'http://' + hostname + ':' + port + '/' + source + '?' + getQueryStr(body);
+  let url = `http://${hostname}:${port}/${source}?${getQueryStr(body)}`;
   console.log(url);
   let response = {};
   try {
