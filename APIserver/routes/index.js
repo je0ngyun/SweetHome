@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
-let state = false; //test 변수 (전등전원)
+let state = [false, false]; //test 변수 (전등전원)
 //테스트 (아두이노 역할 가정)
 router.get('/action', function (req, res, next) {
-  if (state == false) {
-    state = true;
+  if (state[0] == false) {
+    state = [true, false];
   } else {
-    state = false;
+    state = [false, false];
   }
   res.json(state);
 });
