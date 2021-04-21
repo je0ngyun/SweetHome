@@ -4,42 +4,37 @@ const logger = require('./logger');
 const moment = require('moment');
 require('moment-timezone');
 moment.tz.setDefault('Asia/Seoul');
-const self = {};
-let devices = new HashMap();
 const env = require('./env/db_env.json');
+let devices = new HashMap();
+const self = {};
 
 self.initDevice = async function (info) {};
 
 self.setDevice = async function (info) {
-  let date = moment().format('HH:mm:ss');
-  let obj = {};
-
   devices.set(info.device_host, {
     device_type: info.device_type,
     api_serial: env.serial + '',
   });
-
-  obj[info.device_host] = devices.get(info.device_host);
-  obj['state'] = 'regist';
-  obj['time'] = date;
-  await logger.writeLog(obj);
 };
 
 self.setDeviceLog = async function (info) {
   let obj = {};
-  let date = moment().format('HH:mm:ss');
+  let time = moment().format('HH:mm:ss');
 
-  obj[info.host] = devices.get(info.host);
-  obj['userid'] = info.userid;
-  obj['time'] = date;
-  obj['state'] = info.state;
+  obj.host = info.host;
+  obj.info = devices.get(info.host);
+  obj.time = time;
+  obj.state = info.state;
   await logger.writeLog(obj);
 };
 
 self.getDevices = async function () {
-  let ret = {};
+  let ret = [];
   devices.forEach(function (value, key) {
-    ret[key] = value;
+    let obj = {};
+    obj['host'] = key;
+    obj['info'] = value;
+    ret.push(obj);
   });
   return ret;
 };

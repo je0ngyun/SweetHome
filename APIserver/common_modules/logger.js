@@ -11,7 +11,7 @@ const self = {};
 self.readLog = async function (date) {
   const logPath = path.join(__dirname, `../logs/device-${date}.log`);
   const readFile = util.promisify(fs.readFile);
-  let ret = await readFile(logPath, 'utf-8');
+  const ret = await readFile(logPath, 'utf-8');
   return ret.slice(0, -2);
 };
 self.writeLog = async function (obj) {
