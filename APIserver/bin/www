@@ -92,7 +92,7 @@ udpServer.start();
 /*udp test*/
 function test() {
   var PORT = 33333;
-  var HOST = '192.168.0.5';
+  var HOST = '192.168.0.2';
 
   var dgram = require('dgram');
   var message = 'light';
