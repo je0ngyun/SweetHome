@@ -12,8 +12,14 @@ router.get('/action', function (req, res, next) {
   res.json(state);
 });
 
-router.get('/test', function (req, res, next) {
-  res.json(true);
+//api server
+router.get('/', function (req, res, next) {
+  res.send('API server 1.0');
+});
+
+//유효성 검사 JWT이용으로 추후 구현
+router.post('/validation/:serial', function (req, res, next) {
+  res.json(req.params.serial);
 });
 
 module.exports = router;
