@@ -13,12 +13,18 @@ self.setDevice = async function (info) {
     .then();
 };
 
-self.setDeviceLog = async function (info) {
+self.setDeviceLog = async function (info, state) {
+  let device_name = await db('device')
+    .where({ device_host: info.host })
+    .select('device_name')
+    .toString();
+  console.log(device_name);
   await db('device_log')
     .insert({
       device_host: info.host,
-      deviceid: info.deviceid,
-      history: info.history,
+      device_name: 'devi',
+      state: `[${state}]`,
+      api_serial: env.serial,
     })
     .then();
 };

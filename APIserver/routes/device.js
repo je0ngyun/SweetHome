@@ -34,6 +34,9 @@ router.get(
   '/action',
   asyncHandler(async (req, res, next) => {
     const macRes = await reqToMac.req(req.query.host, 80, 'action', req.query);
+    if (macRes.data != '404') {
+      await db.setDeviceLog(req.query, macRes.data);
+    }
     res.status(200).json({
       success: true,
       device: macRes.data,
