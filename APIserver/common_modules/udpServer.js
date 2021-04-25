@@ -2,11 +2,9 @@
 const env = require('./env/db_env.json');
 const db = require('./model');
 const self = {};
-const ip = require('ip');
 
 self.start = function () {
   var PORT = env.udp_env.UDP_PORT;
-  var HOST = ip.address();
   var dgram = require('dgram');
   var server = dgram.createSocket('udp4');
 
@@ -18,6 +16,7 @@ self.start = function () {
   });
 
   server.on('message', async function (message, remote) {
+    console.log('받음');
     let info = {};
     info.device_host = remote.address + '';
     info.device_type = message + '';
@@ -28,7 +27,7 @@ self.start = function () {
     }
   });
 
-  server.bind(PORT, HOST);
+  server.bind(PORT);
 };
 
 module.exports = self;

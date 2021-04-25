@@ -90,9 +90,10 @@ function onListening() {
 udpServer.start();
 
 /*udp test*/
-function test() {
-  var PORT = 33333;
-  var HOST = '192.168.0.2';
+/*function test() {
+  var PORT = 4210;
+  var HOST = '192.168.0.24';
+>>>>>>> JeongYun
 
   var dgram = require('dgram');
   var message = 'light';
@@ -104,5 +105,4 @@ function test() {
     client.close();
   });
 }
-
-setTimeout(test, 1500);
+setTimeout(test, 1500);*/
