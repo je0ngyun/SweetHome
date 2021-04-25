@@ -11,7 +11,7 @@ self.req = async (hostname, port, source, body) => {
       withCredentials: true,
     });
   } catch (ex) {
-    response.data = '400';
+    response.data = '404';
     return response;
   }
   return response;

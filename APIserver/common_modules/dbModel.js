@@ -3,10 +3,6 @@ const env = require('./env/db_env.json');
 const db = require('../common_modules/dbConn');
 const self = {};
 
-self.initDevice = async function (info) {
-  await db('device').where({ api_serial: env.serial }).delete().then();
-};
-
 self.setDevice = async function (info) {
   await db('device')
     .insert({
@@ -28,13 +24,17 @@ self.setDeviceLog = async function (info) {
 };
 
 self.getDevices = async function (info) {
-  let dbResult = await db('device')
-    .select('*')
-    .where({
-      api_serial: info.serial,
-    })
-    .then();
-  return dbResult;
+  try {
+    let dbResult = await db('device')
+      .select('*')
+      .where({
+        api_serial: info.serial,
+      })
+      .then();
+    return dbResult;
+  } catch (ex) {
+    console.log(ex);
+  }
 };
 
 self.getDeviceLog = async function (info) {

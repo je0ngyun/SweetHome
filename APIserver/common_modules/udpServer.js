@@ -5,7 +5,6 @@ const self = {};
 
 self.start = function () {
   var PORT = env.udp_env.UDP_PORT;
-  var HOST = env.udp_env.UDP_HOST;
 
   var dgram = require('dgram');
   var server = dgram.createSocket('udp4');
@@ -15,14 +14,10 @@ self.start = function () {
     console.log(
       'UDP Server listening on ' + address.address + ':' + address.port,
     );
-    try {
-      await db.initDevice();
-    } catch (ex) {
-      console.log(ex);
-    }
   });
 
   server.on('message', async function (message, remote) {
+    console.log('받음');
     let info = {};
     info.device_host = remote.address + '';
     info.device_name = message + '';
@@ -33,7 +28,7 @@ self.start = function () {
     }
   });
 
-  server.bind(PORT, HOST);
+  server.bind(PORT);
 };
 
 module.exports = self;
