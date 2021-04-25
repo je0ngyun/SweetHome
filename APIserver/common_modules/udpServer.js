@@ -1,6 +1,6 @@
 'use strict';
 const env = require('./env/db_env.json');
-const db = require('./model');
+const db = require('./dbmodel');
 const self = {};
 
 self.start = function () {

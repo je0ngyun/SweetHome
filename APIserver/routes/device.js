@@ -2,14 +2,14 @@ var express = require('express');
 var router = express.Router();
 const asyncHandler = require('express-async-handler');
 const createError = require('http-errors');
-const db = require('../common_modules/model');
+const db = require('../common_modules/dbmodel');
 const reqToMac = require('../common_modules/reqToMac');
 
 //등록기기조회
 router.get(
   '/regist',
   asyncHandler(async (req, res, next) => {
-    const result = await db.getDevices();
+    const result = await db.getDevices(req.query);
     if (result == undefined) {
       throw new createError.BadRequest();
     }
@@ -38,8 +38,6 @@ router.get(
       success: true,
       device: macRes.data,
     });
-    req.query.state = macRes.data;
-    await db.setDeviceLog(req.query);
   }),
 );
 
