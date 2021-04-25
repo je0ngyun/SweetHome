@@ -2,16 +2,16 @@
 const { default: axios } = require('axios');
 const self = {};
 
-self.req = async (hostname, port, mid, body) => {
-  let url =
-    'http://' + hostname + ':' + port + '/' + mid + '?' + getQueryStr(body);
+self.req = async (hostname, port, source, body) => {
+  let url = `http://${hostname}:${port}/${source}?${getQueryStr(body)}`;
+  console.log(url);
   let response = {};
   try {
     response = await axios.get(url, {
       withCredentials: true,
     });
   } catch (ex) {
-    response.data = '400';
+    response.data = '404';
     return response;
   }
   return response;

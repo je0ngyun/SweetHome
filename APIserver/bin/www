@@ -7,12 +7,13 @@
 var app = require('../app');
 var debug = require('debug')('apiserver:server');
 var http = require('http');
+var udpServer = require('../common_modules/udpServer');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '80');
 app.set('port', port);
 
 /**
@@ -84,3 +85,24 @@ function onListening() {
   var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+/** udp Server listening */
+udpServer.start();
+
+/*udp test*/
+/*function test() {
+  var PORT = 4210;
+  var HOST = '192.168.0.24';
+>>>>>>> JeongYun
+
+  var dgram = require('dgram');
+  var message = 'light';
+
+  var client = dgram.createSocket('udp4');
+  client.send(message, 0, message.length, PORT, HOST, function (err, bytes) {
+    if (err) throw err;
+    console.log('UDP message sent to ' + HOST + ':' + PORT);
+    client.close();
+  });
+}
+setTimeout(test, 1500);*/
