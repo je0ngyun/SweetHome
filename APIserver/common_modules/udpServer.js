@@ -19,12 +19,8 @@ self.start = function () {
     console.log('받음');
     let info = {};
     info.device_host = remote.address + '';
-    info.device_type = message + '';
-    try {
-      db.setDevice(info);
-    } catch (ex) {
-      console.log(ex);
-    }
+    info.device_name = message + '';
+    await db.setDevice(info);
   });
 
   server.bind(PORT);

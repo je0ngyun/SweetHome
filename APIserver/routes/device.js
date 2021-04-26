@@ -13,7 +13,7 @@ router.get(
     if (result == undefined) {
       throw new createError.BadRequest();
     }
-    res.status(200).json({ success: true, device: result });
+    res.status(200).json({ success: true, devices: result });
   }),
 );
 
@@ -25,7 +25,7 @@ router.get(
     if (result == undefined) {
       throw new createError.BadRequest();
     }
-    res.status(200).json({ success: true, device: result });
+    res.status(200).json({ success: true, logs: result });
   }),
 );
 
