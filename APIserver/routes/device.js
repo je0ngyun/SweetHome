@@ -13,11 +13,11 @@ router.get(
     if (result == undefined) {
       throw new createError.BadRequest();
     }
-    res.status(200).json({ success: true, device: result });
+    res.status(200).json({ success: true, devices: result });
   }),
 );
 
-//기기로그조회
+//특정기기로그조회
 router.get(
   '/log',
   asyncHandler(async (req, res, next) => {
@@ -25,7 +25,19 @@ router.get(
     if (result == undefined) {
       throw new createError.BadRequest();
     }
-    res.status(200).json({ success: true, device: result });
+    res.status(200).json({ success: true, logs: result });
+  }),
+);
+
+//전체기기로그조회
+router.get(
+  '/log/all',
+  asyncHandler(async (req, res, next) => {
+    const result = await db.getDeviceLogAll(req.query);
+    if (result == undefined) {
+      throw new createError.BadRequest();
+    }
+    res.status(200).json({ success: true, logs: result });
   }),
 );
 
@@ -33,7 +45,12 @@ router.get(
 router.get(
   '/action',
   asyncHandler(async (req, res, next) => {
-    const macRes = await reqToMac.req(req.query.host, 80, 'action', req.query);
+    const host = await db.getDeviceHost(req.query);
+    const macRes = await reqToMac.req(host, 80, 'action', req.query);
+    if (macRes.data != '404') {
+      req.query.host = host;
+      await db.setDeviceLog(req.query, macRes.data);
+    }
     res.status(200).json({
       success: true,
       device: macRes.data,

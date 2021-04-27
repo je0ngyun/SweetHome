@@ -4,9 +4,9 @@ const db = require('./dbmodel');
 const self = {};
 
 self.start = function () {
-  var PORT = env.udp_env.UDP_PORT;
-  var dgram = require('dgram');
-  var server = dgram.createSocket('udp4');
+  let PORT = env.udp_env.UDP_PORT;
+  let dgram = require('dgram');
+  let server = dgram.createSocket('udp4');
 
   server.on('listening', async function () {
     var address = server.address();
@@ -19,12 +19,8 @@ self.start = function () {
     console.log('받음');
     let info = {};
     info.device_host = remote.address + '';
-    info.device_type = message + '';
-    try {
-      db.setDevice(info);
-    } catch (ex) {
-      console.log(ex);
-    }
+    info.device_name = message + '';
+    await db.setDevice(info);
   });
 
   server.bind(PORT);
