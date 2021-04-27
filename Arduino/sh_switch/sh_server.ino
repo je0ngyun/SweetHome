@@ -70,7 +70,7 @@ void serverSetup() {
     
     if (request->hasParam("switch")) {
       int n = request->getParam("switch")->value().toInt();
-      if (0 <= n < way) {
+      if (n <= 0 && n < way) {
         state[n] = !state[n];
         object["result"] = "success";
       } else {
