@@ -18,15 +18,10 @@ self.setDevice = async function (info) {
 };
 
 self.setDeviceLog = async function (info, state) {
-  let device_name = await db('device')
-    .where({ device_host: info.host })
-    .select('device_name')
-    .toString();
-  console.log(device_name);
   await db('device_log')
     .insert({
       device_host: info.host,
-      device_name: 'devi',
+      device_name: info.name,
       state: `[${state}]`,
       api_serial: env.serial,
     })
@@ -36,7 +31,7 @@ self.setDeviceLog = async function (info, state) {
 self.getDevices = async function (info) {
   try {
     let dbResult = await db('device')
-      .select('*')
+      .select('api_serial', 'device_host', 'device_name')
       .where({
         api_serial: info.serial,
       })
@@ -51,11 +46,27 @@ self.getDeviceLog = async function (info) {
   let dbResult = await db('device_log')
     .select('*')
     .where({
-      userid: info.userid,
-      deviceid: info.deviceid,
+      device_name: info.name,
     })
     .then();
   return dbResult;
+};
+
+self.getDeviceLogAll = async function (info) {
+  let dbResult = await db('device_log')
+    .select('*')
+    .where({ api_serial: info.serial })
+    .then();
+  return dbResult;
+};
+
+self.getDeviceHost = async function (info) {
+  let dbResult = await db('device')
+    .select('device_host')
+    .where({ device_name: info.name })
+    .first()
+    .then();
+  return dbResult.device_host;
 };
 
 module.exports = self;

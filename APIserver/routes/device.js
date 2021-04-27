@@ -17,7 +17,7 @@ router.get(
   }),
 );
 
-//기기로그조회
+//특정기기로그조회
 router.get(
   '/log',
   asyncHandler(async (req, res, next) => {
@@ -29,12 +29,26 @@ router.get(
   }),
 );
 
+//전체기기로그조회
+router.get(
+  '/log/all',
+  asyncHandler(async (req, res, next) => {
+    const result = await db.getDeviceLogAll(req.query);
+    if (result == undefined) {
+      throw new createError.BadRequest();
+    }
+    res.status(200).json({ success: true, logs: result });
+  }),
+);
+
 //기기동작요청
 router.get(
   '/action',
   asyncHandler(async (req, res, next) => {
-    const macRes = await reqToMac.req(req.query.host, 80, 'action', req.query);
+    const host = await db.getDeviceHost(req.query);
+    const macRes = await reqToMac.req(host, 80, 'action', req.query);
     if (macRes.data != '404') {
+      req.query.host = host;
       await db.setDeviceLog(req.query, macRes.data);
     }
     res.status(200).json({
