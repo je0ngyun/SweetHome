@@ -15,7 +15,7 @@
         <v-layout column>
           <v-btn rounded color="primary" block dark @click="doLogin">{{ expand ? '로그인' : '로그인하기'}}</v-btn>
           <v-layout>
-            <router-link v-show="expand" to="/">회원가입</router-link>
+            <router-link v-show="expand" to="/">하앍</router-link>
             <router-link v-show="expand" to="/">비밀번호 찾기</router-link>
           </v-layout>
         </v-layout>
