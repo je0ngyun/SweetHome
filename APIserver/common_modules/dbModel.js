@@ -1,5 +1,5 @@
 'use strict';
-const env = require('./env/db_env.json');
+const env = require('./env/env.json');
 const db = require('../common_modules/dbConn');
 const self = {};
 

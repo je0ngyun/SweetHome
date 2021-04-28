@@ -34,7 +34,7 @@ const newErrorMap = new Map([['ER_NO_DEFAULT_FOR_FIELD', 400]]);
 app.use((err, req, res, next) => {
   const newError = newErrorMap.get(err.code);
   if (newError) {
-    err.status = 400;
+    err.status = newError;
     next(err);
   } else {
     next(err);
