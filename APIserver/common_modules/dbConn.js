@@ -1,5 +1,5 @@
 'use strict';
-const env = require('./env/db_env.json');
+const env = require('./env/env.json');
 //common_modules/env/db_env.json 필요
 /*e.g {
   "db_env": {
