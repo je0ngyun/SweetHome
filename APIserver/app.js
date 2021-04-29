@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var deviceRouter = require('./routes/device');
+var authRouter = require('./routes/auth');
 
 var app = express();
 
@@ -21,6 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/device', deviceRouter);
+app.use('/auth', authRouter);
 
 // 404핸들러
 app.use(function (req, res, next) {
@@ -45,7 +47,6 @@ app.use((err, req, res, next) => {
 app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   //에러응답
   res.status(err.status || 500);
   res.json({ error: err, success: false });
