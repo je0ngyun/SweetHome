@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const asyncHandler = require('express-async-handler');
 const publicIp = require('public-ip');
+const { verifyToken } = require('./vertifyToken');
 
 let state = [false, false]; //test 변수 (전등전원)
 //테스트 (아두이노 역할 가정)
@@ -22,5 +23,10 @@ router.get(
     res.render('index.ejs', { ip: pubIP });
   }),
 );
+
+router.get('/test', verifyToken, (req, res, next) => {
+  console.log(req);
+  res.json(true);
+});
 
 module.exports = router;
