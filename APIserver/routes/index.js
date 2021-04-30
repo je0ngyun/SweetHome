@@ -3,6 +3,7 @@ var router = express.Router();
 const asyncHandler = require('express-async-handler');
 const publicIp = require('public-ip');
 const { verifyToken } = require('./vertifyToken');
+const authCode = require('../common_modules/authCode');
 
 let state = [false, false]; //test 변수 (전등전원)
 //테스트 (아두이노 역할 가정)
@@ -20,13 +21,23 @@ router.get(
   '/page/main',
   asyncHandler(async (req, res, next) => {
     const pubIP = await publicIp.v4();
-    res.render('index.ejs', { ip: pubIP });
+    res.render('index.ejs', { ip: pubIP, code: '' });
   }),
 );
 
-router.get('/test', verifyToken, (req, res, next) => {
+router.get('/testvert', verifyToken, (req, res, next) => {
   console.log(req);
   res.json(true);
+});
+
+router.get('/test1', (req, res, next) => {
+  authCode.createCode();
+  res.json('코드가 만들어졌습니다');
+});
+
+router.get('/test2', (req, res, next) => {
+  let f = authCode.getCode();
+  res.json(f);
 });
 
 module.exports = router;
