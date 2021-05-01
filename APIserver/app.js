@@ -9,6 +9,7 @@ var deviceRouter = require('./routes/device');
 var authRouter = require('./routes/auth');
 
 var app = express();
+app.io = require('socket.io')(); //socket.io 추가
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -50,6 +51,10 @@ app.use(function (err, req, res, next) {
   //에러응답
   res.status(err.status || 500);
   res.json({ error: err, success: false });
+});
+
+app.io.on('connection', function (socket) {
+  console.log('user conn');
 });
 
 module.exports = app;

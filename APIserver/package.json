@@ -7,7 +7,6 @@
     "test": "supervisor ./bin/www"
   },
   "dependencies": {
-    "app-root-path": "^3.0.0",
     "axios": "^0.21.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
@@ -19,12 +18,11 @@
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.4",
-    "moment": "^2.29.1",
-    "moment-timezone": "^0.5.33",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
     "public-ip": "^4.0.3",
     "randomstring": "^1.1.5",
+    "socket.io": "^4.0.1",
     "supervisor": "^0.12.0"
   }
 }

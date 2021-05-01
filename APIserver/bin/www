@@ -17,10 +17,13 @@ var port = normalizePort(process.env.PORT || '80');
 app.set('port', port);
 
 /**
- * Create HTTP server.
+ * Create HTTP server + soket.io
+ * Create UDP server
  */
 
 var server = http.createServer(app);
+app.io.attach(server); //http 서버에 socket.io 연결
+udpServer.start(); //기기의 브로드캐스팅 메시지 받을 udp서버
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -85,9 +88,6 @@ function onListening() {
   var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
-
-/** udp Server listening */
-udpServer.start();
 
 /*udp test*/
 /*function test() {
