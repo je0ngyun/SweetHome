@@ -39,4 +39,13 @@ router.get('/test2', (req, res, next) => {
   res.json(f);
 });
 
+router.get('/test3', (req, res, next) => {
+  try {
+    authCode.test();
+  } catch (ex) {
+    console.log(ex);
+  }
+  res.json(true);
+});
+
 module.exports = router;
