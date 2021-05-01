@@ -26,7 +26,6 @@ router.get(
 );
 
 router.get('/testvert', verifyToken, (req, res, next) => {
-  console.log(req);
   res.json(true);
 });
 

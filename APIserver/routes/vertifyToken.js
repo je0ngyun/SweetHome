@@ -3,6 +3,7 @@
 const jwt = require('jsonwebtoken');
 const env = require('../common_modules/env/env.json');
 const SECRET_KEY = env.secret_key;
+const createError = require('http-errors');
 
 const verifyToken = (req, res, next) => {
   try {
@@ -11,10 +12,10 @@ const verifyToken = (req, res, next) => {
     if (decoded) {
       next();
     } else {
-      res.status(401).json({ error: 'unauthorized' });
+      throw new createError.Unauthorized('유효하지 않은 토큰');
     }
   } catch (err) {
-    res.status(401).json({ error: 'token expired' });
+    throw new createError.Unauthorized('토큰만료');
   }
 };
 
