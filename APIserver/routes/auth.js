@@ -20,10 +20,10 @@ router.post(
   '/codecheck',
   asyncHandler(async (req, res, next) => {
     if (isEmpty(authCode.getCode())) {
-      throw new createError.BadRequest('만료된 코드');
+      throw new createError.Unauthorized('만료된 코드');
     }
     if (req.query.code != authCode.getCode()) {
-      throw new createError.BadRequest('잘못된 인증코드');
+      throw new createError.Unauthorized('잘못된 인증코드');
     }
     const token = jwt.sign(
       {

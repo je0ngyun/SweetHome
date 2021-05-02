@@ -3,6 +3,7 @@ var router = express.Router();
 const asyncHandler = require('express-async-handler');
 const publicIp = require('public-ip');
 const { verifyToken } = require('./vertifyToken');
+const reqIP = require('request-ip');
 
 let state = [false, false]; //test 변수 (전등전원)
 //테스트 (아두이노 역할 가정)
