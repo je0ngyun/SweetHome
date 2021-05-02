@@ -3,7 +3,11 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,node,windows
 
 ## vscode ##
-.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 ### macOS ###
 # General
 .DS_Store
