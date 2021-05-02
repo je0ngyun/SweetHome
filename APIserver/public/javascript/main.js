@@ -17,13 +17,20 @@ App.main = (function () {
         }
       }
     },
+    socketConn: function () {
+      let socket = io();
+      socket.on('code', function (code) {
+        let codeArea = document.querySelector('.code-area');
+        codeArea.innerHTML = code;
+      });
+    },
   };
 })();
 
 window.addEventListener(
   'load',
   function () {
-    alert('실행');
+    App.main.socketConn();
   },
   false,
 );

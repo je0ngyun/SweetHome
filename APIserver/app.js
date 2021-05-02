@@ -53,8 +53,8 @@ app.use(function (err, req, res, next) {
   res.json({ error: err, success: false });
 });
 
-app.io.on('connection', function (socket) {
-  console.log('user conn');
-});
+//웹소켓 커넥션 핸들러
+app.io.on('connection', function (socket) {});
+app.set('socketIO', app.io); //router 에서 사용하기위해 등록
 
 module.exports = app;

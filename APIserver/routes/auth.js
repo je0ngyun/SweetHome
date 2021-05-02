@@ -7,11 +7,10 @@ const authCode = require('../common_modules/authCode');
 
 //인증코드 화면에 표시
 router.get('/code', (req, res, next) => {
-  let code = authCode.createCode();
-  res.locals.code = code;
-  console.log(res.locals);
-  //화면에 dialog 코드 필요
-  res.json({ success: true }); //이 응답은 클라이언트로의 응답
+  const io = req.app.get('socketIO');
+  const code = authCode.createCode();
+  io.emit('code', code + ''); //이 응답은 라즈베리파이(키오스크화면)의로의 응답
+  res.json({ success: true }); //이 응답은 요청 클라이언트로의 응답
 });
 
 //인증코드 확인후 토큰 발행
