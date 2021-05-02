@@ -8,14 +8,14 @@ class authCode {
       length: 7,
       capitalization: 'lowercase',
     });
-    setTimeout(this.initCode, 5000);
+    setTimeout(this.initCode, 380000);
     return authCode.code;
   }
   static getCode() {
     return authCode.code;
   }
   static initCode() {
-    authCode.code = '222';
+    authCode.code = null;
   }
 }
 

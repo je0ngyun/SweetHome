@@ -20,8 +20,7 @@ App.main = (function () {
     socketConn: function () {
       let socket = io();
       socket.on('code', function (code) {
-        let codeArea = document.querySelector('.code-area');
-        codeArea.innerHTML = code;
+        alert('인증번호 : ' + code);
       });
     },
   };
