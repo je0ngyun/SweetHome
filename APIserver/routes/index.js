@@ -4,6 +4,7 @@ const asyncHandler = require('express-async-handler');
 const publicIp = require('public-ip');
 const { verifyToken } = require('./vertifyToken');
 const reqIP = require('request-ip');
+const path = require('path');
 
 let state = [false, false]; //test 변수 (전등전원)
 //테스트 (아두이노 역할 가정)
@@ -24,6 +25,10 @@ router.get(
     res.render('index.ejs', { ip: pubIP, code: '' });
   }),
 );
+
+router.get('/vue', (req, res, next) => {
+  res.sendFile(path.join(__dirname, '../public', 'index.html'));
+});
 
 router.get('/testvert', verifyToken, (req, res, next) => {
   res.json(true);
