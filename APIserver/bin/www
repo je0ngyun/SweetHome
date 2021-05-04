@@ -22,7 +22,15 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-app.io.attach(server); //http 서버에 socket.io 연결
+app.io.attach(server, {
+  cors: {
+    origin: 'http://localhost:80',
+    methods: ['GET', 'POST'],
+    transports: ['websocket', 'polling'],
+    credentials: true,
+  },
+  allowEIO3: true,
+}); //http 서버에 socket.io 연결
 udpServer.start(); //기기의 브로드캐스팅 메시지 받을 udp서버
 
 /**

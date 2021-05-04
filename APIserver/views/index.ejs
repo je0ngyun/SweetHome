@@ -8,7 +8,12 @@
     <br />
     Your IP is <%=ip %>
     <hr />
-    <script type="module" src="/javascript/main.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      socket.on('code', function (code) {
+        alert(code);
+      });
+    </script>
   </body>
 </html>

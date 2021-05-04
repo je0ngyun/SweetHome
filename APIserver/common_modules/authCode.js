@@ -8,14 +8,14 @@ class authCode {
       length: 7,
       capitalization: 'lowercase',
     });
-    setTimeout(this.initCode, 380000);
+    setTimeout(this.initCode, 380000); //인증유효시간 3분
     return authCode.code;
   }
   static getCode() {
     return authCode.code;
   }
   static initCode() {
-    authCode.code = null;
+    authCode.code = null; //코드만료시 null
   }
 }
 
