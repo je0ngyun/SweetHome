@@ -21,7 +21,11 @@ export default {
   },
   created() {
     this.$socket.on('code', (code) => {
-      alert(code);
+      this.$buefy.dialog.alert({
+        title: '인증번호확인',
+        message: code,
+        confirmText: '확인',
+      });
     });
   },
 };
