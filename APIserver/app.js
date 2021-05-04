@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var deviceRouter = require('./routes/device');
@@ -10,6 +11,9 @@ var authRouter = require('./routes/auth');
 
 var app = express();
 app.io = require('socket.io')(); //socket.io 추가
+
+//cors middleware
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

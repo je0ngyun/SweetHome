@@ -1,32 +1,42 @@
 <template>
   <div id="app">
-    <div>{{ msgg }}</div>
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <div>{{ msg }}</div>
+    <hr />
+    <Device host="123" name="test" />
+    <hr />
+    <Menu />
+    <hr />
+    <Management />
+    <hr />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import Device from './components/Device';
+import Menu from './components/Menu';
+import Management from './components/Management';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    Device,
+    Menu,
+    Management,
   },
   data: function() {
     return {
-      msgg: 'asd',
+      msg: 'Test',
     };
   },
   created() {
-    this.$socket.on('code', (code) => {
+    /*this.$socket.on('code', (code) => {
       this.$buefy.dialog.alert({
         title: '인증번호확인',
         message: code,
         confirmText: '확인',
       });
-    });
+    });*/
+    //빌드시 주석제거 soket.io 이벤트
   },
 };
 </script>
