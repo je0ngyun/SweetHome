@@ -23,6 +23,7 @@ Icon
 #env
 db.env
 db_env.json
+/env
 
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100
