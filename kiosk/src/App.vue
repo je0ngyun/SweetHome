@@ -2,8 +2,6 @@
   <div id="app">
     <div>{{ msg }}</div>
     <hr />
-    <Device host="123" name="test" />
-    <hr />
     <Menu />
     <hr />
     <Management />
@@ -12,20 +10,18 @@
 </template>
 
 <script>
-import Device from './components/Device';
 import Menu from './components/Menu';
 import Management from './components/Management';
 
 export default {
   name: 'App',
   components: {
-    Device,
     Menu,
     Management,
   },
   data: function() {
     return {
-      msg: 'Test',
+      msg: 'APP',
     };
   },
   created() {

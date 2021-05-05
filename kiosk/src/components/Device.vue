@@ -1,8 +1,9 @@
 <template>
   <div>
     <div>this is device component</div>
-    <div>{{ host }}</div>
-    <div>{{ name }}</div>
+    <div>{{ device.device_host }}</div>
+    <div>{{ device.device_name }}</div>
+    <div>{{ index }}</div>
   </div>
 </template>
 
@@ -10,8 +11,8 @@
 export default {
   name: 'Device',
   props: {
-    host: String,
-    name: String,
+    device: Object,
+    index: Number,
   },
 };
 </script>
