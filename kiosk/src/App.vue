@@ -1,11 +1,7 @@
 <template>
-  <div id="app">
-    <div>{{ msg }}</div>
-    <hr />
-    <Menu />
-    <hr />
-    <Management />
-    <hr />
+  <div id="app" class="columns">
+    <Menu class="menu column is-3" />
+    <Management class="manage column is-9 " />
   </div>
 </template>
 
@@ -38,12 +34,26 @@ export default {
 </script>
 
 <style>
+html,
+body {
+  min-height: 100% !important;
+  height: 100%;
+  overflow: hidden;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  width: 800px;
+  height: 100%;
+}
+.menu {
+  background: cornflowerblue;
+  height: 103%;
+}
+.manage {
+  height: 103%;
 }
 </style>

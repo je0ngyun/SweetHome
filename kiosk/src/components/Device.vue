@@ -1,9 +1,6 @@
 <template>
-  <div>
-    <div>this is device component</div>
-    <div>{{ device.device_host }}</div>
-    <div>{{ device.device_name }}</div>
-    <div>{{ index }}</div>
+  <div class="device columns is-multiline card is-inline-block m-1">
+    <div class="is-12">{{ device.device_name }}</div>
   </div>
 </template>
 
@@ -17,4 +14,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.device {
+  height: 6rem;
+}
+</style>

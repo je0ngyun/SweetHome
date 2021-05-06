@@ -1,7 +1,7 @@
 <template>
-  <div>
-    this is menu component
+  <div class="pl-4 pt-5">
     <div>{{ ip }}</div>
+    <br />
   </div>
 </template>
 
@@ -21,4 +21,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>
