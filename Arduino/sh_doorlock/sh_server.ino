@@ -72,6 +72,7 @@ void serverSetup() {
       int n = request->getParam("switch")->value().toInt();
       if (n <= 0 && n < way) {
         state[n] = !state[n];
+        is_stop = false;
         object["result"] = "success";
       } else {
         object["result"] = "fail";
