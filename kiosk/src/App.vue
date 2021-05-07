@@ -1,7 +1,7 @@
 <template>
-  <div id="app" class="columns">
-    <Menu class="menu column is-3" />
-    <Management class="manage column is-9 " />
+  <div id="app" class="columns p-5">
+    <Menu class="menu column is-3 card ml-1" />
+    <Management class="manage column is-9 card ml-4" />
   </div>
 </template>
 
@@ -44,16 +44,16 @@ body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
   width: 800px;
   height: 100%;
 }
 .menu {
-  background: cornflowerblue;
-  height: 103%;
+  background: #397daa !important;
+  color: #ffffff !important;
+  height: 106%;
 }
 .manage {
-  height: 103%;
+  background: #ececec !important;
+  height: 106%;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="pl-4 pt-5">
+  <div class="has-text-centered">
     <div>{{ ip }}</div>
     <br />
   </div>
