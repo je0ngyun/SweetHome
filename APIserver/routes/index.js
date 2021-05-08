@@ -9,22 +9,18 @@ const path = require('path');
 let state = [false, false]; //test 변수 (전등전원)
 //테스트 (아두이노 역할 가정)
 router.get('/action', function (req, res, next) {
-  if (state[0] == false) {
-    state = [true, false];
-  } else {
-    state = [false, false];
+  try {
+    let swt = req.query.switch;
+    if (swt == 0) {
+      state[0] = !state[0];
+    } else {
+      state[1] - !state[1];
+    }
+  } catch (ex) {
+    console.log(ex);
   }
   res.json(state);
 });
-
-//main page
-router.get(
-  '/page/main',
-  asyncHandler(async (req, res, next) => {
-    const pubIP = await publicIp.v4();
-    res.render('index.ejs', { ip: pubIP, code: '' });
-  }),
-);
 
 router.get('/vue', (req, res, next) => {
   res.sendFile(path.join(__dirname, '../public', 'index.html'));

@@ -10,7 +10,7 @@ self.req = async (hostname, port, source, body) => {
       withCredentials: true,
     });
   } catch (ex) {
-    response.data = '404';
+    response.data = 'disconnect';
     return response;
   }
   return response;

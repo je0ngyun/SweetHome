@@ -71,14 +71,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.test {
-  margin: 10px;
-  width: 150px;
-  height: 150px;
-  background: blueviolet;
-}
-.h-100 {
-  height: 1%;
-}
-</style>
+<style scoped></style>

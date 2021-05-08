@@ -35,7 +35,7 @@ router.post(
       },
     );
     authCode.initCode();
-    res.json({ success: true, token: token });
+    res.status(201).json({ success: true, token: token });
   }),
 );
 

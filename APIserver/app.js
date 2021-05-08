@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+const env = require('./common_modules/env/env.json');
 
 var indexRouter = require('./routes/index');
 var deviceRouter = require('./routes/device');
@@ -58,7 +59,9 @@ app.use(function (err, req, res, next) {
 });
 
 //웹소켓 커넥션 핸들러
-app.io.on('connection', function (socket) {});
+app.io.on('connection', function (socket) {
+  console.log('웹소켓 연결완료');
+});
 app.set('socketIO', app.io); //router 에서 사용하기위해 등록
 
 module.exports = app;

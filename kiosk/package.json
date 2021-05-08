@@ -16,6 +16,7 @@
     "core-js": "^3.6.5",
     "public-ip": "^4.0.3",
     "vue": "^2.6.11",
+    "vue-long-click": "^0.0.4",
     "vue-router": "^3.5.1",
     "vue-socket.io": "^3.0.10",
     "vuex": "^3.6.2"

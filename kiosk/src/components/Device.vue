@@ -1,6 +1,7 @@
 <template>
   <div
     @click="action"
+    v-longclick="() => log()"
     class="device columns is-multiline card is-inline-block m-1"
     :style="state ? is_on : is_off"
   >
@@ -29,6 +30,9 @@ export default {
     };
   },
   methods: {
+    log() {
+      console.log('롱클릭됨');
+    },
     toggle() {
       this.state = !this.state;
     },
@@ -40,7 +44,21 @@ export default {
         .then((res) => {
           let success = res.data.success;
           if (success) {
-            this.state = res.data.device;
+            this.state = res.data.device[0];
+          } else {
+            this.$buefy.dialog.confirm({
+              message: '연결이 끊긴 기기입니다 삭제하시겠습니까?',
+              onConfirm: () => {
+                this.$axios
+                  .delete(
+                    `http://localhost:80/device/regist?name=${this.device.device_name}`,
+                  )
+                  .then(() => {
+                    this.$parent.refresh();
+                    this.$buefy.toast.open('기기삭제완료');
+                  });
+              },
+            });
           }
         })
         .catch((res) => {

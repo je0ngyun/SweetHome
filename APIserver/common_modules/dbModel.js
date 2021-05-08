@@ -28,6 +28,15 @@ self.setDeviceLog = async function (info, state) {
     .then();
 };
 
+self.delDevice = async function (info) {
+  await db('device')
+    .where({
+      device_name: info.name,
+    })
+    .delete()
+    .then();
+};
+
 self.getDevices = async function (info) {
   try {
     let dbResult = await db('device')

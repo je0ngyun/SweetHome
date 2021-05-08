@@ -1,13 +1,19 @@
 import Vue from 'vue';
 import App from './App.vue';
+
 import axios from 'axios';
 import store from './store/store';
+
 import Buefy from 'buefy';
 import 'buefy/dist/buefy.css';
+
+import { longClickDirective } from 'vue-long-click';
+const longClickInstance = longClickDirective({ delay: 400, interval: 100000 });
+Vue.directive('longclick', longClickInstance);
+
 import { library as faLibrary } from '@fortawesome/fontawesome-svg-core';
 import { faHome, faSearch, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
 faLibrary.add(faHome, faSearch, faRedoAlt);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
