@@ -1,7 +1,11 @@
 #include <LittleFS.h>
 
+<<<<<<< HEAD
+const int way = 2;
+=======
 const String category = "1way Switch";
 const int way = 1;
+>>>>>>> 2fa76fc84998b88078626ab2b60af4bd445ba09a
 bool state[way] = { false, };
 const int RELAY_PIN = 14;
 
