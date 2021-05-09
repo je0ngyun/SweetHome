@@ -60,10 +60,11 @@ router.get(
   '/action',
   verifyToken,
   asyncHandler(async (req, res, next) => {
-    const host = await db.getDeviceHost(req.query);
+    const name = await db.getDeviceName(req.query);
+    const host = req.query.host;
     const macRes = await reqToMac.req(host, 80, 'action', req.query);
     if (macRes.data != 'disconnect') {
-      req.query.host = host;
+      req.query.name = name;
       await db.setDeviceLog(req.query, macRes.data);
       res.status(200).json({
         success: true,

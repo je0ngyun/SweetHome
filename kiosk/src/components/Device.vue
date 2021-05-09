@@ -1,7 +1,7 @@
 <template>
   <div
     @click="action"
-    v-longclick="() => log()"
+    v-longclick="() => modalOpen()"
     class="device columns is-multiline card is-inline-block m-1"
     :style="state ? is_on : is_off"
   >
@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import LogModal from './LogModal';
+const Modal = LogModal;
 export default {
   name: 'Device',
   props: {
@@ -19,6 +21,7 @@ export default {
   data: function() {
     return {
       state: false,
+      modalActive: false,
       is_on: {
         background: '#f9de6e',
         transition: 'all ease 1s 0s',
@@ -27,11 +30,25 @@ export default {
         background: '#ffffff',
         transition: 'all ease 1s 0s',
       },
+      formProps: {
+        email: 'evan@you.com',
+        password: 'testing',
+      },
     };
   },
   methods: {
-    log() {
-      console.log('롱클릭됨');
+    close() {
+      this.modalActive = false;
+    },
+    modalOpen() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: Modal,
+        hasModalCard: true,
+        customClass: 'custom-class custom-class-2',
+        trapFocus: true,
+        fullScreen: true,
+      });
     },
     toggle() {
       this.state = !this.state;
@@ -39,7 +56,7 @@ export default {
     action() {
       this.$axios
         .get(
-          `http://localhost:80/device/action?name=${this.device.device_name}&switch=0`,
+          `http://localhost:80/device/action?host=${this.device.device_host}&switch=0`,
         )
         .then((res) => {
           let success = res.data.success;
@@ -51,7 +68,7 @@ export default {
               onConfirm: () => {
                 this.$axios
                   .delete(
-                    `http://localhost:80/device/regist?name=${this.device.device_name}`,
+                    `http://localhost:80/device/regist?host=${this.device.device_host}`,
                   )
                   .then(() => {
                     this.$parent.refresh();

@@ -21,13 +21,13 @@ export default {
     };
   },
   created() {
-    /*this.$socket.on('code', (code) => {
+    this.$socket.on('code', (code) => {
       this.$buefy.dialog.alert({
         title: '인증번호확인',
         message: code,
         confirmText: '확인',
       });
-    });*/
+    });
     //빌드시 주석제거 soket.io 이벤트
   },
 };

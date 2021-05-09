@@ -17,9 +17,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 faLibrary.add(faHome, faSearch, faRedoAlt);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
-/*import io from 'socket.io-client';
+import io from 'socket.io-client';
 const socket = io('http://localhost:80');
-Vue.prototype.$socket = socket;*/
+Vue.prototype.$socket = socket;
 //socket.io 부분 병합시 주석제거
 const env = require('./assets/env/env.json');
 Vue.prototype.$axios = axios;

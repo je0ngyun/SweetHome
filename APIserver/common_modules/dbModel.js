@@ -31,7 +31,7 @@ self.setDeviceLog = async function (info, state) {
 self.delDevice = async function (info) {
   await db('device')
     .where({
-      device_name: info.name,
+      device_host: info.host,
     })
     .delete()
     .then();
@@ -69,13 +69,13 @@ self.getDeviceLogAll = async function (info) {
   return dbResult;
 };
 
-self.getDeviceHost = async function (info) {
+self.getDeviceName = async function (info) {
   let dbResult = await db('device')
-    .select('device_host')
-    .where({ device_name: info.name })
+    .select('device_name')
+    .where({ device_host: info.host })
     .first()
     .then();
-  return dbResult.device_host;
+  return dbResult.device_name;
 };
 
 module.exports = self;

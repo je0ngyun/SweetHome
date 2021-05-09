@@ -1,36 +1,31 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from 'axios';
 Vue.use(Vuex);
-const env = require('../assets/env/env.json');
+const publicIp = require('public-ip');
+
 export default new Vuex.Store({
   state: {
-    devices: [],
+    ip: null,
   },
   mutations: {
-    successGetDevices(state, payload) {
-      state.devices = payload.devices;
+    successGetIp(state, payload) {
+      console.log(payload);
+      state.ip = payload + '';
     },
-    failGetDevices() {
-      console.log('서버연결 실패');
+    failGetIp() {
+      console.log('Ip 불러오기 실패');
     },
   },
   actions: {
-    initDevices({ commit }) {
-      axios
-        .get(`http://localhost:80/device/regist?serial=${env.serial}`)
-        .then((res) => {
-          commit('successGetDevices', res.data);
+    getIp({ commit }) {
+      publicIp
+        .v4()
+        .then((ip) => {
+          commit('successGetIp', ip);
         })
-        .catch((res) => {
-          commit('failGetDevices', res);
+        .catch(() => {
+          commit('failGetIp');
         });
     },
   },
-  getters: {
-    devices(state) {
-      return state.devices;
-    },
-  },
-  modules: {},
 });
