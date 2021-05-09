@@ -22,13 +22,13 @@ void setup() {
   pinMode(DIR_PIN2, OUTPUT);
 }
 
-void open() {
+void unlock() {
   unsigned long start = millis();
   unsigned long now = start;
   digitalWrite(DIR_PIN1, HIGH);
   digitalWrite(DIR_PIN2, LOW);
-  analogWrite(SPEED_PIN, 255);
-  while (now - start <= 1500) {
+  analogWrite(SPEED_PIN, 1023);
+  while (now - start <= 500) {
     now = millis();
   }
   stop();
@@ -36,17 +36,18 @@ void open() {
 }
 
 void stop() {
-  analogWrite(SPEED_PIN, 0);
+  digitalWrite(DIR_PIN1, LOW);
+  digitalWrite(DIR_PIN2, LOW);
   is_stop = true;
 }
 
-void close() {
+void lock() {
   unsigned long start = millis();
   unsigned long now = start;
   digitalWrite(DIR_PIN1, LOW);
   digitalWrite(DIR_PIN2, HIGH);
-  analogWrite(SPEED_PIN, 255);
-  while (now - start <= 1800) {
+  analogWrite(SPEED_PIN, 1023);
+  while (now - start <= 500) {
     now = millis();
   }
   stop();
@@ -56,9 +57,9 @@ void close() {
 void loop() {
   if (state[0] && !is_stop) {
     Serial.println("열림");
-    close();
+    lock();
   } else if (!state[0] && !is_stop) {
     Serial.println("닫힘 ");
-    open();
+    unlock();
   }
 }

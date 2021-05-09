@@ -6,10 +6,11 @@
 AsyncWebServer server(80);
 
 void serverSetup() {
+  server.serveStatic("/assets", LittleFS, "/assets");
   server.serveStatic("/script", LittleFS, "/script");
   server.serveStatic("/css", LittleFS, "/css");
-  server.serveStatic("/", LittleFS, "/ap/").setDefaultFile("index.html").setFilter(ON_AP_FILTER);
-  server.serveStatic("/", LittleFS, "/www/").setDefaultFile("index.html").setFilter(ON_STA_FILTER);
+  server.serveStatic("/views", LittleFS, "/views");
+  server.serveStatic("/", LittleFS, "/").setDefaultFile("index.html");
   
   server.on("/scan", HTTP_GET, [](AsyncWebServerRequest *request){
     String json = "[";

@@ -6,7 +6,7 @@ const Home = {
 				<v-row align="center" justify="center">
 					<template v-for="(state, index) in states">
 						<v-col :key="index" align-self="center" cols="auto">
-							<v-btn width="64" height="64" elevation="2">
+							<v-btn width="64" height="64" elevation="2" @click="onClick(index)">
 								<v-icon :color="state ? 'green' : 'red'" large>power_settings_new</v-icon>
 							</v-btn>
 						</v-col>
@@ -17,6 +17,45 @@ const Home = {
 	</v-container>
 	`,
 	data: () => ({
-		states: [false]
-	})
+		polling: null,
+		states: []
+	}),
+
+	created () {
+		this.onScanStates()
+		
+		this.polling = setInterval(() => {
+			this.onScanStates()
+		}, 500)
+	},
+
+	beforeDestroy () {
+        clearInterval(this.polling)
+    },
+
+	methods: {
+		onClick (index) {
+			axios.get('/action', {
+			  params: {
+				switch: index
+			  }
+			})
+			.then(res => {
+			  this.states = res.data.states
+			})
+			.catch(err => {
+			  console.log(err)
+			})
+		},
+
+		onScanStates () {
+			axios.get('/state')
+			  .then(res => {
+				this.states = res.data.states
+			  })
+			  .catch(err => {
+				console.log(err)
+			})
+		},
+	}
 }
