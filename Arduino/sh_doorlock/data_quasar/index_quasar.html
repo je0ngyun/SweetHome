@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link href="css/css.css" rel="stylesheet" type="text/css" />
+    <link href="css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/animate.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/quasar.min.css" rel="stylesheet" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  </head>
+
+  <body>
+    <div id="q-app">
+      <q-layout view="hHh lpR fFf">
+        <q-page-container>
+          <q-page>
+            <div class="window-height window-width row justify-center items-center">
+              <div class="q-gutter-md">
+                <q-btn padding="lg" icon="power_settings_new" v-for="(state, index) in states" :key="`sm-${index}`" @click="onClickPowerBtn(index)" text-color="state" />
+              </div>
+            </div>
+            <q-page-sticky position="bottom-right" :offset="[16, 16]">
+              <q-fab color="purple" icon="keyboard_arrow_up" direction="up">
+                <q-fab-action @click="onClick" color="primary" icon="restart_alt"></q-fab-action>
+                <q-fab-action @click="onClick" color="primary" icon="edit"></q-fab-action>
+                <q-fab-action @click="onClick" color="primary" icon="wifi"></q-fab-action>
+              </q-fab>
+            </q-page-sticky>
+          </q-page>
+        </q-page-container>
+      </q-layout>
+    </div>
+    
+    <script src="script/vue.min.js"></script>
+    <script src="script/axios.min.js"></script>
+    <script src="script/quasar.umd.min.js"></script>
+    <script src="script/ko-kr.umd.min.js"></script>
+    
+    <script>
+      Quasar.lang.set(Quasar.lang.koKr)
+
+      new Vue({
+        el: '#q-app',
+        data: function () {
+          return {
+            states: [false, false]
+          }
+        },
+        methods: {
+
+          onClick () {
+
+          },
+          onClickPowerBtn(index) {
+            this.states[index] = !this.states[index]
+          },
+        },
+      })
+    </script>
+  </body>
+</html>

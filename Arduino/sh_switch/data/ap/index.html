@@ -35,7 +35,7 @@
           <b-modal id="modal" v-model="modal" centered="true" :title="title + '의 비밀번호 입력'" @ok="handleOk" @cancel="reset" @hidden="reset">
             <b-form ref="form" @submit.stop.prevent="onSubmit">
               <b-form-group label="비밀번호" label-for="intput-password" invalid-feedback="비밀번호를 입력해주세요." :state="passwordState">
-                <b-form-input type="password" id="intput-password" v-model="password" :state="passwordState" required />
+                <b-form-input type="password" id="intput-password" v-model="password" :state="passwordState" required>
               </b-form-group>
             </b-form>
             <template #modal-footer="{ ok, cancel }">
@@ -58,7 +58,7 @@
 
       created () {
         this.onScan()
-        
+        this.onScan()
         this.polling = setInterval(() => {
           this.onScan()
         }, 5000)
