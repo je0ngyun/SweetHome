@@ -10,6 +10,11 @@ const Home = {
 								<v-icon :color="state ? 'green' : 'red'" large>power_settings_new</v-icon>
 							</v-btn>
 						</v-col>
+						<v-responsive
+						v-if="index % 2 === 1"
+						:key="'width'-index"
+						width="100%"
+					></v-responsive>
 					</template>
 				</v-row>
 			</v-layout>
@@ -18,7 +23,7 @@ const Home = {
 	`,
 	data: () => ({
 		polling: null,
-		states: []
+		states: [false, false, false, false, false, false, false, false]
 	}),
 
 	created () {

@@ -22,7 +22,7 @@
             </v-icon>
           </v-btn>
         </template>
-        <v-btn fab dark small color="green">
+        <v-btn fab dark small color="green" @click="onClickReset">
           <v-icon>restart_alt</v-icon>
         </v-btn>
         <v-btn fab dark small color="indigo">
@@ -98,7 +98,19 @@
         
         data: () => ({
           fab: false,
-        })
+        }),
+
+        methods: {
+          onClickReset () {
+            axios.get('/reset')
+            .then(res => {
+              
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          }
+        }
     })
   </script>
 
