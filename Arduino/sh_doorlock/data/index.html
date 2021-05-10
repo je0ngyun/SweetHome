@@ -73,7 +73,22 @@
     router.push('/')
 
     const vuetify = new Vuetify({
-      
+      icons: {
+        values: {
+          wifi3: {
+            name: 'signal_wifi_3_bar',
+            component: SignalWiFi3
+          },
+          wifi2: {
+            name: 'signal_wifi_2_bar',
+            component: SignalWiFi2
+          },
+          wifi1: {
+            name: 'signal_wifi_1_bar',
+            component: SignalWiFi1
+          }
+        }
+      }
     })
 
     new Vue({
