@@ -104,5 +104,9 @@ void serverSetup() {
   });
   server.addHandler(handler);
 
+  server.on("/*", HTTP_ANY, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/index.html");
+  });
+
   server.begin();
 }
