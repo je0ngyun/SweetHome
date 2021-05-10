@@ -23,7 +23,7 @@ const Home = {
 	`,
 	data: () => ({
 		polling: null,
-		states: [false, false, false, false, false, false, false, false]
+		states: []
 	}),
 
 	created () {
