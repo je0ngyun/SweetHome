@@ -11,7 +11,8 @@
 
 <script>
 import LogModal from './LogModal';
-const Modal = LogModal;
+const logModal = LogModal;
+
 export default {
   name: 'Device',
   props: {
@@ -30,10 +31,6 @@ export default {
         background: '#ffffff',
         transition: 'all ease 1s 0s',
       },
-      formProps: {
-        email: 'evan@you.com',
-        password: 'testing',
-      },
     };
   },
   methods: {
@@ -43,11 +40,12 @@ export default {
     modalOpen() {
       this.$buefy.modal.open({
         parent: this,
-        component: Modal,
+        component: logModal,
         hasModalCard: true,
         customClass: 'custom-class custom-class-2',
         trapFocus: true,
         fullScreen: true,
+        props: { device: this.device },
       });
     },
     toggle() {
