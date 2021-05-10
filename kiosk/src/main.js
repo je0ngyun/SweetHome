@@ -18,12 +18,14 @@ faLibrary.add(faHome, faSearch, faRedoAlt);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 import io from 'socket.io-client';
-const socket = io('http://localhost:80');
+const socket = io('http://localhost:8080');
 Vue.prototype.$socket = socket;
 //socket.io 부분 병합시 주석제거
+
 const env = require('./assets/env/env.json');
 Vue.prototype.$axios = axios;
 Vue.prototype.$serial = env.serial;
+Vue.prototype.$defaultURL = env.defaultURL;
 Vue.use(Buefy);
 Vue.config.productionTip = false;
 

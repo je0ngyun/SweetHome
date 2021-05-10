@@ -32,7 +32,9 @@ export default {
   },
   created() {
     this.$axios
-      .get(`http://localhost:80/device/regist?serial=${env.serial}`)
+      .get(`${this.$defaultURL}/device/regist`, {
+        params: { serial: env.serial },
+      })
       .then((res) => {
         this.devices = res.data.devices;
         this.$buefy.toast.open({
@@ -51,7 +53,9 @@ export default {
   methods: {
     refresh() {
       this.$axios
-        .get(`http://localhost:80/device/regist?serial=${env.serial}`)
+        .get(`${this.$defaultURL}/device/regist`, {
+          params: { serial: env.serial },
+        })
         .then((res) => {
           this.devices = res.data.devices;
           this.$buefy.toast.open({

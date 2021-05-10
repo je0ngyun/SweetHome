@@ -53,33 +53,37 @@ export default {
     toggle() {
       this.state = !this.state;
     },
+    delDialog() {
+      this.$buefy.dialog.confirm({
+        message: '연결이 불안정한 기기입니다 삭제하시겠습니까?',
+        onConfirm: () => {
+          this.$axios
+            .delete(`${this.$defaultURL}/device/regist`, {
+              params: { host: this.device.device_host },
+            })
+            .then(() => {
+              this.$parent.refresh();
+              this.$buefy.toast.open('기기삭제완료');
+            });
+        },
+      });
+    },
     action() {
       this.$axios
-        .get(
-          `http://localhost:80/device/action?host=${this.device.device_host}&switch=0`,
-        )
+        .get(`${this.$defaultURL}/device/action`, {
+          params: { host: this.device.device_host, switch: 0 },
+          timeout: 4000,
+        })
         .then((res) => {
           let success = res.data.success;
           if (success) {
-            this.state = res.data.device[0];
+            this.state = res.data.device.states[0];
           } else {
-            this.$buefy.dialog.confirm({
-              message: '연결이 끊긴 기기입니다 삭제하시겠습니까?',
-              onConfirm: () => {
-                this.$axios
-                  .delete(
-                    `http://localhost:80/device/regist?host=${this.device.device_host}`,
-                  )
-                  .then(() => {
-                    this.$parent.refresh();
-                    this.$buefy.toast.open('기기삭제완료');
-                  });
-              },
-            });
+            this.delDialog();
           }
         })
-        .catch((res) => {
-          console.log(res);
+        .catch(() => {
+          this.delDialog();
         });
     },
   },
