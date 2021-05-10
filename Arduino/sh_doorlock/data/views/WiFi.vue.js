@@ -52,12 +52,12 @@ const WiFi = {
       </v-btn>
     </v-toolbar>
     <v-card-title />
-          <v-container>
-            <v-form @submit.prevent="onSubmit">
-              <v-text-field v-model="password" outlined label="비밀번호" prepend-inner-icon="lock" :append-icon="passwordShow ? 'visibility' : 'visibility_off'" :type="passwordShow ? 'text' : 'password'" @click:append="passwordShow = !passwordShow" required />
-              <v-btn rounded color="primary" dark>연결</v-btn>
-            </v-form>
-          </v-container>
+      <v-container>
+        <v-form @submit.prevent="onSubmit">
+          <v-text-field v-model="password" outlined label="비밀번호" prepend-inner-icon="lock" :append-icon="passwordShow ? 'visibility' : 'visibility_off'" :type="passwordShow ? 'text' : 'password'" @click:append="passwordShow = !passwordShow" required />
+          <v-btn rounded color="primary" dark>연결</v-btn>
+        </v-form>
+      </v-container>
       </v-card>
     </v-dialog>
   </v-container>
@@ -70,23 +70,7 @@ const WiFi = {
     ssid: '',
     password: '',
     passwordShow: false,
-    networks: [
-      {
-        rssi: "-32",
-        ssid: "KT",
-
-      },
-      {
-        rssi: "-88",
-        ssid: "SK",
-
-      },
-      {
-        rssi: "-132",
-        ssid: "LG",
-
-      }
-    ]
+    networks: []
   }),
 
   created () {
