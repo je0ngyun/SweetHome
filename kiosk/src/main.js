@@ -7,14 +7,21 @@ import store from './store/store';
 import Buefy from 'buefy';
 import 'buefy/dist/buefy.css';
 
+import Moment from 'moment';
+
 import { longClickDirective } from 'vue-long-click';
 const longClickInstance = longClickDirective({ delay: 400, interval: 100000 });
 Vue.directive('longclick', longClickInstance);
 
 import { library as faLibrary } from '@fortawesome/fontawesome-svg-core';
-import { faHome, faSearch, faRedoAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTrash,
+  faInfoCircle,
+  faRedoAlt,
+  faPowerOff,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-faLibrary.add(faHome, faSearch, faRedoAlt);
+faLibrary.add(faPowerOff, faTrash, faInfoCircle, faRedoAlt);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 import io from 'socket.io-client';
@@ -23,6 +30,8 @@ Vue.prototype.$socket = socket;
 //socket.io 부분 병합시 주석제거
 
 const env = require('./assets/env/env.json');
+
+Vue.prototype.$moment = Moment;
 Vue.prototype.$axios = axios;
 Vue.prototype.$serial = env.serial;
 Vue.prototype.$defaultURL = env.defaultURL;

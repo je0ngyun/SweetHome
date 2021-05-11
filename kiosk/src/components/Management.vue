@@ -1,9 +1,9 @@
 <template>
   <div class="pt-3 pl-6">
     <div class="">
-      <b-button @click="refresh" type="is-warning is-shadow ml-5">
-        <font-awesome-icon icon="redo-alt" class="mr-2" />
-        <span>기기불러오기</span>
+      <b-button @click="refresh" size="is-small" class="sub-bg ml-5">
+        <font-awesome-icon icon="redo-alt" class="mr-2 font-light" />
+        <span class="font-light">기기불러오기</span>
       </b-button>
     </div>
     <div class="columns is-multiline mt-3 ml-3 has-text-centered">

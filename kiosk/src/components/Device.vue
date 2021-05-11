@@ -2,10 +2,17 @@
   <div
     @click="action"
     v-longclick="() => modalOpen()"
-    class="device columns is-multiline card is-inline-block m-1"
+    class="device card m-1 is-flex is-flex-direction-column"
     :style="state ? is_on : is_off"
   >
-    <div class="is-12">{{ device.device_name }}</div>
+    <div class="has-text-centered">
+      <font-awesome-icon
+        icon="power-off"
+        size="2x"
+        :style="state ? is_on_icon : is_off_icon"
+      />
+    </div>
+    <div class="mt-a font-s">{{ device.device_name }}</div>
   </div>
 </template>
 
@@ -29,6 +36,14 @@ export default {
       },
       is_off: {
         background: '#ffffff',
+        transition: 'all ease 1s 0s',
+      },
+      is_on_icon: {
+        color: '#4aba68',
+        transition: 'all ease 1s 0s',
+      },
+      is_off_icon: {
+        color: '#ececec',
         transition: 'all ease 1s 0s',
       },
     };

@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="columns p-5">
-    <Menu class="menu column is-3 card ml-1" />
-    <Management class="manage column is-9 card ml-4" />
+    <Menu class="menu column is-3 card ml-1 sub-bg" />
+    <Management class="manage column is-9 card ml-4 main-bg" />
   </div>
 </template>
 
@@ -48,12 +48,27 @@ body {
   height: 100%;
 }
 .menu {
-  background: #397daa !important;
-  color: #ffffff !important;
   height: 106%;
 }
 .manage {
-  background: #ececec !important;
   height: 106%;
+}
+.main-bg {
+  background: #ececec !important;
+}
+.sub-bg {
+  background: #397daa !important;
+}
+.mb-a {
+  margin-bottom: auto;
+}
+.mt-a {
+  margin-top: auto;
+}
+.font-s {
+  font-size: small;
+}
+.font-light {
+  color: #ececec;
 }
 </style>

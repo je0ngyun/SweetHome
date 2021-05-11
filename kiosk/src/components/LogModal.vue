@@ -1,7 +1,7 @@
 <template>
   <div class="modal-card" style="width: auto">
     <header class="modal-card-head">
-      <p class="modal-card-title">기기로그보기</p>
+      <p class="modal-card-title">기기로그</p>
     </header>
     <section class="modal-card-body">
       <b-table :data="logs">
@@ -28,7 +28,7 @@
       </b-table>
     </section>
     <footer class="modal-card-foot">
-      <b-button label="닫기" @click="$parent.close()" />
+      <b-button type="is-primary" label="닫기" @click="$parent.close()" />
     </footer>
   </div>
 </template>
