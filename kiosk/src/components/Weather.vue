@@ -1,9 +1,5 @@
 <template>
-  <div>
-    {{ this.lat }}
-    <br />
-    {{ this.lng }}
-  </div>
+  <div>날씨</div>
 </template>
 
 <script>
@@ -12,17 +8,26 @@ export default {
   data: function() {
     return {
       lat: undefined,
-      lng: undefined,
+      lon: undefined,
+      isLoadding: true,
+      isError: false,
     };
   },
   created() {
     getCurrentPositionPromise()
       .then((position) => {
-        console.log(position.coords);
         this.lat = position.coords.latitude;
-        this.lng = position.coords.longitude;
+        this.lon = position.coords.longitude;
+        this.$axios
+          .get(`${this.$weatherURL}`, {
+            params: { lat: this.lat, lon: this.lon, appid: this.$apiKey },
+          })
+          .then((res) => {
+            console.log(res.data);
+          })
+          .catch(() => console.log('날씨오류'));
       })
-      .catch((e) => console.log(e));
+      .catch(() => console.log('위도경도오류'));
   },
 };
 </script>

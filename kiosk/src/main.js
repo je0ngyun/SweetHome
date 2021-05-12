@@ -21,20 +21,22 @@ import {
   faPowerOff,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+const env = require('./assets/env/env.json');
+
 faLibrary.add(faPowerOff, faTrash, faInfoCircle, faRedoAlt);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 import io from 'socket.io-client';
-const socket = io('http://localhost:8080');
+const socket = io(`${env.defaultURL}`);
 Vue.prototype.$socket = socket;
-//socket.io 부분 병합시 주석제거
-
-const env = require('./assets/env/env.json');
 
 Vue.prototype.$moment = Moment;
 Vue.prototype.$axios = axios;
 Vue.prototype.$serial = env.serial;
 Vue.prototype.$defaultURL = env.defaultURL;
+Vue.prototype.$weatherURL = env.weatherURL;
+Vue.prototype.$apiKey = env.apiKey;
 Vue.use(Buefy);
 Vue.config.productionTip = false;
 

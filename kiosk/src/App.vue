@@ -28,7 +28,6 @@ export default {
         confirmText: '확인',
       });
     });
-    //빌드시 주석제거 soket.io 이벤트
   },
 };
 </script>
