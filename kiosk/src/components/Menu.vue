@@ -8,7 +8,7 @@
       </div>
     </div>
     <Clock class="card mt-1 mb-1"></Clock>
-    <div class="p-6 card mt-1 mb-1">날씨정보</div>
+    <Weather class="card mt-1 mb-1"></Weather>
     <div class="is-flex is-flex-direction-column mt-a">
       <b-button size="is-small" class="mt-1 mb-1" type="is-warning"
         ><font-awesome-icon icon="info-circle" class="mr-4" />
@@ -30,11 +30,13 @@
 
 <script>
 import Clock from './Clock';
+import Weather from './Weather';
 
 const publicIp = require('public-ip');
 export default {
   components: {
     Clock,
+    Weather,
   },
   data: function() {
     return {
