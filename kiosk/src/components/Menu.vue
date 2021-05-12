@@ -1,6 +1,6 @@
 <template>
   <div class="is-flex is-flex-direction-column has-text-centered">
-    <div class="p-5 mb-1 card">logo</div>
+    <div class="mt-1 mb-1"><img src="../assets/logo.svg" alt="" /></div>
     <div>
       <div class="card p-1 mt-1 mb-1">
         <div class="font-s">나의 IP 주소</div>
@@ -30,6 +30,7 @@
 
 <script>
 import Clock from './Clock';
+
 const publicIp = require('public-ip');
 export default {
   components: {
