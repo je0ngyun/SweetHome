@@ -1,7 +1,9 @@
 <template>
   <div class="is-flex is-flex-direction-column has-text-centered">
     <div class="is-flex">
-      <div class="mr-a mt-a">{{ this.weather.icon }}</div>
+      <div class="ml-4 mt-a">
+        <font-awesome-icon :icon="['fas', this.weatherIcon]" size="2x" />
+      </div>
       <div class="ml-a">
         <span class="font-xl">{{ this.weather.temp }}</span>
         <span>℃</span>
@@ -28,12 +30,16 @@ export default {
         area: undefined,
         main: undefined,
         desc: undefined,
-        icon: undefined,
+        code: undefined,
       },
+      weatherIcon: 'spinner',
     };
   },
   created() {
-    getCurrentPositionPromise()
+    const options = {
+      timeout: 5000,
+    };
+    getCurrentPositionPromise(options)
       .then((position) => {
         this.lat = position.coords.latitude;
         this.lon = position.coords.longitude;
@@ -49,9 +55,26 @@ export default {
         this.weather.area = res.data.name;
         this.weather.main = res.data.weather[0].main;
         this.weather.desc = res.data.weather[0].description;
-        this.weather.icon = res.data.weather[0].icon;
+        this.weather.code = res.data.weather[0].icon.substring(0, 2);
+        this.decode();
       })
       .catch(() => console.log('날씨오류'));
+  },
+  methods: {
+    decode() {
+      let weatherIcon = {
+        '01': 'sun',
+        '02': 'cloud-sun',
+        '03': 'cloud',
+        '04': 'cloud-meatball',
+        '09': 'cloud-sun-rain',
+        '10': 'cloud-showers-heavy',
+        '11': 'poo-storm',
+        '13': 'snowflake',
+        '50': 'smog',
+      };
+      this.weatherIcon = weatherIcon[this.weather.code];
+    },
   },
 };
 </script>

@@ -12,16 +12,41 @@ import {
   faInfoCircle,
   faRedoAlt,
   faPowerOff,
+  faSun,
+  faCloudSun,
+  faCloud,
+  faCloudMeatball,
+  faCloudSunRain,
+  faCloudShowersHeavy,
+  faPooStorm,
+  faSnowflake,
+  faSmog,
+  faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import io from 'socket.io-client';
 const env = require('./assets/env/env.json');
 
+faLibrary.add(
+  faTrash,
+  faInfoCircle,
+  faRedoAlt,
+  faPowerOff,
+  faSun,
+  faCloudSun,
+  faCloud,
+  faCloudMeatball,
+  faCloudSunRain,
+  faCloudShowersHeavy,
+  faPooStorm,
+  faSnowflake,
+  faSmog,
+  faSpinner,
+);
+Vue.component('font-awesome-icon', FontAwesomeIcon);
+
 const longClickInstance = longClickDirective({ delay: 400, interval: 100000 });
 Vue.directive('longclick', longClickInstance);
-
-faLibrary.add(faPowerOff, faTrash, faInfoCircle, faRedoAlt);
-Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 const socket = io(`${env.defaultURL}`);
 Vue.prototype.$socket = socket;
