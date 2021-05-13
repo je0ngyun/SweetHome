@@ -85,7 +85,7 @@ export default {
       this.$axios
         .get(`${this.$defaultURL}/device/action`, {
           params: { host: this.device.device_host, switch: 0 },
-          timeout: 4000,
+          timeout: 3000,
         })
         .then((res) => {
           let success = res.data.success;

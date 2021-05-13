@@ -8,7 +8,7 @@
       </div>
     </div>
     <Clock class="card mt-1 mb-1"></Clock>
-    <Weather class="card mt-1 mb-1"></Weather>
+    <Weather class="card p-3 mt-1 mb-1"></Weather>
     <div class="is-flex is-flex-direction-column mt-a">
       <b-button size="is-small" class="mt-1 mb-1" type="is-warning"
         ><font-awesome-icon icon="info-circle" class="mr-4" />

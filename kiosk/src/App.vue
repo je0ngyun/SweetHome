@@ -64,8 +64,20 @@ body {
 .mt-a {
   margin-top: auto;
 }
+.ml-a {
+  margin-left: auto;
+}
+.mr-a {
+  margin-right: auto;
+}
 .font-s {
   font-size: small;
+}
+.font-xs {
+  font-size: x-small;
+}
+.font-xl {
+  font-size: x-large;
 }
 .font-light {
   color: #ececec;

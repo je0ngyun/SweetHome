@@ -1,18 +1,11 @@
 import Vue from 'vue';
 import App from './App.vue';
-
 import axios from 'axios';
 import store from './store/store';
-
 import Buefy from 'buefy';
 import 'buefy/dist/buefy.css';
-
 import Moment from 'moment';
-
 import { longClickDirective } from 'vue-long-click';
-const longClickInstance = longClickDirective({ delay: 400, interval: 100000 });
-Vue.directive('longclick', longClickInstance);
-
 import { library as faLibrary } from '@fortawesome/fontawesome-svg-core';
 import {
   faTrash,
@@ -21,13 +14,15 @@ import {
   faPowerOff,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
+import io from 'socket.io-client';
 const env = require('./assets/env/env.json');
+
+const longClickInstance = longClickDirective({ delay: 400, interval: 100000 });
+Vue.directive('longclick', longClickInstance);
 
 faLibrary.add(faPowerOff, faTrash, faInfoCircle, faRedoAlt);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
-import io from 'socket.io-client';
 const socket = io(`${env.defaultURL}`);
 Vue.prototype.$socket = socket;
 
