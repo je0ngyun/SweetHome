@@ -82,4 +82,20 @@ body {
 .font-light {
   color: #ececec;
 }
+.loading {
+  width: 30px;
+  height: 30px;
+  border: 5px solid rgba(24, 2, 2, 0.1);
+  border-right: 5px solid orange;
+  border-radius: 50%;
+  animation: spinner 1s linear infinite;
+}
+@keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>

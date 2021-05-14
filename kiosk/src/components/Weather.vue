@@ -1,30 +1,41 @@
 <template>
-  <div class="is-flex is-flex-direction-column has-text-centered">
-    <div class="is-flex">
-      <div class="ml-4 mt-a">
-        <font-awesome-icon :icon="['fas', this.weatherIcon]" size="2x" />
-      </div>
-      <div class="ml-a">
-        <span class="font-xl">{{ this.weather.temp }}</span>
-        <span>℃</span>
-      </div>
+  <div>
+    <div
+      v-if="this.isLoading"
+      class="is-flex is-flex-direction-column has-text-centered 
+      is-justify-content-center is-align-items-center"
+    >
+      <div class="loading mb-3"></div>
+      <div class="font-s">loadding..</div>
     </div>
-    <div class="is-flex">
-      <div class="mr-a mt-a font-xs">{{ this.weather.desc }}</div>
-      <div class="ml-a mt-a">{{ this.weather.area }}</div>
+    <div
+      v-if="!this.isLoading"
+      class="is-flex is-flex-direction-column has-text-centered"
+    >
+      <div class="is-flex">
+        <div class="ml-4 mt-a">
+          <font-awesome-icon :icon="['fas', this.weatherIcon]" size="2x" />
+        </div>
+        <div class="ml-a">
+          <span class="font-xl">{{ this.weather.temp }}</span>
+          <span>℃</span>
+        </div>
+      </div>
+      <div class="is-flex">
+        <div class="mr-a mt-a font-xs">{{ this.weather.desc }}</div>
+        <div class="ml-a mt-a">{{ this.weather.area }}</div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-const { getCurrentPositionPromise } = require('geolocation-promise');
 export default {
   data: function() {
     return {
       lat: undefined,
       lon: undefined,
-      isLoadding: true,
-      isError: false,
+      isLoading: true,
       weather: {
         temp: undefined,
         area: undefined,
@@ -36,16 +47,6 @@ export default {
     };
   },
   created() {
-    const options = {
-      timeout: 5000,
-    };
-    getCurrentPositionPromise(options)
-      .then((position) => {
-        this.lat = position.coords.latitude;
-        this.lon = position.coords.longitude;
-        console.log(`${this.lat} ${this.lon}`);
-      })
-      .catch((ex) => console.log(ex));
     this.$axios
       .get(`${this.$weatherURL}`, {
         params: { lat: 35.806559, lon: 127.1103191, appid: this.$apiKey },
@@ -57,6 +58,7 @@ export default {
         this.weather.desc = res.data.weather[0].description;
         this.weather.code = res.data.weather[0].icon.substring(0, 2);
         this.decode();
+        this.isLoading = false;
       })
       .catch(() => console.log('날씨오류'));
   },
@@ -79,4 +81,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>

@@ -3,8 +3,18 @@
     <div class="mt-1 mb-1"><img src="../assets/logo.svg" alt="" /></div>
     <div>
       <div class="card p-1 mt-1 mb-1">
-        <div class="font-s">나의 IP 주소</div>
-        <div>{{ ip }}</div>
+        <div
+          v-if="this.isLoading"
+          class="is-flex is-flex-direction-column has-text-centered 
+      is-justify-content-center is-align-items-center"
+        >
+          <div class="loading mb-3"></div>
+          <div class="font-s">loadding..</div>
+        </div>
+        <div v-if="!this.isLoading">
+          <div class="font-s">나의 IP 주소</div>
+          <div>{{ ip }}</div>
+        </div>
       </div>
     </div>
     <Clock class="card mt-1 mb-1"></Clock>
@@ -41,11 +51,13 @@ export default {
   data: function() {
     return {
       ip: null,
+      isLoading: true,
     };
   },
   created() {
     publicIp.v4().then((ip) => {
       this.ip = ip;
+      this.isLoading = false;
     });
   },
 };
