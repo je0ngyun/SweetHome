@@ -13,7 +13,7 @@ var udpServer = require('../common_modules/udpServer');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '80');
+var port = normalizePort(process.env.PORT || '8080');
 app.set('port', port);
 
 /**
@@ -24,7 +24,7 @@ app.set('port', port);
 var server = http.createServer(app);
 app.io.attach(server, {
   cors: {
-    origin: 'http://localhost:80',
+    origin: 'http://localhost:8081',
     methods: ['GET', 'POST'],
     transports: ['websocket', 'polling'],
     credentials: true,
@@ -100,7 +100,7 @@ function onListening() {
 /*udp test*/
 /*function test() {
   var PORT = 4210;
-  var HOST = '101.1.14.131';
+  var HOST = '192.168.0.24';
 
   var dgram = require('dgram');
   var message = 'light-09';
@@ -112,4 +112,4 @@ function onListening() {
     client.close();
   });
 }
-setTimeout(test, 1500);*/
+setTimeout(test, 5000);*/

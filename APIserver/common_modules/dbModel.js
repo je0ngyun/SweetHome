@@ -22,7 +22,7 @@ self.setDeviceLog = async function (info, state) {
     .insert({
       device_host: info.host,
       device_name: info.name,
-      state: `[${state}]`,
+      state: `${state}`,
       api_serial: env.serial,
     })
     .then();
@@ -32,6 +32,15 @@ self.delDevice = async function (info) {
   await db('device')
     .where({
       device_host: info.host,
+    })
+    .delete()
+    .then();
+};
+
+self.delDeviceAll = async function (info) {
+  await db('device')
+    .where({
+      api_serial: info.serial,
     })
     .delete()
     .then();
@@ -55,7 +64,7 @@ self.getDeviceLog = async function (info) {
   let dbResult = await db('device_log')
     .select('*')
     .where({
-      device_name: info.name,
+      device_host: info.host,
     })
     .then();
   return dbResult;
@@ -67,6 +76,15 @@ self.getDeviceLogAll = async function (info) {
     .where({ api_serial: info.serial })
     .then();
   return dbResult;
+};
+
+self.delDeviceLogAll = async function (info) {
+  await db('device_log')
+    .where({
+      api_serial: info.serial,
+    })
+    .delete()
+    .then();
 };
 
 self.getDeviceName = async function (info) {
