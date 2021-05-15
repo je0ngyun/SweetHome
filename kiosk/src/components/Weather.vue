@@ -30,11 +30,12 @@
 </template>
 
 <script>
+import { getCurrentPositionPromise } from 'geolocation-promise';
 export default {
   data: function() {
     return {
-      lat: undefined,
-      lon: undefined,
+      lat: 35.806559,
+      lon: 127.1103191,
       isLoading: true,
       weather: {
         temp: undefined,
@@ -47,20 +48,17 @@ export default {
     };
   },
   created() {
-    this.$axios
-      .get(`${this.$weatherURL}`, {
-        params: { lat: 35.806559, lon: 127.1103191, appid: this.$apiKey },
+    getCurrentPositionPromise()
+      .then((position) => {
+        this.lat = position.coords.latitude;
+        this.lon = position.coords.longitude;
+        this.getWeather();
       })
-      .then((res) => {
-        this.weather.temp = parseInt(res.data.main.temp) - 273;
-        this.weather.area = res.data.name;
-        this.weather.main = res.data.weather[0].main;
-        this.weather.desc = res.data.weather[0].description;
-        this.weather.code = res.data.weather[0].icon.substring(0, 2);
-        this.decode();
-        this.isLoading = false;
-      })
-      .catch(() => console.log('날씨오류'));
+      .catch((e) => {
+        console.log(e);
+        this.getWeather();
+      });
+    setInterval(this.getWeather, 360000);
   },
   methods: {
     decode() {
@@ -76,6 +74,22 @@ export default {
         '50': 'smog',
       };
       this.weatherIcon = weatherIcon[this.weather.code];
+    },
+    getWeather() {
+      this.$axios
+        .get(`${this.$weatherURL}`, {
+          params: { lat: this.lat, lon: this.lon, appid: this.$apiKey },
+        })
+        .then((res) => {
+          this.weather.temp = parseInt(res.data.main.temp) - 273;
+          this.weather.area = res.data.name;
+          this.weather.main = res.data.weather[0].main;
+          this.weather.desc = res.data.weather[0].description;
+          this.weather.code = res.data.weather[0].icon.substring(0, 2);
+          this.decode();
+          this.isLoading = false;
+        })
+        .catch((ex) => console.log(ex));
     },
   },
 };

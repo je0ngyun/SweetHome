@@ -1,6 +1,6 @@
 <template>
   <div class="is-flex is-flex-direction-column has-text-centered">
-    <div class="mt-1 mb-1"><img src="../assets/logo.svg" alt="" /></div>
+    <div class="mt-3 mb-3"><img src="../assets/logo.svg" alt="" /></div>
     <div>
       <div class="card p-1 mt-1 mb-1">
         <div
