@@ -5,8 +5,8 @@ class authCode {
   static code = null;
   static createCode() {
     authCode.code = random.generate({
-      length: 7,
-      capitalization: 'lowercase',
+      length: 6,
+      charset: 'numeric',
     });
     setTimeout(this.initCode, 380000); //인증유효시간 3분
     return authCode.code;

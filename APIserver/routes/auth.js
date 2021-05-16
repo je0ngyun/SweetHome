@@ -22,7 +22,7 @@ router.post(
     if (isEmpty(authCode.getCode())) {
       throw new createError.Unauthorized('만료된 코드');
     }
-    if (req.query.code != authCode.getCode()) {
+    if (req.headers.code != authCode.getCode()) {
       throw new createError.Unauthorized('잘못된 인증코드');
     }
     const token = jwt.sign(
@@ -31,7 +31,7 @@ router.post(
       },
       env.secret_key,
       {
-        expiresIn: '1h',
+        expiresIn: '30h',
       },
     );
     authCode.initCode();

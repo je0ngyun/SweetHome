@@ -50,7 +50,7 @@ Vue.directive('longclick', longClickInstance);
 
 const socket = io(`${env.defaultURL}`);
 Vue.prototype.$socket = socket;
-
+Vue.prototype.$env = env;
 Vue.prototype.$moment = Moment;
 Vue.prototype.$axios = axios;
 Vue.prototype.$serial = env.serial;

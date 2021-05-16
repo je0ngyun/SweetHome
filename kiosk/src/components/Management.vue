@@ -20,7 +20,6 @@
 
 <script>
 import Device from '../components/Device';
-const env = require('../assets/env/env.json');
 export default {
   components: {
     Device,
@@ -33,7 +32,7 @@ export default {
   created() {
     this.$axios
       .get(`${this.$defaultURL}/device/regist`, {
-        params: { serial: env.serial },
+        params: { serial: this.$env.serial },
       })
       .then((res) => {
         this.devices = res.data.devices;
@@ -54,7 +53,7 @@ export default {
     refresh() {
       this.$axios
         .get(`${this.$defaultURL}/device/regist`, {
-          params: { serial: env.serial },
+          params: { serial: this.$env.serial },
         })
         .then((res) => {
           this.devices = res.data.devices;

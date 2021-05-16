@@ -12,26 +12,38 @@
           <div class="font-s">loadding..</div>
         </div>
         <div v-if="!this.isLoading">
-          <div class="font-s">나의 IP 주소</div>
-          <div>{{ ip }}</div>
+          <div class="font-s mb-1">나의 IP 주소</div>
+          <div class="font-s">{{ ip }}</div>
         </div>
       </div>
     </div>
     <Clock class="card mt-1 mb-1"></Clock>
     <Weather class="card p-3 mt-1 mb-1"></Weather>
     <div class="is-flex is-flex-direction-column mt-a">
-      <b-button size="is-small" class="mt-1 mb-1" type="is-warning"
+      <b-button
+        @click="alertInfo()"
+        size="is-small"
+        class="mt-1 mb-1"
+        type="is-warning"
         ><font-awesome-icon icon="info-circle" class="mr-4" />
         <span>시스템정보 </span>
       </b-button>
-      <b-button size="is-small" class="mt-1 mb-1" type="is-warning"
+      <b-button
+        @click="resetDevices()"
+        size="is-small"
+        class="mt-1 mb-1"
+        type="is-warning"
         ><font-awesome-icon icon="trash" class="mr-4" /><span
           >기기초기화</span
         ></b-button
       >
-      <b-button size="is-small" class="mt-1 mb-1" type="is-warning"
-        ><font-awesome-icon icon="power-off" class="mr-5" /><span
-          >종료하기</span
+      <b-button
+        @click="resetLogs()"
+        size="is-small"
+        class="mt-1 mb-1"
+        type="is-warning"
+        ><font-awesome-icon icon="trash" class="mr-4" /><span
+          >로그초기화</span
         ></b-button
       >
     </div>
@@ -59,6 +71,47 @@ export default {
       this.ip = ip;
       this.isLoading = false;
     });
+  },
+  methods: {
+    alertInfo() {
+      let info = `Version : TenPlus 0.1.0 <br/>
+      Serial : 9830`;
+      this.$buefy.dialog.alert({
+        title: '시스템정보',
+        message: info,
+        confirmText: '확인',
+      });
+    },
+    resetDevices() {
+      this.$buefy.dialog.confirm({
+        message:
+          '정말로 모든 기기를 삭제하시겠습니까? <br/> 삭제후엔 재등록이 필요합니다 ',
+        onConfirm: () => {
+          this.$axios
+            .delete(`${this.$defaultURL}/device/regist/all`, {
+              params: { serial: this.$env.serial },
+            })
+            .then(() => {
+              this.$buefy.toast.open('기기삭제완료');
+            });
+        },
+      });
+    },
+    resetLogs() {
+      this.$buefy.dialog.confirm({
+        message:
+          '정말로 모든 로그를 삭제하시겠습니까? <br/> 삭제된 로그는 복구가 불가능합니다',
+        onConfirm: () => {
+          this.$axios
+            .delete(`${this.$defaultURL}/device/log/all`, {
+              params: { serial: this.$env.serial },
+            })
+            .then(() => {
+              this.$buefy.toast.open('로그삭제완료');
+            });
+        },
+      });
+    },
   },
 };
 </script>
