@@ -34,7 +34,6 @@ router.post(
         expiresIn: '30h',
       },
     );
-    authCode.initCode();
     res.status(201).json({ success: true, token: token });
   }),
 );

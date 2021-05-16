@@ -76,6 +76,16 @@ router.delete(
   }),
 );
 
+//기기이름변경
+router.get(
+  '/rename',
+  verifyToken,
+  asyncHandler(async (req, res, next) => {
+    await db.deviceRename(req.query);
+    res.status(200).json({ success: true });
+  }),
+);
+
 //기기동작요청
 router.get(
   '/action',

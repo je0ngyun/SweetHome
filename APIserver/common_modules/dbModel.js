@@ -15,6 +15,10 @@ self.setDevice = async function (info) {
     ' on duplicate key update ' +
     db.raw('device_name= ?, api_serial = ?', [info.device_name, env.serial]);
   await db.raw(query).then();
+  await db('device_log')
+    .where({ api_serial: env.serial, device_host: info.device_host })
+    .update({ device_name: info.device_name })
+    .then();
 };
 
 self.setDeviceLog = async function (info, state) {
@@ -32,6 +36,7 @@ self.delDevice = async function (info) {
   await db('device')
     .where({
       device_host: info.host,
+      api_serial: info.serial,
     })
     .delete()
     .then();
@@ -94,6 +99,17 @@ self.getDeviceName = async function (info) {
     .first()
     .then();
   return dbResult.device_name;
+};
+
+self.deviceRename = async function (info) {
+  await db('device')
+    .where({ api_serial: info.serial, device_host: info.host })
+    .update({ device_name: info.newname })
+    .then();
+  await db('device_log')
+    .where({ api_serial: info.serial, device_host: info.host })
+    .update({ device_name: info.newname })
+    .then();
 };
 
 module.exports = self;

@@ -26,8 +26,4 @@ router.get('/vue', (req, res, next) => {
   res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
-router.get('/testvert', verifyToken, (req, res, next) => {
-  res.json(true);
-});
-
 module.exports = router;
