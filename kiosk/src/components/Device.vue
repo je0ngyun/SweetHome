@@ -1,6 +1,6 @@
 <template>
   <div
-    @click="action"
+    @click="click"
     v-longclick="() => modalOpen()"
     class="device card m-1 is-flex is-flex-direction-column"
     :style="state ? is_on : is_off"
@@ -12,7 +12,7 @@
         :style="state ? is_on_icon : is_off_icon"
       />
     </div>
-    <div class="mt-a font-s">{{ device.device_name }}</div>
+    <div class="mt-a font-s">{{ this.device.device_name }}</div>
   </div>
 </template>
 
@@ -30,6 +30,9 @@ export default {
     return {
       state: false,
       modalActive: false,
+      delay: 200,
+      clicks: 0,
+      timer: null,
       is_on: {
         background: '#f9de6e',
         transition: 'all ease 1s 0s',
@@ -49,6 +52,9 @@ export default {
     };
   },
   methods: {
+    dblclick() {
+      this.delDialog('정말로 기기를 삭제하시겠습니까?');
+    },
     close() {
       this.modalActive = false;
     },
@@ -63,16 +69,16 @@ export default {
         props: { device: this.device },
       });
     },
-    toggle() {
-      this.state = !this.state;
-    },
-    delDialog() {
+    delDialog(msg) {
       this.$buefy.dialog.confirm({
-        message: '연결이 불안정한 기기입니다 삭제하시겠습니까?',
+        message: msg,
         onConfirm: () => {
           this.$axios
             .delete(`${this.$defaultURL}/device/regist`, {
-              params: { host: this.device.device_host },
+              params: {
+                host: this.device.device_host,
+                serial: this.$env.serial,
+              },
             })
             .then(() => {
               this.$parent.refresh();
@@ -92,12 +98,25 @@ export default {
           if (success) {
             this.state = res.data.device.states[0];
           } else {
-            this.delDialog();
+            this.delDialog('연결이 불안정한 기기입니다 삭제하시겠습니까?');
           }
         })
         .catch(() => {
-          this.delDialog();
+          this.delDialog('연결이 불안정한 기기입니다 삭제하시겠습니까?');
         });
+    },
+    click() {
+      this.clicks++;
+      if (this.clicks === 1) {
+        this.timer = setTimeout(() => {
+          this.action();
+          this.clicks = 0;
+        }, this.delay);
+      } else {
+        clearTimeout(this.timer);
+        this.dblclick();
+        this.clicks = 0;
+      }
     },
   },
 };

@@ -51,6 +51,7 @@ export default {
   },
   methods: {
     refresh() {
+      this.devices = null;
       this.$axios
         .get(`${this.$defaultURL}/device/regist`, {
           params: { serial: this.$env.serial },
