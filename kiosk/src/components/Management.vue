@@ -31,9 +31,7 @@ export default {
   },
   created() {
     this.$axios
-      .get(`${this.$defaultURL}/device/regist`, {
-        params: { serial: this.$env.serial },
-      })
+      .get(`${this.$defaultURL}/device/regist`, {})
       .then((res) => {
         this.devices = res.data.devices;
         this.$buefy.toast.open({
@@ -53,9 +51,7 @@ export default {
     refresh() {
       this.devices = null;
       this.$axios
-        .get(`${this.$defaultURL}/device/regist`, {
-          params: { serial: this.$env.serial },
-        })
+        .get(`${this.$defaultURL}/device/regist`, {})
         .then((res) => {
           this.devices = res.data.devices;
           this.$buefy.toast.open({

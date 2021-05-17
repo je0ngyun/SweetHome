@@ -88,9 +88,7 @@ export default {
           '정말로 모든 기기를 삭제하시겠습니까? <br/> 삭제후엔 재등록이 필요합니다 ',
         onConfirm: () => {
           this.$axios
-            .delete(`${this.$defaultURL}/device/regist/all`, {
-              params: { serial: this.$env.serial },
-            })
+            .delete(`${this.$defaultURL}/device/regist/all`, {})
             .then(() => {
               this.$buefy.toast.open('기기삭제완료');
             });
@@ -103,9 +101,7 @@ export default {
           '정말로 모든 로그를 삭제하시겠습니까? <br/> 삭제된 로그는 복구가 불가능합니다',
         onConfirm: () => {
           this.$axios
-            .delete(`${this.$defaultURL}/device/log/all`, {
-              params: { serial: this.$env.serial },
-            })
+            .delete(`${this.$defaultURL}/device/log/all`, {})
             .then(() => {
               this.$buefy.toast.open('로그삭제완료');
             });

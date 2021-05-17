@@ -77,7 +77,6 @@ export default {
             .delete(`${this.$defaultURL}/device/regist`, {
               params: {
                 host: this.device.device_host,
-                serial: this.$env.serial,
               },
             })
             .then(() => {
