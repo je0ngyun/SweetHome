@@ -36,7 +36,7 @@ self.delDevice = async function (info) {
   await db('device')
     .where({
       device_host: info.host,
-      api_serial: info.serial,
+      api_serial: env.serial,
     })
     .delete()
     .then();
@@ -45,7 +45,7 @@ self.delDevice = async function (info) {
 self.delDeviceAll = async function (info) {
   await db('device')
     .where({
-      api_serial: info.serial,
+      api_serial: env.serial,
     })
     .delete()
     .then();
@@ -56,7 +56,7 @@ self.getDevices = async function (info) {
     let dbResult = await db('device')
       .select('api_serial', 'device_host', 'device_name')
       .where({
-        api_serial: info.serial,
+        api_serial: env.serial,
       })
       .then();
     return dbResult;
@@ -78,7 +78,7 @@ self.getDeviceLog = async function (info) {
 self.getDeviceLogAll = async function (info) {
   let dbResult = await db('device_log')
     .select('*')
-    .where({ api_serial: info.serial })
+    .where({ api_serial: env.serial })
     .then();
   return dbResult;
 };
@@ -86,7 +86,7 @@ self.getDeviceLogAll = async function (info) {
 self.delDeviceLogAll = async function (info) {
   await db('device_log')
     .where({
-      api_serial: info.serial,
+      api_serial: env.serial,
     })
     .delete()
     .then();
@@ -103,13 +103,27 @@ self.getDeviceName = async function (info) {
 
 self.deviceRename = async function (info) {
   await db('device')
-    .where({ api_serial: info.serial, device_host: info.host })
+    .where({ api_serial: env.serial, device_host: info.host })
     .update({ device_name: info.newname })
     .then();
   await db('device_log')
-    .where({ api_serial: info.serial, device_host: info.host })
+    .where({ api_serial: env.serial, device_host: info.host })
     .update({ device_name: info.newname })
     .then();
+};
+
+self.getLastState = async function (info) {
+  let subQurey = await db('device_log')
+    .max('ack as ack')
+    .where({ device_host: info.host, api_serial: env.serial })
+    .first()
+    .then();
+  let dbResult = await db('device_log')
+    .select('state')
+    .where({ ack: subQurey.ack })
+    .first()
+    .then();
+  console.log(dbResult);
 };
 
 module.exports = self;

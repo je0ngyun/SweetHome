@@ -76,6 +76,16 @@ router.delete(
   }),
 );
 
+//테스트
+router.get(
+  '/state',
+  verifyToken,
+  asyncHandler(async (req, res, next) => {
+    await db.getLastState(req.query);
+    res.status(200).json({ success: true });
+  }),
+);
+
 //기기이름변경
 router.get(
   '/rename',
