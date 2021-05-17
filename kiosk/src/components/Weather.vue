@@ -34,8 +34,8 @@ import { getCurrentPositionPromise } from 'geolocation-promise';
 export default {
   data: function() {
     return {
-      lat: 35.806559,
-      lon: 127.1103191,
+      lat: 35.83191671255827,
+      lon: 127.1372125,
       isLoading: true,
       weather: {
         temp: undefined,

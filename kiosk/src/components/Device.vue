@@ -51,10 +51,10 @@ export default {
       },
     };
   },
+  created() {
+    this.getState();
+  },
   methods: {
-    dblclick() {
-      this.delDialog('정말로 기기를 삭제하시겠습니까?');
-    },
     close() {
       this.modalActive = false;
     },
@@ -116,6 +116,16 @@ export default {
         this.dblclick();
         this.clicks = 0;
       }
+    },
+    getState() {
+      this.$axios
+        .get(`${this.$defaultURL}/device/state`, {
+          params: { host: this.device.device_host },
+        })
+        .then((res) => {
+          this.state = JSON.parse(res.data.state);
+        })
+        .catch(() => {});
     },
   },
 };
