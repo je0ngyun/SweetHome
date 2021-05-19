@@ -1,14 +1,14 @@
 <template>
   <div class="pt-3 pl-6">
     <div class="">
-      <b-button @click="refresh" size="is-small" class="sub-bg ml-5">
+      <b-button @click="refresh" size="is-small" class="sub-bg ml-1">
         <font-awesome-icon icon="redo-alt" class="mr-2 font-light" />
         <span class="font-light">기기불러오기</span>
       </b-button>
     </div>
-    <div class="columns is-multiline mt-3 ml-3 has-text-centered">
+    <div class="columns is-multiline mt-3 has-text-centered">
       <Device
-        class="column is-3 ml-3 mb-4"
+        class="column ml-3 mb-4"
         v-for="(item, index) in devices"
         v-bind:device="item"
         v-bind:index="index"
