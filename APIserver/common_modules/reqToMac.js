@@ -9,6 +9,7 @@ self.req = async (hostname, port, source, body) => {
     response = await axios.get(url, {
       withCredentials: true,
     });
+    console.log(response.data);
     return response;
   } catch (ex) {
     let response = {};

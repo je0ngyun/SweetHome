@@ -60,7 +60,7 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const result = await db.getDeviceLogAll(req.query);
     if (isEmpty(result)) {
-      throw new createError.BadRequest('요청시리얼번호 없음');
+      throw new createError.BadRequest('요청기기 없음');
     }
     res.status(200).json({ success: true, logs: result });
   }),
@@ -76,13 +76,23 @@ router.delete(
   }),
 );
 
-//테스트
+//기기상태확인
 router.get(
   '/state',
   verifyToken,
   asyncHandler(async (req, res, next) => {
-    await db.getLastState(req.query);
-    res.status(200).json({ success: true });
+    let state = '';
+    const result = await db.getLastState(req.query);
+    if (isEmpty(result)) {
+      let way = await db.getDeviceWay(req.query);
+      for (let i = 0; i < Number(way); i++) {
+        state += 'false,';
+      }
+      state = state.slice(0, state.length - 1);
+    } else {
+      state = result.state;
+    }
+    res.status(200).json({ success: true, state: state });
   }),
 );
 

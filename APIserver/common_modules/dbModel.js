@@ -9,6 +9,7 @@ self.setDevice = async function (info) {
       device_host: info.device_host,
       device_name: info.device_name,
       api_serial: env.serial,
+      way: info.device_way,
     })
     .toString();
   query +=
@@ -54,7 +55,7 @@ self.delDeviceAll = async function (info) {
 self.getDevices = async function (info) {
   try {
     let dbResult = await db('device')
-      .select('api_serial', 'device_host', 'device_name')
+      .select('api_serial', 'device_host', 'device_name', 'way')
       .where({
         api_serial: env.serial,
       })
@@ -70,6 +71,7 @@ self.getDeviceLog = async function (info) {
     .select('*')
     .where({
       device_host: info.host,
+      api_serial: env.serial,
     })
     .then();
   return dbResult;
@@ -95,7 +97,7 @@ self.delDeviceLogAll = async function (info) {
 self.getDeviceName = async function (info) {
   let dbResult = await db('device')
     .select('device_name')
-    .where({ device_host: info.host })
+    .where({ device_host: info.host, api_serial: env.serial })
     .first()
     .then();
   return dbResult.device_name;
@@ -123,7 +125,16 @@ self.getLastState = async function (info) {
     .where({ ack: subQurey.ack })
     .first()
     .then();
-  console.log(dbResult);
+  return dbResult;
+};
+
+self.getDeviceWay = async function (info) {
+  let dbResult = await db('device')
+    .select('way')
+    .where({ device_host: info.host, api_serial: env.serial })
+    .first()
+    .then();
+  return dbResult.way;
 };
 
 module.exports = self;
