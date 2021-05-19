@@ -73,7 +73,7 @@ export default {
           this.$axios
             .delete(`${this.$defaultURL}/device/regist`, {
               params: {
-                host: this.device.device_host,
+                host: this.host,
               },
             })
             .then(() => {

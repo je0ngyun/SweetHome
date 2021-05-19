@@ -53,6 +53,23 @@ export default {
     this.wayToArray();
   },
   methods: {
+    delDialog(msg) {
+      this.$buefy.dialog.confirm({
+        message: msg,
+        onConfirm: () => {
+          this.$axios
+            .delete(`${this.$defaultURL}/device/regist`, {
+              params: {
+                host: this.device.device_host,
+              },
+            })
+            .then(() => {
+              this.$parent.refresh();
+              this.$buefy.toast.open('기기삭제완료');
+            });
+        },
+      });
+    },
     close() {
       this.modalActive = false;
     },
@@ -75,7 +92,7 @@ export default {
         }, this.delay);
       } else {
         clearTimeout(this.timer);
-        console.log('더블클릭');
+        this.delDialog('정말로 기기를 삭제하시겠습니까?');
         this.clicks = 0;
       }
     },

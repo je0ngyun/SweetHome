@@ -13,13 +13,19 @@
         </b-table-column>
         <b-table-column field="state" label="기기상태" v-slot="props">
           <span
-            :class="[
-              'tag',
-              { 'is-danger': props.row.state == '꺼짐' },
-              { 'is-success': props.row.state == '켜짐' },
-            ]"
+            v-for="(state, index) in props.row.state"
+            :key="state.id"
+            :index="index"
           >
-            {{ props.row.state }}
+            <span
+              class="m-1"
+              :class="[
+                'tag',
+                { 'is-danger': state == false },
+                { 'is-success': state == true },
+              ]"
+              >{{ index + 1 }}
+            </span>
           </span>
         </b-table-column>
         <b-table-column field="time" label="시간" v-slot="props">
@@ -78,11 +84,16 @@ export default {
         this.logs[i].time = `${this.logs[i].time.substring(0, 10)} ${this.logs[
           i
         ].time.substring(11, 19)}`;
-        if (this.logs[i].state == 'true') {
-          this.logs[i].state = '켜짐';
-        } else {
-          this.logs[i].state = '꺼짐';
+        let strBoolsArr = this.logs[i].state.split(',');
+        let stateArr = [];
+        for (let k = 0; k < strBoolsArr.length; k++) {
+          if (strBoolsArr[k] == 'true') {
+            stateArr[k] = true;
+          } else {
+            stateArr[k] = false;
+          }
         }
+        this.logs[i].state = stateArr;
       }
     },
   },
