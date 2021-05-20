@@ -5,13 +5,23 @@
     </header>
     <section class="modal-card-body">
       <b-table :data="logs">
-        <b-table-column field="device_name" label="기기이름" v-slot="props">
+        <b-table-column
+          field="device_name"
+          label="기기이름"
+          centered
+          v-slot="props"
+        >
           {{ props.row.device_name }}
         </b-table-column>
-        <b-table-column field="device_host" label="기기호스트" v-slot="props">
+        <b-table-column
+          field="device_host"
+          label="기기호스트"
+          centered
+          v-slot="props"
+        >
           {{ props.row.device_host }}
         </b-table-column>
-        <b-table-column field="state" label="기기상태" v-slot="props">
+        <b-table-column field="state" label="기기상태" centered v-slot="props">
           <span
             v-for="(state, index) in props.row.state"
             :key="state.id"
@@ -28,7 +38,7 @@
             </span>
           </span>
         </b-table-column>
-        <b-table-column field="time" label="시간" v-slot="props">
+        <b-table-column field="time" label="시간" centered v-slot="props">
           {{ props.row.time }}
         </b-table-column>
       </b-table>
@@ -85,16 +95,16 @@ export default {
         this.logs[i].time = `${this.logs[i].time.substring(0, 10)} ${this.logs[
           i
         ].time.substring(11, 19)}`;
-        let strBoolsArr = this.logs[i].state.split(',');
-        let stateArr = [];
-        for (let k = 0; k < strBoolsArr.length; k++) {
-          if (strBoolsArr[k] == 'true') {
-            stateArr[k] = true;
-          } else {
-            stateArr[k] = false;
-          }
-        }
-        this.logs[i].state = stateArr;
+        // let strBoolsArr = this.logs[i].state.split(',');
+        // let stateArr = [];
+        // for (let k = 0; k < strBoolsArr.length; k++) {
+        //   if (strBoolsArr[k] == 'true') {
+        //     stateArr[k] = true;
+        //   } else {
+        //     stateArr[k] = false;
+        //   }
+        // }
+        // this.logs[i].state = stateArr;
       }
     },
   },

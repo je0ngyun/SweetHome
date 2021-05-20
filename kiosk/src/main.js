@@ -22,6 +22,7 @@ import {
   faSnowflake,
   faSmog,
   faSpinner,
+  faCog,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import io from 'socket.io-client';
@@ -42,6 +43,7 @@ faLibrary.add(
   faSnowflake,
   faSmog,
   faSpinner,
+  faCog,
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

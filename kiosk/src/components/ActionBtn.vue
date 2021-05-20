@@ -60,9 +60,7 @@ export default {
           params: { host: this.host },
         })
         .then((res) => {
-          //res.data.state 로 문자열 false,false 옴
-          const arr = res.data.state.split(','); //문자열->배열 ['false',false']
-          this.state = JSON.parse(arr[this.switch]); //배열[0] 'false' 를 boolean false 변환
+          this.state = res.data.state[this.switch];
         })
         .catch(() => {});
     },
