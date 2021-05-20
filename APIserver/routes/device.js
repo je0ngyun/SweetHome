@@ -49,6 +49,19 @@ router.get(
     if (isEmpty(result)) {
       throw new createError.BadRequest('요청기기 없음');
     }
+    for (let i = 0; i < result.length; i++) {
+      let state = [];
+      let stateStr = result[i].state;
+      state = stateStr.split(',');
+      for (let k = 0; k < state.length; k++) {
+        if (state[k] == 'true') {
+          state[k] = true;
+        } else {
+          state[k] = false;
+        }
+      }
+      result[i].state = state;
+    }
     res.status(200).json({ success: true, logs: result });
   }),
 );
@@ -81,16 +94,36 @@ router.get(
   '/state',
   verifyToken,
   asyncHandler(async (req, res, next) => {
-    let state = '';
+    let state = [];
+    let stateStr;
     const result = await db.getLastState(req.query);
     if (isEmpty(result)) {
+      //로그가 없을때 == 꺼진상태
+      //기기의 스위치 수 만큼 상태 평문 생성
       let way = await db.getDeviceWay(req.query);
       for (let i = 0; i < Number(way); i++) {
-        state += 'false,';
+        stateStr += 'false,';
       }
-      state = state.slice(0, state.length - 1);
+      stateStr = stateStr.slice(0, state.length - 1);
+      //로그 평문을 배열화
+      state = stateStr.split(',');
+      for (let i = 0; i < state.length; i++) {
+        if (state[i] == 'true') {
+          state[i] = true;
+        } else {
+          state[i] = false;
+        }
+      }
     } else {
-      state = result.state;
+      stateStr = result.state;
+      state = stateStr.split(',');
+      for (let i = 0; i < state.length; i++) {
+        if (state[i] == 'true') {
+          state[i] = true;
+        } else {
+          state[i] = false;
+        }
+      }
     }
     res.status(200).json({ success: true, state: state });
   }),
