@@ -2,11 +2,11 @@
   <div class="pt-3 pl-6">
     <div class="">
       <b-button @click="refresh" size="is-small" class="sub-bg ml-1">
-        <font-awesome-icon icon="redo-alt" class="mr-2 font-light" />
+        <font-awesome-icon icon="redo-alt" class="font-light mr-2" />
         <span class="font-light">기기불러오기</span>
       </b-button>
     </div>
-    <div class="columns is-multiline mt-3 has-text-centered">
+    <div class="columns is-multiline has-text-centered mt-3">
       <Device
         class="column ml-3 mb-4"
         v-for="(item, index) in devices"

@@ -74,7 +74,8 @@ export default {
   },
   methods: {
     alertInfo() {
-      let info = `Version : TenPlus 0.1.0 <br/>
+      let info = `Service : TenPlus <br/>
+      Version : 0.1.0 <br/>
       Serial : 9830`;
       this.$buefy.dialog.alert({
         title: '시스템정보',

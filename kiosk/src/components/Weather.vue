@@ -34,7 +34,7 @@ import { getCurrentPositionPromise } from 'geolocation-promise';
 export default {
   data: function() {
     return {
-      lat: 35.83191671255827,
+      lat: 35.8319167125,
       lon: 127.1372125,
       isLoading: true,
       weather: {
@@ -62,6 +62,7 @@ export default {
   },
   methods: {
     decode() {
+      //날씨코드 복호화
       let weatherIcon = {
         '01': 'sun',
         '02': 'cloud-sun',

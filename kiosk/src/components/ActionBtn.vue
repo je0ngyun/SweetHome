@@ -14,6 +14,7 @@ export default {
   data: function() {
     return {
       state: false,
+      fontSize: undefined,
       is_on_icon: {
         color: '#4aba68',
         transition: 'all ease 1s 0s',
@@ -22,7 +23,6 @@ export default {
         color: '#ececec',
         transition: 'all ease 1s 0s',
       },
-      fontSize: undefined,
     };
   },
   props: {
@@ -33,7 +33,7 @@ export default {
   },
   created() {
     this.getState();
-    this.fontSizing();
+    this.fontSize = this.fontSizing();
   },
   methods: {
     action() {
@@ -84,10 +84,11 @@ export default {
       });
     },
     fontSizing() {
+      //테스팅중
       if (Number(this.way) > 3) {
-        this.fontSize = '2x';
+        return '3x';
       } else {
-        this.fontSize = '3x';
+        return '3x';
       }
     },
   },

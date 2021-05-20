@@ -2,12 +2,12 @@
   <div
     @click="click"
     v-longclick="() => modalOpen()"
-    class="device card m-1 is-flex is-flex-direction-column"
+    class="device card is-flex is-flex-direction-column m-1"
     :class="[
       'tag',
-      { 'is-3': device.way == 1 },
+      { 'is-2': device.way == 1 },
       { 'is-3': device.way == 2 },
-      { 'is-4': device.way == 4 },
+      { 'is-5': device.way == 4 },
     ]"
   >
     <div>
@@ -87,15 +87,18 @@ export default {
     click() {
       this.clicks++;
       if (this.clicks === 1) {
+        //클릭
         this.timer = setTimeout(() => {
           this.clicks = 0;
         }, this.delay);
       } else {
+        //더블클릭
         clearTimeout(this.timer);
         this.delDialog('정말로 기기를 삭제하시겠습니까?');
         this.clicks = 0;
       }
     },
+    //n 구의 스위치 -> [0,1,2,n] 배열변환
     wayToArray() {
       let array = [];
       for (let i = 0; i < Number(this.device.way); i++) {

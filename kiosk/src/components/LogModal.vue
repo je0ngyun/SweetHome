@@ -79,6 +79,7 @@ export default {
       .catch(() => {});
   },
   methods: {
+    //시간정보 추출, 기기상태 boolean 배열화
     preProcessing() {
       for (let i = 0; i < this.logs.length; i++) {
         this.logs[i].time = `${this.logs[i].time.substring(0, 10)} ${this.logs[

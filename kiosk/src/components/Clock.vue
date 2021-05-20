@@ -1,10 +1,10 @@
 <template>
-  <div id="content" v-bind:style="contentStyle" @click="clicked">
+  <div id="content" :style="contentStyle" @click="clicked">
     <div class="wrapper">
-      <h1 v-if="one" v-bind:class="faded">{{ timeOne }}</h1>
-      <h1 v-if="two" v-bind:class="faded">{{ timeTwo }}</h1>
-      <h1 v-if="three" v-bind:class="faded">{{ timeThree }}</h1>
-      <h1 v-if="four" v-bind:class="faded">{{ timeFour }}</h1>
+      <h1 v-if="one" :class="faded">{{ timeOne }}</h1>
+      <h1 v-if="two" :class="faded">{{ timeTwo }}</h1>
+      <h1 v-if="three" :class="faded">{{ timeThree }}</h1>
+      <h1 v-if="four" :class="faded">{{ timeFour }}</h1>
     </div>
   </div>
 </template>
