@@ -117,7 +117,7 @@ router.get(
       const macRes = await reqToMac.req(host, 80, 'action', req.query);
       if (macRes.data != 'disconnect') {
         req.query.name = name;
-        await db.setDeviceLog(req.query, macRes.data.states);
+        //await db.setDeviceLog(req.query, macRes.data.states);
         res.status(200).json({
           success: true,
           device: macRes.data,

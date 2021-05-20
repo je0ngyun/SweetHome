@@ -40,6 +40,7 @@ udpServer.start(); //기기의 브로드캐스팅 메시지 받을 udp서버
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+console.log('HTTP Server Start');
 
 /**
  * Normalize a port into a number, string, or false.
@@ -96,20 +97,3 @@ function onListening() {
   var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
-
-/*udp test*/
-/*function test() {
-  var PORT = 4210;
-  var HOST = '192.168.0.24';
-
-  var dgram = require('dgram');
-  var message = 'light-09';
-
-  var client = dgram.createSocket('udp4');
-  client.send(message, 0, message.length, PORT, HOST, function (err, bytes) {
-    if (err) throw err;
-    console.log('UDP message sent to ' + HOST + ':' + PORT);
-    client.close();
-  });
-}
-setTimeout(test, 5000);*/

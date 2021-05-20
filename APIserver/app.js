@@ -60,7 +60,7 @@ app.use(function (err, req, res, next) {
 
 //웹소켓 커넥션 핸들러
 app.io.on('connection', function (socket) {
-  console.log('웹소켓 연결완료');
+  console.log(`WebSocket Connected to the Client`);
 });
 app.set('socketIO', app.io); //router 에서 사용하기위해 등록
 

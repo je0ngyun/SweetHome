@@ -11,7 +11,7 @@ const isEmpty = require('is-empty');
 router.get('/code', (req, res, next) => {
   const io = req.app.get('socketIO');
   const code = authCode.createCode();
-  io.emit('code', code + ''); //이 응답은 라즈베리파이(키오스크화면)의로의 응답
+  io.emit('code', code + ''); //라즈베리파이로의 코드 표출 요청
   res.json({ success: true }); //이 응답은 요청 클라이언트로의 응답
 });
 

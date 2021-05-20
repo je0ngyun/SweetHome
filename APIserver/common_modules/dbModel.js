@@ -1,4 +1,5 @@
 'use strict';
+//DB 처리 모듈
 const env = require('./env/env.json');
 const db = require('../common_modules/dbConn');
 const self = {};
