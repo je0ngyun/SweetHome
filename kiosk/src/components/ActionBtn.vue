@@ -4,7 +4,7 @@
       @click="action"
       icon="power-off"
       :size="fontSize"
-      :style="state ? this.is_on_icon : this.is_off_icon"
+      :style="state ? btnTheme.is_on : btnTheme.is_off"
     ></font-awesome-icon>
   </span>
 </template>
@@ -15,14 +15,6 @@ export default {
     return {
       state: false,
       fontSize: undefined,
-      is_on_icon: {
-        color: '#4aba68',
-        transition: 'all ease 1s 0s',
-      },
-      is_off_icon: {
-        color: '#ececec',
-        transition: 'all ease 1s 0s',
-      },
     };
   },
   props: {
@@ -30,6 +22,7 @@ export default {
     switch: Number,
     index: Number,
     way: String,
+    btnTheme: Object,
   },
   created() {
     this.getState();

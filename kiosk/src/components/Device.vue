@@ -1,7 +1,7 @@
 <template>
   <div
     @click="click"
-    v-longclick="() => modalOpen()"
+    v-longclick="() => logModalOpen()"
     class="device card is-flex is-flex-direction-column m-1"
     :class="[
       'tag',
@@ -9,6 +9,7 @@
       { 'is-3': device.way == 2 },
       { 'is-5': device.way == 4 },
     ]"
+    :style="cardTheme"
   >
     <div>
       <ActionBtn
@@ -19,6 +20,7 @@
         :key="item.id"
         :host="device.device_host"
         :way="device.way"
+        :btnTheme="btnTheme"
       ></ActionBtn>
     </div>
     <div class="mt-a font-xs">{{ this.device.device_name }}</div>
@@ -26,9 +28,11 @@
 </template>
 
 <script>
-import LogModal from './LogModal';
 import ActionBtn from './ActionBtn';
+import LogModal from './LogModal';
+import ThemeModal from './ThemeModal';
 const logModal = LogModal;
+const themeModal = ThemeModal;
 
 export default {
   components: {
@@ -43,16 +47,29 @@ export default {
     return {
       switchs: undefined,
       state: false,
-      modalActive: false,
       delay: 400,
       clicks: 0,
       timer: null,
+      counter: 0,
     };
   },
   created() {
     this.wayToArray();
   },
+  computed: {
+    cardTheme() {
+      return this.$store.getters.getCardTheme(this.index);
+    },
+    btnTheme() {
+      return this.$store.getters.getBtnTheme(this.index);
+    },
+  },
   methods: {
+    testfunc() {
+      this.$store.commit('setValue', {
+        index: this.index,
+      });
+    },
     delDialog(msg) {
       this.$buefy.dialog.confirm({
         message: msg,
@@ -70,10 +87,7 @@ export default {
         },
       });
     },
-    close() {
-      this.modalActive = false;
-    },
-    modalOpen() {
+    logModalOpen() {
       this.$buefy.modal.open({
         parent: this,
         component: logModal,
@@ -82,6 +96,17 @@ export default {
         trapFocus: true,
         fullScreen: true,
         props: { device: this.device },
+      });
+    },
+    themeModalOpen() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: themeModal,
+        hasModalCard: true,
+        customClass: 'custom-class custom-class-2',
+        trapFocus: true,
+        fullScreen: false,
+        props: { index: this.index },
       });
     },
     click() {
@@ -94,7 +119,8 @@ export default {
       } else {
         //더블클릭
         clearTimeout(this.timer);
-        this.delDialog('정말로 기기를 삭제하시겠습니까?');
+        //this.delDialog('정말로 기기를 삭제하시겠습니까?');
+        this.themeModalOpen();
         this.clicks = 0;
       }
     },

@@ -1,31 +1,36 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 Vue.use(Vuex);
-const publicIp = require('public-ip');
 
 export default new Vuex.Store({
   state: {
-    ip: null,
+    btnThemes: [],
+    cardThemes: [],
+  },
+  getters: {
+    getBtnTheme: (state) => (id) => {
+      return state.btnThemes[id];
+    },
+    getCardTheme: (state) => (id) => {
+      return state.cardThemes[id];
+    },
   },
   mutations: {
-    successGetIp(state, payload) {
-      console.log(payload);
-      state.ip = payload + '';
+    setBtnTheme(state, payload) {
+      state.btnThemes.splice(payload.index, 1, payload.theme);
     },
-    failGetIp() {
-      console.log('Ip 불러오기 실패');
+    setCardTheme(state, payload) {
+      state.cardThemes.splice(payload.index, 1, payload.theme);
     },
-  },
-  actions: {
-    getIp({ commit }) {
-      publicIp
-        .v4()
-        .then((ip) => {
-          commit('successGetIp', ip);
-        })
-        .catch(() => {
-          commit('failGetIp');
-        });
+    initTheme(state, payload) {
+      for (let i = 0; i < payload.numOfDevices; i++) {
+        state.btnThemes[i] = {
+          is_on: { color: '#4aba68', transition: 'all ease 1s 0s' },
+          is_off: { color: '#ececec', transition: 'all ease 1s 0s' },
+        };
+        state.cardThemes[i] = { background: '#ffffff', color: '#000000' };
+      }
     },
   },
+  actions: {},
 });

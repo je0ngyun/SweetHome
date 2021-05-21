@@ -3,7 +3,7 @@
     <div class="">
       <b-button @click="refresh" size="is-small" class="sub-bg ml-1">
         <font-awesome-icon icon="redo-alt" class="font-light mr-2" />
-        <span class="font-light">기기불러오기</span>
+        <span class="font-light">기기새로고침</span>
       </b-button>
       <b-button size="is-small" class="sub-bg ml-1">
         <font-awesome-icon icon="cog" class="font-light mr-2" />
@@ -34,7 +34,17 @@ export default {
     };
   },
   created() {
-    this.refresh();
+    this.$axios
+      .get(`${this.$defaultURL}/device/regist`, {})
+      .then((res) => {
+        this.devices = res.data.devices;
+        this.$store.commit('initTheme', {
+          numOfDevices: this.devices.length,
+        });
+      })
+      .catch((res) => {
+        console.log(res);
+      });
   },
   methods: {
     refresh() {
