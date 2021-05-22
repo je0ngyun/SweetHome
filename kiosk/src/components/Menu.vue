@@ -24,7 +24,7 @@
         @click="alertInfo()"
         size="is-small"
         class="mt-1 mb-1"
-        type="is-warning"
+        type="is-primary is-light"
         ><font-awesome-icon icon="info-circle" class="mr-4" />
         <span>시스템정보 </span>
       </b-button>
@@ -32,7 +32,7 @@
         @click="resetDevices()"
         size="is-small"
         class="mt-1 mb-1"
-        type="is-warning"
+        type="is-primary is-light"
         ><font-awesome-icon icon="trash" class="mr-4" /><span
           >기기초기화</span
         ></b-button
@@ -40,8 +40,8 @@
       <b-button
         @click="resetLogs()"
         size="is-small"
-        class="mt-1 mb-1"
-        type="is-warning"
+        class="mt-1 mb-1 font-xs"
+        type="is-primary is-light"
         ><font-awesome-icon icon="trash" class="mr-4" /><span
           >로그초기화</span
         ></b-button
