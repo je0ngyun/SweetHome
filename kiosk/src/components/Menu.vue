@@ -1,6 +1,6 @@
 <template>
   <div class="is-flex is-flex-direction-column has-text-centered">
-    <div class="mt-3 mb-3"><img src="../assets/logo.svg" alt="" /></div>
+    <div class="mt-1 mb-1"><img src="../assets/logo.svg" alt="" /></div>
     <div>
       <div class="card p-1 mt-1 mb-1">
         <div
@@ -24,7 +24,8 @@
         @click="alertInfo()"
         size="is-small"
         class="mt-1 mb-1"
-        type="is-primary is-light"
+        type="is-warning"
+        rounded
         ><font-awesome-icon icon="info-circle" class="mr-4" />
         <span>시스템정보 </span>
       </b-button>
@@ -32,7 +33,8 @@
         @click="resetDevices()"
         size="is-small"
         class="mt-1 mb-1"
-        type="is-primary is-light"
+        type="is-warning"
+        rounded
         ><font-awesome-icon icon="trash" class="mr-4" /><span
           >기기초기화</span
         ></b-button
@@ -41,9 +43,20 @@
         @click="resetLogs()"
         size="is-small"
         class="mt-1 mb-1 font-xs"
-        type="is-primary is-light"
+        type="is-warning"
+        rounded
         ><font-awesome-icon icon="trash" class="mr-4" /><span
           >로그초기화</span
+        ></b-button
+      >
+      <b-button
+        @click="exit()"
+        size="is-small"
+        class="mt-1 mb-1 font-xs"
+        type="is-warning"
+        rounded
+        ><font-awesome-icon icon="power-off" class="mr-4" /><span
+          >시스템종료</span
         ></b-button
       >
     </div>
@@ -106,6 +119,18 @@ export default {
             .then(() => {
               this.$buefy.toast.open('로그삭제완료');
             });
+        },
+      });
+    },
+    exit() {
+      this.$buefy.dialog.confirm({
+        message: '정말로 시스템을 종료하시겠습니까?',
+        onConfirm: () => {
+          if (navigator.appVersion.indexOf('MSIE 6.0') >= 0) {
+            parent.window.close();
+          } else {
+            parent.window.open('about:blank', '_self').close();
+          }
         },
       });
     },

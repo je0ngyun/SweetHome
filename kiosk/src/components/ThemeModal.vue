@@ -51,10 +51,22 @@
           </span>
         </div>
         <div class="ml-5">
-          <Chrome v-if="selected == 0" v-model="cardBg"></Chrome>
-          <Chrome v-if="selected == 1" v-model="fontColor"></Chrome>
-          <Chrome v-if="selected == 2" v-model="btnOnColor"></Chrome>
-          <Chrome v-if="selected == 3" v-model="btnOffColor"></Chrome>
+          <Chrome class="picker" v-if="selected == 0" v-model="cardBg"></Chrome>
+          <Chrome
+            class="picker"
+            v-if="selected == 1"
+            v-model="fontColor"
+          ></Chrome>
+          <Chrome
+            class="picker"
+            v-if="selected == 2"
+            v-model="btnOnColor"
+          ></Chrome>
+          <Chrome
+            class="picker"
+            v-if="selected == 3"
+            v-model="btnOffColor"
+          ></Chrome>
         </div>
       </div>
     </section>
@@ -127,4 +139,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.picker {
+  box-shadow: none !important;
+}
+</style>
