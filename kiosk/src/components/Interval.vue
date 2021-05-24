@@ -24,6 +24,11 @@
           30분마다
         </b-radio>
       </b-field>
+      <b-field>
+        <b-checkbox v-model="realTimeDetect">
+          실시간 전원상태 업데이트
+        </b-checkbox>
+      </b-field>
     </section>
     <footer class="modal-card-foot">
       <b-button type="is-primary" label="적용" @click="handleTermValue" />
@@ -35,20 +40,33 @@
 <script>
 import { EventBus } from '../bus/event-bus';
 export default {
-  props: {},
+  props: {
+    currentTerm: Number,
+    realTimeflag: Boolean,
+  },
   created() {
-    this.term = this.defalutTerm;
+    this.term = `${this.currentTerm / 60000}`;
+    this.realTimeDetect = this.realTimeflag;
   },
   data: function() {
     return {
-      term: '30',
+      term: '5',
+      realTimeDetect: undefined,
     };
   },
   methods: {
     handleTermValue() {
-      EventBus.$emit('re-setting-interval', Number(this.term) * 60000);
+      EventBus.$emit(
+        're-setting-interval',
+        Number(this.term) * 60000,
+        this.realTimeDetect,
+      );
+      if (this.realTimeDetect) {
+        EventBus.$emit('realTime:true');
+      } else {
+        EventBus.$emit('realTime:false');
+      }
       this.$parent.close();
-      console.log(this.term);
     },
   },
 };

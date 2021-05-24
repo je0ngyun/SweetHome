@@ -40,19 +40,27 @@ export default {
     return {
       devices: undefined,
       interval: undefined,
+      currentTerm: undefined,
+      realTimeDetect: false,
     };
   },
   created() {
     this.refresh();
     this.intervalRefresh(5 * 60000);
-    EventBus.$on('re-setting-interval', (term) => {
+    EventBus.$on('re-setting-interval', (term, realTimeflag) => {
       clearInterval(this.interval);
       this.intervalRefresh(term);
+      this.realTimeDetect = realTimeflag;
+      this.$buefy.toast.open({
+        message: '적용되었습니다',
+        type: 'is-success',
+      });
     });
   },
   methods: {
     intervalRefresh(term) {
       this.interval = setInterval(this.onRefresh, term);
+      this.currentTerm = term;
     },
     settingModalOpen() {
       this.$buefy.modal.open({
@@ -62,6 +70,10 @@ export default {
         customClass: 'custom-class custom-class-2',
         trapFocus: true,
         fullScreen: false,
+        props: {
+          currentTerm: this.currentTerm,
+          realTimeflag: this.realTimeDetect,
+        },
       });
     },
     refresh() {

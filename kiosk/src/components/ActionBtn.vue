@@ -10,11 +10,13 @@
 </template>
 
 <script>
+import { EventBus } from '../bus/event-bus';
 export default {
   data: function() {
     return {
       state: false,
       fontSize: undefined,
+      interval: undefined,
     };
   },
   props: {
@@ -27,8 +29,17 @@ export default {
   created() {
     this.getState();
     this.fontSize = this.fontSizing();
+    EventBus.$on('realTime:false', () => {
+      clearInterval(this.interval);
+    });
+    EventBus.$on('realTime:true', () => {
+      this.interval = this.intervalGetState();
+    });
   },
   methods: {
+    intervalGetState() {
+      return setInterval(this.getState, 1000);
+    },
     action() {
       this.$axios
         .get(`${this.$defaultURL}/device/action`, {
