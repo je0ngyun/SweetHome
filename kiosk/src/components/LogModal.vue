@@ -89,22 +89,11 @@ export default {
       .catch(() => {});
   },
   methods: {
-    //시간정보 추출, 기기상태 boolean 배열화
     preProcessing() {
       for (let i = 0; i < this.logs.length; i++) {
         this.logs[i].time = `${this.logs[i].time.substring(0, 10)} ${this.logs[
           i
         ].time.substring(11, 19)}`;
-        // let strBoolsArr = this.logs[i].state.split(',');
-        // let stateArr = [];
-        // for (let k = 0; k < strBoolsArr.length; k++) {
-        //   if (strBoolsArr[k] == 'true') {
-        //     stateArr[k] = true;
-        //   } else {
-        //     stateArr[k] = false;
-        //   }
-        // }
-        // this.logs[i].state = stateArr;
       }
     },
   },

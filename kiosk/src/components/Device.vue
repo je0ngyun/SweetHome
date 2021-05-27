@@ -65,11 +65,6 @@ export default {
     },
   },
   methods: {
-    testfunc() {
-      this.$store.commit('setValue', {
-        index: this.index,
-      });
-    },
     delDialog(msg) {
       this.$buefy.dialog.confirm({
         message: msg,
