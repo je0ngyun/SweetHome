@@ -88,7 +88,7 @@ void serverSetup() {
 
     serializeJson(doc, json);
     request->send(200, "application/json", json);
-
+    
     udp.beginPacket(broadcastIp, UDP_PORT);
     udp.print(0x01);
     for (int i = 0; i < way; i++) {
@@ -110,6 +110,10 @@ void serverSetup() {
     ESP.restart();
   });
   server.addHandler(handler);
+
+  server.on("/*", HTTP_ANY, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/index.html");
+  });
 
   server.begin();
 }

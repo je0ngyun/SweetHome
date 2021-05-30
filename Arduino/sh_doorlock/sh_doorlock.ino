@@ -1,12 +1,14 @@
 #include <LittleFS.h>
+#include <WiFiUdp.h>
 
-const int SPEED_PIN = D2;
-const int DIR_PIN1 = D3;
-const int DIR_PIN2 = D4;
+WiFiUDP udp;
+const int UDP_PORT = 4210;
+IPAddress broadcastIp;
 
+const String category = "1way Switch";
 const int way = 1;
 bool state[way] = { false, };
-bool is_stop = false;
+const int RELAY_PIN = 14;
 
 void setup() {
   Serial.begin(115200);
@@ -17,48 +19,16 @@ void setup() {
   eepromSetup();
   wifiSetup();
   serverSetup();
-  pinMode(SPEED_PIN, OUTPUT);
-  pinMode(DIR_PIN1, OUTPUT);
-  pinMode(DIR_PIN2, OUTPUT);
-}
-
-void open() {
-  unsigned long start = millis();
-  unsigned long now = start;
-  digitalWrite(DIR_PIN1, HIGH);
-  digitalWrite(DIR_PIN2, LOW);
-  analogWrite(SPEED_PIN, 255);
-  while (now - start <= 1500) {
-    now = millis();
-  }
-  stop();
-  state[0] != state[0];
-}
-
-void stop() {
-  analogWrite(SPEED_PIN, 0);
-  is_stop = true;
-}
-
-void close() {
-  unsigned long start = millis();
-  unsigned long now = start;
-  digitalWrite(DIR_PIN1, LOW);
-  digitalWrite(DIR_PIN2, HIGH);
-  analogWrite(SPEED_PIN, 255);
-  while (now - start <= 1800) {
-    now = millis();
-  }
-  stop();
-  state[0] != state[0];
+  pinMode(RELAY_PIN, OUTPUT);
 }
 
 void loop() {
-  if (state[0] && !is_stop) {
-    Serial.println("열림");
-    close();
-  } else if (!state[0] && !is_stop) {
-    Serial.println("닫힘 ");
-    open();
+  if (state[0] == true) {
+    digitalWrite(RELAY_PIN, LOW); // ON
+    delay(500);
+    state[0] = false;
+  } else {
+    digitalWrite(RELAY_PIN, HIGH); // OFF
+    delay(100);
   }
 }

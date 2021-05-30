@@ -4,9 +4,6 @@
 const String AP_NAME = "SweetHome";
 const String AP_PASSWORD = "1234qwer";
 
-WiFiUDP udp;
-const int UDP_PORT = 4210;
-
 String errorMessage;
 
 bool connectWifi() {
@@ -58,12 +55,15 @@ bool connectWifi() {
 
   udp.begin(UDP_PORT);
 
-  IPAddress broadcastIp = WiFi.localIP();
+  broadcastIp = WiFi.localIP();
   broadcastIp[3] = 255;
 
   udp.beginPacket(broadcastIp, UDP_PORT);
+  udp.print(0x00);
   udp.print(WiFi.hostname().c_str());
+  udp.print(way);
   udp.endPacket();
+  delay(500);
   return true;
 }
 

@@ -6,9 +6,9 @@ const int UDP_PORT = 4210;
 IPAddress broadcastIp;
 
 const String category = "1way Switch";
-const int way = 1;
+const int way = 4;
 bool state[way] = { false, };
-const int RELAY_PIN = 14;
+const int RELAY_PIN[way] = { D4, D5, D6, D7 };
 
 void setup() {
   Serial.begin(115200);
@@ -19,15 +19,20 @@ void setup() {
   eepromSetup();
   wifiSetup();
   serverSetup();
-  pinMode(RELAY_PIN, OUTPUT);
+  for (int i = 0; i < way; i++) {
+    pinMode(RELAY_PIN[i], OUTPUT);
+  }
+  
 }
 
 void loop() {
-  if (state[0] == true) {
-    digitalWrite(RELAY_PIN, LOW); // ON
-    delay(100);
-  } else {
-    digitalWrite(RELAY_PIN, HIGH); // OFF
-    delay(100);
+  for (int i = 0; i < way; i++) {
+    if (state[i]) {
+      digitalWrite(RELAY_PIN[i], LOW); // ON
+      delay(100);
+    } else {
+      digitalWrite(RELAY_PIN[i], HIGH); // OFF
+      delay(100);
+    }
   }
 }
