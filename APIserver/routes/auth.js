@@ -11,7 +11,7 @@ const isEmpty = require('is-empty');
 router.get('/code', (req, res, next) => {
   const io = req.app.get('socketIO');
   const code = authCode.createCode();
-  io.emit('code', code + ''); //이 응답은 라즈베리파이(키오스크화면)의로의 응답
+  io.emit('code', code + ''); //라즈베리파이로의 코드 표출 요청
   res.json({ success: true }); //이 응답은 요청 클라이언트로의 응답
 });
 
@@ -22,7 +22,7 @@ router.post(
     if (isEmpty(authCode.getCode())) {
       throw new createError.Unauthorized('만료된 코드');
     }
-    if (req.query.code != authCode.getCode()) {
+    if (req.headers.code != authCode.getCode()) {
       throw new createError.Unauthorized('잘못된 인증코드');
     }
     const token = jwt.sign(
@@ -31,10 +31,9 @@ router.post(
       },
       env.secret_key,
       {
-        expiresIn: '1h',
+        expiresIn: '30h',
       },
     );
-    authCode.initCode();
     res.status(201).json({ success: true, token: token });
   }),
 );

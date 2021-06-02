@@ -1,7 +1,7 @@
 'use strict';
 const env = require('./env/env.json');
-//common_modules/env/db_env.json 필요
-/*e.g {
+//common_modules/env/env.json 필요
+/*e.g{
   "db_env": {
     "SERVER_PORT": 3000,
     "DB_HOST": "localhost",

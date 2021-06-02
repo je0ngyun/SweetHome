@@ -6,10 +6,11 @@
 AsyncWebServer server(80);
 
 void serverSetup() {
+  server.serveStatic("/assets", LittleFS, "/assets");
   server.serveStatic("/script", LittleFS, "/script");
   server.serveStatic("/css", LittleFS, "/css");
-  server.serveStatic("/", LittleFS, "/ap/").setDefaultFile("index.html").setFilter(ON_AP_FILTER);
-  server.serveStatic("/", LittleFS, "/www/").setDefaultFile("index.html").setFilter(ON_STA_FILTER);
+  server.serveStatic("/views", LittleFS, "/views");
+  server.serveStatic("/", LittleFS, "/").setDefaultFile("index.html");
   
   server.on("/scan", HTTP_GET, [](AsyncWebServerRequest *request){
     String json = "[";
@@ -70,9 +71,8 @@ void serverSetup() {
     
     if (request->hasParam("switch")) {
       int n = request->getParam("switch")->value().toInt();
-      if (n <= 0 && n < way) {
+      if (n >= 0 && n < way) {
         state[n] = !state[n];
-        is_stop = false;
         object["result"] = "success";
       } else {
         object["result"] = "fail";
@@ -88,6 +88,14 @@ void serverSetup() {
 
     serializeJson(doc, json);
     request->send(200, "application/json", json);
+
+    udp.beginPacket(broadcastIp, UDP_PORT);
+    udp.print(0x01);
+    for (int i = 0; i < way; i++) {
+      udp.print(state[i]);
+    }
+    udp.print(way);
+    udp.endPacket();
   });
 
   AsyncCallbackJsonWebHandler* handler = new AsyncCallbackJsonWebHandler("/connect", [](AsyncWebServerRequest *request, JsonVariant &json) {

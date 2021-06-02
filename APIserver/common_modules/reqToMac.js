@@ -1,19 +1,21 @@
 'use strict';
+//아두이노로의 웹요청 모듈
 const { default: axios } = require('axios');
 const self = {};
 
 self.req = async (hostname, port, source, body) => {
-  let url = `http://${hostname}:${port}/${source}?${getQueryStr(body)}`;
-  let response = {};
   try {
+    let url = `http://${hostname}:${port}/${source}?${getQueryStr(body)}`;
+    let response = {};
     response = await axios.get(url, {
       withCredentials: true,
     });
+    return response;
   } catch (ex) {
+    let response = {};
     response.data = 'disconnect';
     return response;
   }
-  return response;
 };
 
 function getQueryStr(body) {

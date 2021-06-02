@@ -1,36 +1,36 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from 'axios';
 Vue.use(Vuex);
-const env = require('../assets/env/env.json');
+
 export default new Vuex.Store({
   state: {
-    devices: [],
-  },
-  mutations: {
-    successGetDevices(state, payload) {
-      state.devices = payload.devices;
-    },
-    failGetDevices() {
-      console.log('서버연결 실패');
-    },
-  },
-  actions: {
-    initDevices({ commit }) {
-      axios
-        .get(`http://localhost:80/device/regist?serial=${env.serial}`)
-        .then((res) => {
-          commit('successGetDevices', res.data);
-        })
-        .catch((res) => {
-          commit('failGetDevices', res);
-        });
-    },
+    btnThemes: [],
+    cardThemes: [],
   },
   getters: {
-    devices(state) {
-      return state.devices;
+    getBtnTheme: (state) => (id) => {
+      return state.btnThemes[id];
+    },
+    getCardTheme: (state) => (id) => {
+      return state.cardThemes[id];
     },
   },
-  modules: {},
+  mutations: {
+    setBtnTheme(state, payload) {
+      state.btnThemes.splice(payload.index, 1, payload.theme);
+    },
+    setCardTheme(state, payload) {
+      state.cardThemes.splice(payload.index, 1, payload.theme);
+    },
+    initTheme(state, payload) {
+      for (let i = 0; i < payload.numOfDevices; i++) {
+        state.btnThemes[i] = {
+          is_on: { color: '#4aba68', transition: 'all ease 1s 0s' },
+          is_off: { color: '#ececec', transition: 'all ease 1s 0s' },
+        };
+        state.cardThemes[i] = { background: '#ffffff', color: '#000000' };
+      }
+    },
+  },
+  actions: {},
 });
