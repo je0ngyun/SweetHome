@@ -84,8 +84,6 @@ export default {
           this.$store.commit('initTheme', {
             numOfDevices: this.devices.length,
           });
-          console.log(this.devices.length);
-          console.log('요청완료');
         })
         .catch(() => {
           console.log('기기없음 요청실패');
