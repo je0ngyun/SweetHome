@@ -15,6 +15,7 @@
     "buefy": "^0.9.7",
     "core-js": "^3.6.5",
     "geolocation-promise": "^1.0.2",
+    "is-empty": "^1.2.0",
     "moment": "^2.29.1",
     "public-ip": "^4.0.3",
     "vue": "^2.6.11",

@@ -84,9 +84,11 @@ export default {
           this.$store.commit('initTheme', {
             numOfDevices: this.devices.length,
           });
+          console.log(this.devices.length);
+          console.log('요청완료');
         })
-        .catch((res) => {
-          console.log(res);
+        .catch(() => {
+          console.log('기기없음 요청실패');
         });
     },
     onRefresh() {
@@ -95,6 +97,9 @@ export default {
         .get(`${this.$defaultURL}/device/regist`, {})
         .then((res) => {
           this.devices = res.data.devices;
+          this.$store.commit('initTheme', {
+            numOfDevices: this.devices.length,
+          });
           this.$buefy.toast.open({
             message: '연결된 기기 불러오기 성공',
             type: 'is-success',

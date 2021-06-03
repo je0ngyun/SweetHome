@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import isEmpty from 'is-empty';
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -24,11 +26,13 @@ export default new Vuex.Store({
     },
     initTheme(state, payload) {
       for (let i = 0; i < payload.numOfDevices; i++) {
-        state.btnThemes[i] = {
-          is_on: { color: '#4aba68', transition: 'all ease 1s 0s' },
-          is_off: { color: '#ececec', transition: 'all ease 1s 0s' },
-        };
-        state.cardThemes[i] = { background: '#ffffff', color: '#000000' };
+        if (isEmpty(state.btnThemes[i])) {
+          state.btnThemes[i] = {
+            is_on: { color: '#4aba68', transition: 'all ease 1s 0s' },
+            is_off: { color: '#ececec', transition: 'all ease 1s 0s' },
+          };
+          state.cardThemes[i] = { background: '#ffffff', color: '#000000' };
+        }
       }
     },
   },

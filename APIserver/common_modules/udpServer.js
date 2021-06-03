@@ -28,6 +28,7 @@ self.start = function () {
       info.device_name = name;
       info.device_way = way;
       await db.setDevice(info);
+      console.log(info);
     } else {
       //opcode == 1 기기상태 처리
       //아두이노로부터 오는형식 opcode|stateBoolean|way // ex) 0114
@@ -46,6 +47,7 @@ self.start = function () {
       state = state.slice(0, state.length - 1);
       info.name = await db.getDeviceName({ host: remote.address + '' });
       await db.setDeviceLog(info, state);
+      console.log(info);
     }
   });
 
