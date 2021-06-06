@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link href="css/css.css" rel="stylesheet">
+  <link href="css/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+<body>
+  <div id="app">
+    <v-app>
+      <v-speed-dial v-if="$route.name === 'home'" v-model="fab" left top absolute direction="bottom" transition="slide-y-transition">
+        <template v-slot:activator>
+          <v-btn v-model="fab" color="blue darken-2" dark fab>
+            <v-icon v-if="fab">
+              close
+            </v-icon>
+            <v-icon v-else>
+              expand_more
+            </v-icon>
+          </v-btn>
+        </template>
+        <v-btn fab dark small color="green" @click="onClickReset">
+          <v-icon>restart_alt</v-icon>
+        </v-btn>
+        <v-btn fab dark small color="indigo">
+          <v-icon>edit</v-icon>
+        </v-btn>
+        <v-btn fab dark small color="red" @click="$router.push('WiFi')">
+          <v-icon>wifi</v-icon>
+        </v-btn>
+      </v-speed-dial>
+      <v-speed-dial v-else left top absolute fab color="blue darken-2">
+        <template v-slot:activator>
+          <v-btn color="blue darken-2" dark fab @click="$router.go(-1)">
+            <v-icon>arrow_back</v-icon>
+          </v-btn>
+        </template>
+      </v-speed-dial>
+      <v-main>
+        <router-view />
+      </v-main>
+    </v-app>
+  </div>
+
+  <script src="script/vue.min.js"></script>
+  <script src="script/axios.min.js"></script>
+  <script src="script/vuetify.min.js"></script>
+  <script src="script/vue-router.js"></script>
+  <script src="views/Home.vue.js"></script>
+  <script src="views/WiFi.vue.js"></script>
+  <script>
+    const routes = [
+      {
+        path: '/',
+        name: 'home',
+        component: Home
+      },
+      {
+        path: '/wifi',
+        component: WiFi
+      }
+    ]
+    
+    const router = new VueRouter({
+        mode: 'history',
+        base: '/',
+        routes,
+    })
+
+    router.push('/')
+
+    const vuetify = new Vuetify({
+      icons: {
+        values: {
+          wifi3: {
+            name: 'signal_wifi_3_bar',
+            component: SignalWiFi3
+          },
+          wifi2: {
+            name: 'signal_wifi_2_bar',
+            component: SignalWiFi2
+          },
+          wifi1: {
+            name: 'signal_wifi_1_bar',
+            component: SignalWiFi1
+          }
+        }
+      }
+    })
+
+    new Vue({
+        el: '#app',
+        vuetify,
+        router,
+        
+        data: () => ({
+          fab: false,
+        }),
+
+        methods: {
+          onClickReset () {
+            axios.get('/reset')
+            .then(res => {
+              
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          }
+        }
+    })
+  </script>
+
+  <style>
+    html {
+        overflow-y: auto
+    }
+  </style>
+</body>
+</html>

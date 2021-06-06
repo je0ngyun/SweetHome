@@ -1,15 +1,20 @@
 #include <tplus.h>
-#include <utility>
 
 tplus app;
 
 void setup() {
-  pinMode(13, OUTPUT);
   app.setup();
-  std::pair<int, int> p(1, 2);
+  app.add_switch(14);
 }
 
 void loop() {
-  digitalWrite(13, !(digitalRead(13)));
-  delay(500);
+  for (auto p : app.get_switchs()) {
+    if (p.second) {
+      digitalWrite(p.first, LOW);
+      delay(100);
+    } else {
+      digitalWrite(p.first, HIGH);
+      delay(100);
+    }
+  }
 }
