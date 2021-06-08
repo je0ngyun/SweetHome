@@ -6,6 +6,7 @@
 
 #include "Arduino.h"
 #include "ESP8266WiFi.h"
+#include "WiFiUdp.h"
 #include "ESPAsyncWebServer.h"
 #include "AsyncMqttClient.h"
 #include "AsyncJson.h"
@@ -33,8 +34,10 @@ private:
   WiFiEventHandler wifi_disconnect_handler_;
   AsyncWebServer server_;
 
+  WiFiUDP udp_;
   IPAddress broker_ip_;
   AsyncMqttClient mqtt_client_;
+  Ticker udp_reciver_timer_;
   Ticker mqtt_reconnecte_timer_;
 
   vector<pair<int, bool>> switch_;
@@ -47,9 +50,10 @@ private:
   void on_connect(AsyncWebServerRequest* request, JsonVariant& json);
 
   void setup_wifi();
-  void on_wifi_connected(const WiFiEventStationModeConnected& event);
+  void on_wifi_connected(const WiFiEventStationModeGotIP& event);
   void on_wifi_disconnected(const WiFiEventStationModeDisconnected& event);
   void connect_wifi();
+  void get_broker_ip();
 
   void setup_mqtt();
   void on_mqtt_connect(bool session_present);

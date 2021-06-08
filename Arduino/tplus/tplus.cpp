@@ -3,7 +3,6 @@
 #include <functional>
 
 #include "ESP8266WiFi.h"
-#include "WiFiUdp.h"
 #include "LittleFS.h"
 
 tplus::tplus() :
@@ -21,7 +20,6 @@ void tplus::setup() {
   setup_mqtt();
   setup_wifi();
   setup_server();
-  connect_mqtt();
 }
 
 void tplus::setup_server() {
@@ -43,7 +41,7 @@ void tplus::setup_server() {
 }
 
 void tplus::setup_wifi() {
-  wifi_connect_handler_ = WiFi.onStationModeConnected(bind(&tplus::on_wifi_connected, this, placeholders::_1));
+  wifi_connect_handler_ = WiFi.onStationModeGotIP(bind(&tplus::on_wifi_connected, this, placeholders::_1));
   wifi_disconnect_handler_ = WiFi.onStationModeDisconnected(bind(&tplus::on_wifi_disconnected, this, placeholders::_1));
 
   connect_wifi();
@@ -145,25 +143,25 @@ void tplus::on_connect(AsyncWebServerRequest* request, JsonVariant& json) {
   ESP.restart();
 }
 
-void tplus::on_wifi_connected(const WiFiEventStationModeConnected& event) {
+void tplus::get_broker_ip() {
+  broker_ip_ = udp_.remoteIP();
+  if (broker_ip_.toString() != "(IP unset)") {
+    connect_mqtt();
+    udp_reciver_timer_.detach();
+  }
+}
+
+void tplus::on_wifi_connected(const WiFiEventStationModeGotIP& event) {
   Serial.println("Connected to WiFi");
+  Serial.println(WiFi.localIP());
   IPAddress broadcastIp = WiFi.localIP();
   broadcastIp[3] = 255;
+  udp_.begin(4210);
+  udp_.beginPacket(broadcastIp, 4210);
+  udp_.print(0x00);
+  udp_.endPacket();
 
-  /*WiFiUDP udp;
-  udp.begin(4210);
-  udp.beginPacket(broadcastIp, 4210);
-  udp.print(WiFi.hostname().c_str());
-  udp.endPacket();
-
-  int packet_size;
-  count = 0;
-  while (!(packet_size = udp.parsePacket())) {
-    Serial.print(".");
-  }
-  Serial.println();*/
-  broker_ip_ = IPAddress(14, 55, 49, 212);
-  Serial.println("mqtt server ip: " + broker_ip_.toString());
+  udp_reciver_timer_.attach(1, bind(&tplus::get_broker_ip, this));
 }
 
 void tplus::on_wifi_disconnected(const WiFiEventStationModeDisconnected& event) {
@@ -178,16 +176,11 @@ void tplus::connect_wifi() {
   String password = eeprom_.read_string(eeprom_.PASSWORD_ADDRESS);
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(500);
-  }
-  Serial.println();
 }
 
 void tplus::on_mqtt_connect(bool session_present) {
   Serial.println("Connected to MQTT");
-  mqtt_client_.subscribe("/action", 2);
+  mqtt_client_.subscribe("action", 0);
   publish_regist();
 }
 
@@ -238,18 +231,18 @@ void tplus::on_mqtt_publish(uint16_t packet_id) {
 }
 
 void tplus::connect_mqtt() {
-  Serial.print("Connecting to MQTT");
-  mqtt_client_.setServer("14.55.49.212", 1883);
-  while (!mqtt_client_.connected()) {
-    mqtt_client_.connect();
-    Serial.print(".");
-    delay(500);
-  }
+  Serial.println("Connecting to MQTT");
+  mqtt_client_.setServer(broker_ip_, 1883);
+  mqtt_client_.connect();
   Serial.println();
 }
 
 uint16_t tplus::subscribe_action() {
 
+}
+
+uint16_t tplus::publish_state() {
+  
 }
 
 uint16_t tplus::publish_regist() {
@@ -261,7 +254,7 @@ uint16_t tplus::publish_regist() {
   object["device_way"] = switch_.size();
   serializeJson(doc, json);
 
-  uint16_t packet_id = mqtt_client_.publish("/regist", 2, true, json.c_str());
+  uint16_t packet_id = mqtt_client_.publish("regist", 2, true, json.c_str());
   return packet_id;
 }
 
