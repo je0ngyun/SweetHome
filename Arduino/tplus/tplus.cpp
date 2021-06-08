@@ -18,8 +18,10 @@ void tplus::setup() {
     return;
   }
 
+  setup_mqtt();
   setup_wifi();
   setup_server();
+  connect_mqtt();
 }
 
 void tplus::setup_server() {
@@ -54,8 +56,6 @@ void tplus::setup_mqtt() {
   mqtt_client_.onUnsubscribe(bind(&tplus::on_mqtt_unsubscribe, this, placeholders::_1));
   mqtt_client_.onMessage(bind(&tplus::on_mqtt_message, this, placeholders::_1, placeholders::_2, placeholders::_3, placeholders::_4, placeholders::_5, placeholders::_6));
   mqtt_client_.onPublish(bind(&tplus::on_mqtt_publish, this, placeholders::_1));
-  mqtt_client_.setServer("14.55.49.212", 1883);
-  mqtt_client_.connect();
 }
 
 void tplus::on_scan(AsyncWebServerRequest* request) {
@@ -164,8 +164,6 @@ void tplus::on_wifi_connected(const WiFiEventStationModeConnected& event) {
   Serial.println();*/
   broker_ip_ = IPAddress(14, 55, 49, 212);
   Serial.println("mqtt server ip: " + broker_ip_.toString());
-  setup_mqtt();
-  connect_mqtt();
 }
 
 void tplus::on_wifi_disconnected(const WiFiEventStationModeDisconnected& event) {
@@ -175,16 +173,22 @@ void tplus::on_wifi_disconnected(const WiFiEventStationModeDisconnected& event) 
 }
 
 void tplus::connect_wifi() {
+  Serial.print("Connecting to WiFi");
   String ssid = eeprom_.read_string(eeprom_.SSID_ADDRESS);
   String password = eeprom_.read_string(eeprom_.PASSWORD_ADDRESS);
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(500);
+  }
+  Serial.println();
 }
 
 void tplus::on_mqtt_connect(bool session_present) {
   Serial.println("Connected to MQTT");
-  uint16_t packet_id = publish_regist();
-  Serial.println("Packet ID: " + packet_id);
+  mqtt_client_.subscribe("/action", 2);
+  publish_regist();
 }
 
 void tplus::on_mqtt_disconnect(AsyncMqttClientDisconnectReason reason) {
@@ -234,9 +238,14 @@ void tplus::on_mqtt_publish(uint16_t packet_id) {
 }
 
 void tplus::connect_mqtt() {
-  Serial.println("Connecting to MQTT");
-  mqtt_client_.connect();
-  Serial.println(mqtt_client_.connected());
+  Serial.print("Connecting to MQTT");
+  mqtt_client_.setServer("14.55.49.212", 1883);
+  while (!mqtt_client_.connected()) {
+    mqtt_client_.connect();
+    Serial.print(".");
+    delay(500);
+  }
+  Serial.println();
 }
 
 uint16_t tplus::subscribe_action() {
@@ -247,12 +256,12 @@ uint16_t tplus::publish_regist() {
   DynamicJsonDocument doc(512);
   String json;
   JsonObject object = doc.to<JsonObject>();
-  object["device_host"] = WiFi.localIP().toString().c_str();
-  object["device_name"] = WiFi.hostname().c_str();
+  object["device_host"] = WiFi.localIP().toString();
+  object["device_name"] = WiFi.hostname();
   object["device_way"] = switch_.size();
   serializeJson(doc, json);
 
-  uint16_t packet_id = mqtt_client_.publish("/regist", 0, true, json.c_str());
+  uint16_t packet_id = mqtt_client_.publish("/regist", 2, true, json.c_str());
   return packet_id;
 }
 

@@ -3,8 +3,8 @@
 tplus app;
 
 void setup() {
-  app.setup();
   app.add_switch(14);
+  app.setup();
 }
 
 void loop() {
@@ -17,5 +17,4 @@ void loop() {
       delay(100);
     }
   }
-  Serial.println(app.mqtt_connected());
 }
