@@ -119,6 +119,7 @@ void tplus::on_action(AsyncWebServerRequest* request) {
     } else {
       object["result"] = "fail";
     }
+    publish_state();
   } else {
     object["result"] = "fail";
   }
@@ -145,7 +146,8 @@ void tplus::on_connect(AsyncWebServerRequest* request, JsonVariant& json) {
 
 void tplus::get_broker_ip() {
   broker_ip_ = udp_.remoteIP();
-  if (broker_ip_.toString() != "(IP unset)") {
+  broker_ip_ = IPAddress(14, 55, 61, 153);
+  if (broker_ip_.isSet()) {
     connect_mqtt();
     udp_reciver_timer_.detach();
   }
@@ -180,7 +182,8 @@ void tplus::connect_wifi() {
 
 void tplus::on_mqtt_connect(bool session_present) {
   Serial.println("Connected to MQTT");
-  mqtt_client_.subscribe("action", 0);
+  String topic = WiFi.localIP() + "/action";
+  mqtt_client_.subscribe(topic.c_str(), 0);
   publish_regist();
 }
 
@@ -232,6 +235,7 @@ void tplus::on_mqtt_publish(uint16_t packet_id) {
 
 void tplus::connect_mqtt() {
   Serial.println("Connecting to MQTT");
+  Serial.println(broker_ip_);
   mqtt_client_.setServer(broker_ip_, 1883);
   mqtt_client_.connect();
   Serial.println();
@@ -242,7 +246,17 @@ uint16_t tplus::subscribe_action() {
 }
 
 uint16_t tplus::publish_state() {
-  
+  DynamicJsonDocument doc(512);
+  String json;
+  JsonObject object = doc.to<JsonObject>();
+  object["device_host"] = WiFi.localIP().toString();
+  JsonArray array = object.createNestedArray("device_state");
+  for (const pair<int, bool> p : switch_) {
+    array.add(p.second);
+  }
+
+  uint16_t packet_id = mqtt_client_.publish("state", 2, true, json.c_str());
+  return packet_id;
 }
 
 uint16_t tplus::publish_regist() {
